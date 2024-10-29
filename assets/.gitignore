@@ -1,0 +1,12 @@
+# Ignore everything
+*
+
+# But not these files...
+!.gitignore
+!AppAsset.php
+!AppLightAsset.php
+!DashboardAsset.php
+!DashboardLightAsset.php
+!ErrorAsset.php
+!LoginAsset.php
+# etc...

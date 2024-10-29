@@ -1,0 +1,38 @@
+.btn {
+    color: #111 !important;
+    font: 15px 'Carter One';
+    padding: 10px 10px;
+    background: #ccc;
+    margin: 20px 0;
+    display: inline-block;
+    border-radius: 20px;
+    /* text-shadow: none; */
+}
+
+.btn:hover {
+    padding: 12px;
+    transition: 0.2s;
+    background: #fc0 !important;
+}
+
+.container {
+    text-align: center;
+    padding-top: 200px;
+    width: 1000px;
+    height: 100vh;
+    border: 1px solid black;
+}
+
+.teks-fi {
+    text-align: center;
+    font: 45px 'Poppins', cursive;
+    text-shadow: 2px 2px 2px #000;
+    color: #fff;
+}
+
+.teks-fi-kecil {
+    text-align: center;
+    font: 25px 'Carter One', cursive;
+    text-shadow: 2px 2px 2px #000;
+    color: #ccc;
+}

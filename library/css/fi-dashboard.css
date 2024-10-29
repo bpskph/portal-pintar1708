@@ -1,0 +1,55 @@
+.ring {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ring i.circle {
+    position: absolute;
+    inset: 0;
+    border: 2px solid #666666;
+    transition: 0.5s;
+}
+
+.ring i.circle:nth-child(1) {
+    border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+    animation: animate 10s linear infinite;
+}
+
+.ring i.circle:nth-child(2) {
+    border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+    animation: animate 8s linear infinite;
+}
+
+.ring i.circle:nth-child(3) {
+    border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+    animation: animate2 14s linear infinite;
+}
+
+.ring:hover i.circle {
+    border: 3px solid var(--clr);
+    filter: drop-shadow(0 0 8px var(--clr));
+}
+
+@keyframes animate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes animate2 {
+    0% {
+        transform: rotate(360deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
