@@ -7,7 +7,7 @@ use kartik\grid\GridView;
 use yii\web\View;
 
 
-$this->title = 'Jadwal Request/Pemakaian Zoom BPS Provinsi Bengkulu';
+$this->title = 'Jadwal Request/Pemakaian Zoom BPS Kabupaten Bengkulu Selatan';
 ?>
 <div class="container-fluid" data-aos="fade-up">
     <h1 class="text-center"><?= Html::encode($this->title) ?></h1>

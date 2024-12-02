@@ -339,7 +339,7 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
             $sekretaris = \app\models\Pengguna::findOne('sekbps17');
             $isi_notif_wa_sek = '*Portal Pintar 2.0 - WhatsApp Notification Blast*
 
-            Ykh. Sekretaris BPS Provinsi Bengkulu, Surat dari ' . $pengguna->nama . ' dengan  Nomor *' . $model->nomor_suratrepoeks  . '* sudah disetujui oleh *' . $approver->nama . '*, mohon meng-upload PDF surat yang telah ditandatangani ke Sistem Portal Pintar 2.0 di https://webapps.bps.go.id/bengkulu/portalpintar/. Terima kasih.
+            Ykh. Sekretaris BPS Kabupaten Bengkulu Selatan, Surat dari ' . $pengguna->nama . ' dengan  Nomor *' . $model->nomor_suratrepoeks  . '* sudah disetujui oleh *' . $approver->nama . '*, mohon meng-upload PDF surat yang telah ditandatangani ke Sistem Portal Pintar 2.0 di https://webapps.bps.go.id/bengkulu/portalpintar/. Terima kasih.
             
             _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
             $response2 = AgendaController::wa_engine($sekretaris->nomor_hp, $isi_notif_wa_sek);
@@ -580,7 +580,7 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
                         <tr>
                             <td height="40" colspan="0" width="10" align="left"><img src="data:image/png;base64,' . Yii::$app->params['imagebase64'] . '" height="60" width="82" /> 
                             </td>
-                            <td height="40" vertical-align="middle"><h4 style="color: #007bff; margin-left: 6px;" class="tulisanbps"><i>BADAN PUSAT STATISTIK<br/>PROVINSI BENGKULU</h4></i></td>
+                            <td height="40" vertical-align="middle"><h4 style="color: #007bff; margin-left: 6px;" class="tulisanbps"><i>BADAN PUSAT STATISTIK<br/>KABUPATEN BENGKULU SELATAN</h4></i></td>
                             <td height="40" colspan="0" align="right"><img src="data:image/png;base64,' . Yii::$app->params['imagebase64_st2023'] . '" height="70" width="170" />
                             </td>
                         </tr>
@@ -659,7 +659,7 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
                         <tr>
                             <td height="40" colspan="0" width="10" align="left"><img src="data:image/png;base64,' . Yii::$app->params['imagebase64'] . '" height="60" width="82" /> 
                             </td>
-                            <td height="40" vertical-align="middle"><h4 style="margin-left: 6px" class="tulisanbps"><i>BADAN PUSAT STATISTIK<br/>PROVINSI BENGKULU</h4></i></td>
+                            <td height="40" vertical-align="middle"><h4 style="margin-left: 6px" class="tulisanbps"><i>BADAN PUSAT STATISTIK<br/>KABUPATEN BENGKULU SELATAN</h4></i></td>
                             <td height="40" colspan="0" align="right"><br>
                             </td>
                         </tr>
@@ -702,7 +702,7 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
                         <tr>
                             <td height="40" colspan="0" width="10" align="left"><img src="data:image/png;base64,' . Yii::$app->params['imagebase64'] . '" height="60" width="82" /> 
                             </td>
-                            <td height="40" vertical-align="middle"><h4 style="margin-left: 6px" class="tulisanbps"><i>BADAN PUSAT STATISTIK<br/>PROVINSI BENGKULU</h4></i></td>
+                            <td height="40" vertical-align="middle"><h4 style="margin-left: 6px" class="tulisanbps"><i>BADAN PUSAT STATISTIK<br/>KABUPATEN BENGKULU SELATAN</h4></i></td>
                             <td height="40" colspan="0" align="right"><br>
                             </td>
                         </tr>
@@ -762,8 +762,8 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
                 </body>
                 <foot style="font-size:10px">
                     <div class="footer">
-                        <center>Jalan Adam Malik Km.8 Bengkulu, 38225, Telepon (0736) 349117-118, Kepala (0736) 349116
-                            <br>Fax. (0736) 349115, E-mail: bps1700@bps.go.id
+                        <center>Jalan Affan Bachsin No.108A RT.07 Pasar Baru Kota Manna 38512 
+                            <br>Telp./Fax.: 0739-21048, E-mail: bps1701@bps.go.id
                         </center>
                         <i style="font-size: 8px;">
                             Generated in Portal Pintar
@@ -809,7 +809,7 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
                     $template = '
                     <p>Yang bertandatangan di bawah ini :</p>
                     <p>Nama&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;: Ir. Win Rizal, ME</p>
-                    <p>Jabatan &nbsp; &nbsp; : Kepala BPS Provinsi Bengkulu</p>
+                    <p>Jabatan &nbsp; &nbsp; : Kepala BPS Kabupaten Bengkulu Selatan</p>
                     <p style="text-align:center;"><strong>MEMERINTAHKAN :</strong></p>
                     <br/>
                     <table style="border-collapse:collapse;border: none;" width="100%">
@@ -906,9 +906,9 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
                     <br/>
                     <p>Nama&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;:&nbsp; &nbsp;&nbsp;Ir. Win Rizal, M.E.</p>
                     <p>NIP&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:&nbsp; &nbsp;&nbsp;196608251988021001</p>
-                    <p>Jabatan&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:&nbsp; &nbsp;&nbsp;Kepala BPS Provinsi Bengkulu selaku Kuasa Pengguna Barang</p>
+                    <p>Jabatan&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:&nbsp; &nbsp;&nbsp;Kepala BPS Kabupaten Bengkulu Selatan selaku Kuasa Pengguna Barang</p>
                     <p>
-                    dengan ini menerangkan bahwa di BPS Provinsi Bengkulu terdapat Barang Milik Negara (BMN) yang diaktifkan kembali penggunaannya. Dengan rincian sebagai berikut:
+                    dengan ini menerangkan bahwa di BPS Kabupaten Bengkulu Selatan terdapat Barang Milik Negara (BMN) yang diaktifkan kembali penggunaannya. Dengan rincian sebagai berikut:
                     </p>
                     <br/>
                     <table style="border-collapse:collapse;border: none;" width="100%">
@@ -1003,13 +1003,13 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
 
                     $isi_notif_wa = '*Portal Pintar 2.0 - WhatsApp Notification Blast*
 
-Bapak/Ibu ' . $pengguna->nama . ', Berkas Surat Anda Nomor *' . $model->nomor_suratrepoeks  . '* sudah diupload oleh *Sekretaris BPS Provinsi Bengkulu*, dan dapat diunduh di Sistem Portal Pintar 2.0 di https://webapps.bps.go.id/bengkulu/portalpintar/. Terima kasih.
+Bapak/Ibu ' . $pengguna->nama . ', Berkas Surat Anda Nomor *' . $model->nomor_suratrepoeks  . '* sudah diupload oleh *Sekretaris BPS Kabupaten Bengkulu Selatan*, dan dapat diunduh di Sistem Portal Pintar 2.0 di https://webapps.bps.go.id/bengkulu/portalpintar/. Terima kasih.
 
 _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
 
                     $isi_notif_wa_approver = '*Portal Pintar 2.0 - WhatsApp Notification Blast*
 
-Bapak/Ibu ' . $approver->nama . ', Berkas Surat Nomor *' . $model->nomor_suratrepoeks  . '* dari ' . $pengguna->nama . ' sudah diupload oleh *Sekretaris BPS Provinsi Bengkulu*, dan dapat diunduh di Sistem Portal Pintar 2.0 di https://webapps.bps.go.id/bengkulu/portalpintar/. Terima kasih.
+Bapak/Ibu ' . $approver->nama . ', Berkas Surat Nomor *' . $model->nomor_suratrepoeks  . '* dari ' . $pengguna->nama . ' sudah diupload oleh *Sekretaris BPS Kabupaten Bengkulu Selatan*, dan dapat diunduh di Sistem Portal Pintar 2.0 di https://webapps.bps.go.id/bengkulu/portalpintar/. Terima kasih.
 
 _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
 
@@ -1146,7 +1146,7 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
                         <tr>
                             <td height="40" colspan="0" width="10" align="left"><img src="data:image/png;base64,' . Yii::$app->params['imagebase64'] . '" height="60" width="82" /> 
                             </td>
-                            <td height="40" vertical-align="middle"><h4 style="color: #007bff; margin-left: 6px; font-family: Tahoma, sans-serif !important;font-size: 18.7px; font-weight: bold;"><i>BADAN PUSAT STATISTIK<br/>PROVINSI BENGKULU</h4></i></td>
+                            <td height="40" vertical-align="middle"><h4 style="color: #007bff; margin-left: 6px; font-family: Tahoma, sans-serif !important;font-size: 18.7px; font-weight: bold;"><i>BADAN PUSAT STATISTIK<br/>KABUPATEN BENGKULU SELATAN</h4></i></td>
                             <td height="40" colspan="0" align="right"><img src="data:image/png;base64,' . Yii::$app->params['imagebase64_st2023'] . '" height="70" width="170" />
                             </td>
                         </tr>
@@ -1220,7 +1220,7 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
                         <tr>
                             <td height="40" colspan="0" width="10" align="left"><img src="data:image/png;base64,' . Yii::$app->params['imagebase64'] . '" height="60" width="82" /> 
                             </td>
-                            <td height="40" vertical-align="middle"><h4 style="margin-left: 6px; font-family: Tahoma, sans-serif !important;font-size: 18.7px; font-weight: bold;"><i>BADAN PUSAT STATISTIK<br/>PROVINSI BENGKULU</h4></i></td>
+                            <td height="40" vertical-align="middle"><h4 style="margin-left: 6px; font-family: Tahoma, sans-serif !important;font-size: 18.7px; font-weight: bold;"><i>BADAN PUSAT STATISTIK<br/>KABUPATEN BENGKULU SELATAN</h4></i></td>
                             <td height="40" colspan="0" align="right"><br>
                             </td>
                         </tr>
@@ -1263,7 +1263,7 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
                         <tr>
                             <td height="40" colspan="0" width="10" align="left"><img src="data:image/png;base64,' . Yii::$app->params['imagebase64'] . '" height="60" width="82" /> 
                             </td>
-                            <td height="40" vertical-align="middle"><h4 style="margin-left: 6px; font-family: Tahoma, sans-serif !important;font-size: 18.7px; font-weight: bold;"><i>BADAN PUSAT STATISTIK<br/>PROVINSI BENGKULU</h4></i></td>
+                            <td height="40" vertical-align="middle"><h4 style="margin-left: 6px; font-family: Tahoma, sans-serif !important;font-size: 18.7px; font-weight: bold;"><i>BADAN PUSAT STATISTIK<br/>KABUPATEN BENGKULU SELATAN</h4></i></td>
                             <td height="40" colspan="0" align="right"><br>
                             </td>
                         </tr>
@@ -1321,8 +1321,8 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
                         <br/>
                         ' . ($model->tembusan != null ? '<p style="margin-bottom: 0px">Tembusan: </p>' . $autofillString2 : '') . '                   
                         <div style="font-size:10px" class="tulisan">                    
-                                <center>Jalan Adam Malik Km.8 Bengkulu, 38225, Telepon (0736) 349117-118, Kepala (0736) 349116
-                                    <br>Fax. (0736) 349115, E-mail: bps1700@bps.go.id
+                                <center>Jalan Affan Bachsin No.108A RT.07 Pasar Baru Kota Manna 38512 
+                                    <br>Telp./Fax.: 0739-21048, E-mail: bps1701@bps.go.id
                                 </center>
                                 <i style="font-size: 8px;">
                                     <center>Generated in Portal Pintar</center>

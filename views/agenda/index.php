@@ -17,7 +17,7 @@ use yii\web\View;
 $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-copy-link-agenda.js', ['position' => View::POS_END, 'depends' => [\yii\web\JqueryAsset::class]]);
 $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-agenda-index.js', ['position' => View::POS_END, 'depends' => [\yii\web\JqueryAsset::class]]);
 $this->registerCssFile(Yii::$app->request->baseUrl . '/library/css/fi-agenda-index.css', ['position' => View::POS_HEAD, 'depends' => [\yii\web\JqueryAsset::class]]);
-$this->title = 'Agenda Kantor BPS Provinsi Bengkulu';
+$this->title = 'Agenda Kantor BPS Kabupaten Bengkulu Selatan';
 
 ?>
 <?php

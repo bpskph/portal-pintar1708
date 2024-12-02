@@ -889,7 +889,7 @@ CREATE TABLE IF NOT EXISTS `mobildinaskeperluan` (
 
 INSERT INTO `mobildinaskeperluan` (`id_mobildinaskeperluan`, `nama_mobildinaskeperluan`, `timestamp`) VALUES
 (1, 'Agenda di DPRD atau OPD Lainnya', '2024-02-07 07:45:29'),
-(2, 'Narasumber di Luar Kantor BPS Provinsi Bengkulu', '2024-02-07 07:45:29'),
+(2, 'Narasumber di Luar Kantor BPS Kabupaten Bengkulu Selatan', '2024-02-07 07:45:29'),
 (3, 'Koordinasi/Enumerasi Data', '2024-02-07 07:45:29'),
 (4, 'Agenda Kehumasan', '2024-02-07 07:45:29'),
 (5, 'Agenda Keuangan (ke Bank)', '2024-02-07 07:45:29'),
@@ -1246,8 +1246,8 @@ CREATE TABLE IF NOT EXISTS `suratrepoeksttd` (
 --
 
 INSERT INTO `suratrepoeksttd` (`id_suratrepoeksttd`, `nama`, `jabatan`, `deleted`) VALUES
-(1, 'WIN RIZAL', 'Kepala Badan Pusat Statistik<br/>Provinsi Bengkulu,', 0),
-(2, 'SAHRANUDIN', 'a.n. Kepala BPS Provinsi Bengkulu\r\n<br/>\r\nKepala Bagian Umum', 0);
+(1, 'WIN RIZAL', 'Kepala Badan Pusat Statistik<br/>Kabupaten Bengkulu Selatan,', 0),
+(2, 'SAHRANUDIN', 'a.n. Kepala BPS Kabupaten Bengkulu Selatan\r\n<br/>\r\nKepala Bagian Umum', 0);
 
 -- --------------------------------------------------------
 

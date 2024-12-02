@@ -714,7 +714,7 @@ class AgendaController extends BaseController
                     $recipients[] = $email;
                 }
             }
-            $recipients = array_merge(['rb1700@bps.go.id'], $recipients);
+            $recipients = array_merge(['bps1701@bps.go.id'], $recipients);
             $recipients = array_merge([$dataagenda->pemimpin . '@bps.go.id'], $recipients);
             // die(var_dump($recipients));
             if ($model->contact($recipients)) {

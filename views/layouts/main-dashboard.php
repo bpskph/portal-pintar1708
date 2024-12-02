@@ -72,7 +72,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         <div class="container">
             <h5 style="font-style: normal" ;>Portal Pusat Informasi Terkini Dalam Layar 2.0</h5>
             <div style="font-style: normal" class="credits">
-                Initiated by Sekretariat Reformasi Birokrasi BPS Provinsi Bengkulu in 2023 | Coded and Maintained by <a href="https://khansasafira19.github.io/" target="_blank">nofriani@bps.go.id</a>
+                Initiated by Sekretariat Reformasi Birokrasi BPS Kabupaten Bengkulu Selatan in 2023 | Coded and Maintained by <a href="https://khansasafira19.github.io/" target="_blank">nofriani@bps.go.id</a>
             </div>
         </div>
     </footer><!-- End Footer -->

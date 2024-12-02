@@ -259,10 +259,10 @@ class SuratrepoController extends BaseController
                     <td height="40" colspan="0" width="10" align="left"><img src="data:image/png;base64,' . Yii::$app->params['imagebase64'] . '" height="60" width="82" /> 
                     </td>
                     <td height="40" vertical-align="middle">
-                        <h4 style="font-size: 18px; line-height: 1; margin: 0; font-weight: bold"><i>BADAN PUSAT STATISTIK<br/>PROVINSI BENGKULU</h4></i>
+                        <h4 style="font-size: 18px; line-height: 1; margin: 0; font-weight: bold"><i>BADAN PUSAT STATISTIK<br/>KABUPATEN BENGKULU SELATAN</h4></i>
                         <p style="font-size: 10px; line-height: 1.1; margin:0">
-                            Jalan Adam Malik KM. 8 Jalan Gedang, 38225, Bengkulu. Telp (0736) 349117<br/>
-                            Website: bengkulu.bps.go.id, e-mail: bps1700@bps.go.id
+                            Jalan Affan Bachsin No.108A RT.07 Pasar Baru Kota Manna 38512<br/>
+                            Website: bengkuluselatankab.bps.go.id, e-mail: bps1701@bps.go.id
                         </p>
                     </td>                            
                 </tr>
@@ -771,7 +771,7 @@ class SuratrepoController extends BaseController
                         <tr>
                             <td height="40" colspan="0" width="10" align="left"><img src="data:image/png;base64,' . Yii::$app->params['imagebase64'] . '" height="60" width="82" /> 
                             </td>
-                            <td height="40" vertical-align="middle"><h4 style="color: #007bff; margin-left: 6px"><i>BADAN PUSAT STATISTIK<br/>PROVINSI BENGKULU</h4></i></td>
+                            <td height="40" vertical-align="middle"><h4 style="color: #007bff; margin-left: 6px"><i>BADAN PUSAT STATISTIK<br/>KABUPATEN BENGKULU SELATAN</h4></i></td>
                             <td height="40" colspan="0" align="right"><img src="data:image/png;base64,' . Yii::$app->params['imagebase64_st2023'] . '" height="70" width="170" />
                             </td>
                         </tr>
@@ -849,7 +849,7 @@ class SuratrepoController extends BaseController
                 $kop = '
                 <table width="500" border="0" bordercolor="33FFFF" align="center" cellpadding="3" cellspacing="00">
                     <tr style="">
-                        <h4 style="text-align: center;margin-top: -20px;">BADAN PUSAT STATISTIK<br/>PROVINSI BENGKULU</h4> 
+                        <h4 style="text-align: center;margin-top: -20px;">BADAN PUSAT STATISTIK<br/>KABUPATEN BENGKULU SELATAN</h4> 
                     </tr>
                     <tr style="">
                         <h4 style="text-align: center; text-decoration: underline">N O T A  D I N A S</h4> 
@@ -922,7 +922,7 @@ class SuratrepoController extends BaseController
                         <tr>
                             <td height="40" colspan="0" width="10" align="left"><img src="data:image/png;base64,' . Yii::$app->params['imagebase64'] . '" height="60" width="82" /> 
                             </td>
-                            <td height="40" vertical-align="middle"><h4 style="margin-left: 6px"><i>BADAN PUSAT STATISTIK<br/>PROVINSI BENGKULU</h4></i></td>
+                            <td height="40" vertical-align="middle"><h4 style="margin-left: 6px"><i>BADAN PUSAT STATISTIK<br/>KABUPATEN BENGKULU SELATAN</h4></i></td>
                             <td height="40" colspan="0" align="right"><br>
                             </td>
                         </tr>
@@ -965,7 +965,7 @@ class SuratrepoController extends BaseController
                     <tr>
                         <td height="40" colspan="0" width="10" align="left"><img src="data:image/png;base64,' . Yii::$app->params['imagebase64'] . '" height="60" width="82" /> 
                         </td>
-                        <td height="40" vertical-align="middle"><h4 style="margin-left: 6px"><i>BADAN PUSAT STATISTIK<br/>PROVINSI BENGKULU</h4></i></td>
+                        <td height="40" vertical-align="middle"><h4 style="margin-left: 6px"><i>BADAN PUSAT STATISTIK<br/>KABUPATEN BENGKULU SELATAN</h4></i></td>
                         <td height="40" colspan="0" align="right"><br>
                         </td>
                     </tr>
@@ -1015,7 +1015,7 @@ class SuratrepoController extends BaseController
                                 <br/>
                                 <center>
                                     Mengetahui, <br/>                                                                   
-                                    Kepala BPS Provinsi Bengkulu
+                                    Kepala BPS Kabupaten Bengkulu Selatan
                                     <br />
                                     Selaku Kuasa Pengguna Barang
                                     <br />
@@ -1055,8 +1055,8 @@ class SuratrepoController extends BaseController
                 </body>
                 <foot style="font-size:10px">
                     <div class="footer">
-                        <center>Jalan Adam Malik Km.8 Bengkulu, 38225, Telepon (0736) 349117-118, Kepala (0736) 349116
-                            <br>Fax. (0736) 349115, E-mail: bps1700@bps.go.id
+                        <center>Jalan Affan Bachsin No.108A RT.07 Pasar Baru Kota Manna 38512 
+                            <br>Telp./Fax.: 0739-21048, E-mail: bps1701@bps.go.id
                         </center>
                         <i style="font-size: 8px;">
                             Generated in Portal Pintar
@@ -1083,11 +1083,11 @@ class SuratrepoController extends BaseController
             switch ($id) {
                 case 0: // surat biasa
                     $template = '
-                    <p style="text-indent:.5in; text-align: justify">Dalam rangka peningkatan pemahaman Reformasi Birokrasi dalam tim sekretariat RB BPS Provinsi Bengkulu, bersama ini  mengundang Bapak/Ibu untuk hadir pada:</p>
+                    <p style="text-indent:.5in; text-align: justify">Dalam rangka peningkatan pemahaman Reformasi Birokrasi dalam tim sekretariat RB BPS Kabupaten Bengkulu Selatan, bersama ini  mengundang Bapak/Ibu untuk hadir pada:</p>
                     <p>Hari/Tanggal&nbsp; &nbsp; &nbsp; &nbsp;: Jumat/2 Februari 2023</p>
                     <p>Waktu&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;: 14.00 WIB s.d. selesai</p>
                     <p>Agenda&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;: Review Pilar dan Rencana Kegiatan Bulanan</p>
-                    <p>Tempat &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : Ruang Agro BPS Provinsi Bengkulu</p>
+                    <p>Tempat &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : Ruang Agro BPS Kabupaten Bengkulu Selatan</p>
                     <p style="text-indent:.5in; text-align: justify">Demikian disampaikan, atas perhatian diucapkan terima kasih.</p>
                     <br/> 
                     ';
@@ -1095,7 +1095,7 @@ class SuratrepoController extends BaseController
                 case 1: //nota dinas
                     $template = '
                     <p style="text-indent:.5in; text-align: justify">Sehubungan pelaksananaan lapangan Survei Pariwisata Tahun 2023, maka dimohon untuk dapat dilakukan pencetakan Buku Pedoman dan Kuesioner yang dapat didownload pada link <a href="https://s.id/par23">https://s.id/par23</a>, dibebankan pada mata anggaran persediaan kegiatan Survei Keuangan, TI dan pariwisata (2908.BMA.004.051.521811) dengan rincian sebagai berikut.</p>
-                    <p style="text-indent:.5in; text-align: justify">Selanjutnya agar dapat didistribusikan kepada BPS Kabupaten dan Kota se-Provinsi Bengkulu.  Demikian disampaikan atas perhatian dan Kerjasamanya diucapkan terima kasih.</p>
+                    <p style="text-indent:.5in; text-align: justify">Selanjutnya agar dapat didistribusikan kepada BPS Kabupaten dan Kota se-Kabupaten Bengkulu Selatan.  Demikian disampaikan atas perhatian dan Kerjasamanya diucapkan terima kasih.</p>
                     ';
                     break;
                 case 2: // surat keterangan
@@ -1104,9 +1104,9 @@ class SuratrepoController extends BaseController
                     <br/>
                     <p>Nama&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;:&nbsp; &nbsp;&nbsp;Ir. Win Rizal, M.E.</p>
                     <p>NIP&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:&nbsp; &nbsp;&nbsp;196608251988021001</p>
-                    <p>Jabatan&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:&nbsp; &nbsp;&nbsp;Kepala BPS Provinsi Bengkulu selaku Kuasa Pengguna Barang</p>
+                    <p>Jabatan&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:&nbsp; &nbsp;&nbsp;Kepala BPS Kabupaten Bengkulu Selatan selaku Kuasa Pengguna Barang</p>
                     <p>
-                    dengan ini menerangkan bahwa di BPS Provinsi Bengkulu terdapat Barang Milik Negara (BMN) yang diaktifkan kembali penggunaannya. Dengan rincian sebagai berikut:
+                    dengan ini menerangkan bahwa di BPS Kabupaten Bengkulu Selatan terdapat Barang Milik Negara (BMN) yang diaktifkan kembali penggunaannya. Dengan rincian sebagai berikut:
                     </p>
                     <br/>
                     <table style="border-collapse:collapse;border: none;" width="100%">
@@ -1148,7 +1148,7 @@ class SuratrepoController extends BaseController
                 case 3: //bast
                     $template = '
                     <p style="text-align:justify;">Pada hari ini, Senin tanggal Dua Puluh Sembilan bulan Mei tahun dua ribu dua puluh tiga
-                        (26-05-2023) bertempat di Badan Pusat Statistik Provinsi Bengkulu, berdasarkan Risalah Lelang Nomor: 140/18/2023
+                        (26-05-2023) bertempat di Badan Pusat Statistik Kabupaten Bengkulu Selatan, berdasarkan Risalah Lelang Nomor: 140/18/2023
                         tanggal 23 Mei 2023, kami yang bertanda tangan di bawah ini:
                     </p>
                     <br />
@@ -1197,7 +1197,7 @@ class SuratrepoController extends BaseController
                                     :
                                 </td>
                                 <td>
-                                    Pejabat Penjual Lelang BMN Milik BPS Provinsi Bengkulu
+                                    Pejabat Penjual Lelang BMN Milik BPS Kabupaten Bengkulu Selatan
                                 </td>
                             </tr>
                             <tr>
@@ -1439,7 +1439,7 @@ class SuratrepoController extends BaseController
                         <tr>
                             <td height="40" colspan="0" width="10" align="left"><img src="data:image/png;base64,' . Yii::$app->params['imagebase64'] . '" height="60" width="82" /> 
                             </td>
-                            <td height="40" vertical-align="middle"><h4 style="color: #007bff; margin-left: 6px; font-family: Tahoma, sans-serif !important;font-size: 18.7px; font-weight: bold;"><i>BADAN PUSAT STATISTIK<br/>PROVINSI BENGKULU</h4></i></td>
+                            <td height="40" vertical-align="middle"><h4 style="color: #007bff; margin-left: 6px; font-family: Tahoma, sans-serif !important;font-size: 18.7px; font-weight: bold;"><i>BADAN PUSAT STATISTIK<br/>KABUPATEN BENGKULU SELATAN</h4></i></td>
                             <td height="40" colspan="0" align="right"><img src="data:image/png;base64,' . Yii::$app->params['imagebase64_st2023'] . '" height="70" width="170" />
                             </td>
                         </tr>
@@ -1511,7 +1511,7 @@ class SuratrepoController extends BaseController
                 $kop = '
                 <table width="100%" border="0" bordercolor="33FFFF" align="center" cellpadding="3" cellspacing="00">
                     <tr style="">
-                        <h4 style="text-align: center;margin-top: -20px;">BADAN PUSAT STATISTIK<br/>PROVINSI BENGKULU</h4> 
+                        <h4 style="text-align: center;margin-top: -20px;">BADAN PUSAT STATISTIK<br/>KABUPATEN BENGKULU SELATAN</h4> 
                     </tr>
                     <tr style="">
                         <h4 style="text-align: center; text-decoration: underline">N O T A  D I N A S</h4> 
@@ -1578,7 +1578,7 @@ class SuratrepoController extends BaseController
                         <tr>
                             <td height="40" colspan="0" width="10" align="left"><img src="data:image/png;base64,' . Yii::$app->params['imagebase64'] . '" height="60" width="82" /> 
                             </td>
-                            <td height="40" vertical-align="middle"><h4 style="margin-left: 6px"><i>BADAN PUSAT STATISTIK<br/>PROVINSI BENGKULU</h4></i></td>
+                            <td height="40" vertical-align="middle"><h4 style="margin-left: 6px"><i>BADAN PUSAT STATISTIK<br/>KABUPATEN BENGKULU SELATAN</h4></i></td>
                             <td height="40" colspan="0" align="right"><br>
                             </td>
                         </tr>
@@ -1621,7 +1621,7 @@ class SuratrepoController extends BaseController
                     <tr>
                         <td height="40" colspan="0" width="10" align="left"><img src="data:image/png;base64,' . Yii::$app->params['imagebase64'] . '" height="60" width="82" /> 
                         </td>
-                        <td height="40" vertical-align="middle"><h4 style="margin-left: 6px"><i>BADAN PUSAT STATISTIK<br/>PROVINSI BENGKULU</h4></i></td>
+                        <td height="40" vertical-align="middle"><h4 style="margin-left: 6px"><i>BADAN PUSAT STATISTIK<br/>KABUPATEN BENGKULU SELATAN</h4></i></td>
                         <td height="40" colspan="0" align="right"><br>
                         </td>
                     </tr>
@@ -1671,7 +1671,7 @@ class SuratrepoController extends BaseController
                                 <br/>
                                 <center>
                                     Mengetahui, <br/>                                                                   
-                                    Kepala BPS Provinsi Bengkulu
+                                    Kepala BPS Kabupaten Bengkulu Selatan
                                     <br />
                                     Selaku Kuasa Pengguna Barang
                                     <br />
@@ -1709,8 +1709,8 @@ class SuratrepoController extends BaseController
                         <br/>
                         ' . ($model->tembusan != null ? '<p style="margin-bottom: 0px">Tembusan: </p>' . $autofillString2 : '') . '                    
                         <div style="font-size:10px" class="tulisan">                    
-                                <center>Jalan Adam Malik Km.8 Bengkulu, 38225, Telepon (0736) 349117-118, Kepala (0736) 349116
-                                    <br>Fax. (0736) 349115, E-mail: bps1700@bps.go.id
+                                <center>Jalan Affan Bachsin No.108A RT.07 Pasar Baru Kota Manna 38512 
+                                    <br>Telp./Fax.: 0739-21048, E-mail: bps1701@bps.go.id
                                 </center>
                                 <i style="font-size: 8px;">
                                     <center>Generated in Portal Pintar</center>

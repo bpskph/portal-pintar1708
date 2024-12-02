@@ -83,7 +83,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-suratrepoeks
                     ]
                 ])->hint('Untuk menjaga ketertiban nomor, surat yang dapat diinput adalah sebatas tanggal hari ini.', ['class' => '', 'style' => 'color: #999']) ?>
                 <?= $form->field($model, 'perihal_suratrepoeks')->textarea(['rows' => 3])
-                    ->hint('Jika ingin memisahkan perihal menjadi beberapa baris, pisahkan dengan "&ltbr/&gt". Contoh: <b>Usulan Penetapan Penggunaan (PSP) &ltbr/&gt BMN Wilayah BPS Provinsi Bengkulu</b>', ['class' => '', 'style' => 'color: #999']) ?>
+                    ->hint('Jika ingin memisahkan perihal menjadi beberapa baris, pisahkan dengan "&ltbr/&gt". Contoh: <b>Usulan Penetapan Penggunaan (PSP) &ltbr/&gt BMN Wilayah BPS Kabupaten Bengkulu Selatan</b>', ['class' => '', 'style' => 'color: #999']) ?>
                 <?= $form->field($model, 'lampiran')->textInput(['maxlength' => true])
                     ->hint('Contoh Pengisian: <b>1 (Satu) Berkas</b><br/>Kosongkan bila tidak ada lampiran. ', ['class' => '', 'style' => 'color: #999']) ?>
                 <?= $form->field($model, 'fk_suratsubkode')->widget(Select2::classname(), [
@@ -242,7 +242,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-suratrepoeks
                 ])->hint('Penyetuju Surat adalah Ketua Proyek Menurut SK <b>Tahun Berjalan (' . date("Y") . ')</b>', ['class' => '', 'style' => 'color: #999']) ?>
 
                 <?= $form->field($model, 'tembusan')->textarea(['rows' => 3])
-                    ->hint('Jika daftar tembusan lebih dari satu, pisahkan dengan koma. Contoh: <b>Kepala BPS Provinsi Bengkulu, Kepala Bagian Umum BPS Provinsi Bengkulu</b>', ['class' => '', 'style' => 'color: #999']) ?>
+                    ->hint('Jika daftar tembusan lebih dari satu, pisahkan dengan koma. Contoh: <b>Kepala BPS Kabupaten Bengkulu Selatan, Kepala Bagian Umum BPS Kabupaten Bengkulu Selatan</b>', ['class' => '', 'style' => 'color: #999']) ?>
 
                 <?= $form->field($model, 'shared_to')->widget(Select2::classname(), [
                     'name' => 'shared_to',

@@ -65,7 +65,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-projectmembe
                 <?php elseif ($bengkulu == 'TIDAK') : ?>
                     <div class="alert alert-secondary alert-dismissable">
                         <p>
-                            Mohon maaf, pegawai yang dapat ditambahkan ke sistem Portal Pintar hanya pegawai yang pada Community BPS tercatat di Satker Provinsi Bengkulu.
+                            Mohon maaf, pegawai yang dapat ditambahkan ke sistem Portal Pintar hanya pegawai yang pada Community BPS tercatat di Satker Kabupaten Bengkulu Selatan.
                         </p>
                     </div>
                 <?php elseif ($ada == 'COMMUNITY') : ?>

@@ -333,7 +333,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-agenda-form.
                     ],
                 ])->label('Atau Pilih dari Daftar Pegawai'); ?>
                 <?= $form->field($model, 'peserta_lain')->textarea(['rows' => 3])
-                    ->hint('Input nama badan/orang di luar BPS Provinsi Bengkulu serta alamat email valid (<b>hanya</b> jika ingin mengirimkan undangan digital via email blast). Data dapat terisi lebih dari satu, pisahkan dengan koma. Contoh: <b>Bappeda Provinsi Bengkulu, Nofriana, S.Pd., dianputra@bps.go.id, khansa.safira19@gmail.com</b>', ['class' => '', 'style' => 'color: #999']) ?>
+                    ->hint('Input nama badan/orang di luar BPS Kabupaten Bengkulu Selatan serta alamat email valid (<b>hanya</b> jika ingin mengirimkan undangan digital via email blast). Data dapat terisi lebih dari satu, pisahkan dengan koma. Contoh: <b>Bappeda Kabupaten Bengkulu Selatan, Nofriana, S.Pd., dianputra@bps.go.id, khansa.safira19@gmail.com</b>', ['class' => '', 'style' => 'color: #999']) ?>
                 <?= $form->field($model, 'id_lanjutan')->widget(Select2::classname(), [
                     'data' => ArrayHelper::map(
                         Agenda::find()
