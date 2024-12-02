@@ -9,6 +9,7 @@ use Yii;
  * @property string $penerima_suratrepo
  * @property string $tanggal_suratrepo
  * @property string $perihal_suratrepo
+ * @property int $is_undangan
  * @property int $fk_suratsubkode
  * @property string $nomor_suratrepo
  * @property string $owner
@@ -33,7 +34,7 @@ class Suratrepo extends \yii\db\ActiveRecord
         return [
             [['penerima_suratrepo', 'tanggal_suratrepo', 'perihal_suratrepo', 'fk_suratsubkode', 'nomor_suratrepo', 'owner', 'jenis'], 'required'],
             [['fk_agenda', 'fk_suratsubkode'], 'integer'],
-            [['tanggal_suratrepo', 'timestamp', 'timestamp_suratrepo_lastupdate', 'isi_suratrepo', 'lampiran', 'tembusan', 'pihak_pertama', 'pihak_kedua', 'ttd_by', 'ttd_by_jabatan', 'isi_lampiran', 'isi_lampiran_orientation'], 'safe'],
+            [['tanggal_suratrepo', 'timestamp', 'timestamp_suratrepo_lastupdate', 'isi_suratrepo', 'lampiran', 'tembusan', 'pihak_pertama', 'pihak_kedua', 'ttd_by', 'ttd_by_jabatan', 'isi_lampiran', 'isi_lampiran_orientation', 'is_undangan'], 'safe'],
             [['perihal_suratrepo'], 'string'],
             // [['nomor_suratrepo'], 'unique'],
             [['penerima_suratrepo', 'nomor_suratrepo'], 'string', 'max' => 255],
@@ -61,6 +62,7 @@ class Suratrepo extends \yii\db\ActiveRecord
             'penerima_suratrepo' => 'Kepada',
             'tanggal_suratrepo' => 'Tanggal',
             'perihal_suratrepo' => 'Perihal',
+            'is_undangan' => 'Apakah ini merupakan surat undangan?',
             'fk_suratsubkode' => 'Subjek Surat',
             'nomor_suratrepo' => 'Nomor Surat',
             'owner' => 'Owner',

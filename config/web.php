@@ -5,8 +5,8 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'basic',
-    'name' => 'PORTAL PINTAR 2.0',
-    'language' => 'id',
+    'name' => 'PORTAL PINTAR',
+    'language' => 'id-ID',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [
@@ -33,7 +33,7 @@ $config = [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'RLXOJYUIJZ3lrNN1b8OWBF5gKq5WiCgK',
             'hostInfo' => 'http://localhost:8080',
-            //'hostInfo' => 'https://webapps.bps.go.id/bengkulu',
+            //'hostInfo' => 'https://webapps.bps.go.id/bengkuluselatankab',
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -55,8 +55,8 @@ $config = [
             'transport' => [
                 'scheme' => 'smtps',
                 'host' => 'smtp.bps.go.id',
-                'username' => 'portalpintar',
-                'password' => 'Portalpintar1700',
+                'username' => 'username',
+                'password' => 'password',
                 'encryption' => 'ssl',
                 'port' => '465',
                 'dsn' => 'sendmail://default',

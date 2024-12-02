@@ -52,7 +52,10 @@ $this->registerJs($script, \yii\web\View::POS_HEAD);
                                                                                         ? 'active' : '' ?>">Agenda & Surat<i class="bi bi-chevron-down"></i></a>
                             <ul>
                                 <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/agenda/index?owner=&year=<?php echo date("Y") ?>&nopage=0" class="<?= (Yii::$app->controller->id == 'agenda' && Yii::$app->controller->action->id != 'calendar') ? 'aktip' : '' ?>">Agenda (Utama)</a></li>
-                                <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/agenda/calendar" class="<?= (Yii::$app->controller->id == 'agenda' && Yii::$app->controller->action->id == 'calendar') ? 'aktip' : '' ?>"><span class="badge bg-danger">New</span>&nbsp;Kalender Agenda</a></li>
+                                <?php if (Yii::$app->user->identity->username == 'sekbps17'): ?>
+                                    <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/agendapimpinan/index" class="<?= (Yii::$app->controller->id == 'agendapimpinan') ? 'aktip' : '' ?>">Agenda Pimpinan</a></li>
+                                <?php endif; ?>
+                                <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/agenda/calendar" class="<?= (Yii::$app->controller->id == 'agenda' && Yii::$app->controller->action->id == 'calendar') ? 'aktip' : '' ?>">Kalender Agenda</a></li>
                                 <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/suratrepo/index?owner=&year=<?php echo date("Y") ?>" class="<?= (Yii::$app->controller->id == 'suratrepo') ? 'aktip' : '' ?>">Surat Internal</a></li>
                                 <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/suratrepoeks/index?owner=&year=<?php echo date("Y") ?>" class="<?= (Yii::$app->controller->id == 'suratrepoeks') ? 'aktip' : '' ?>">Surat Eksternal</a></li>
                                 <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/zooms/index" class="<?= (Yii::$app->controller->id == 'zooms') ? 'aktip' : '' ?>">Zoom Meetings</a></li>
@@ -183,7 +186,7 @@ $this->registerJs($script, \yii\web\View::POS_HEAD);
         </div>
         <div class="container">
             <div class="copyright">
-                &copy; Copyright <strong><span>Tim PTM BPS Provinsi Bengkulu</span></strong>. All Rights Reserved
+                &copy; Copyright <strong><span>Tim PTM BPS Provinsi Bengkulu</span></strong>. All Rights Reserved | <span class="text-secondary"> App Version:</span> <?= Yii::$app->params['appVersion']; ?>
             </div>
             <div class="credits" style="color: #aaa">
                 Coded by <a href="https://khansasafira19.github.io/">nofriani@bps.go.id</a> | <a href="https://wa.me/6285664991937?text=Salam+Senyum,+Developer+Portal+Pintar%0ASaya+ingin+berdiskusi+terkait+Sistem+Portal+Pintar" target="_blank">Hubungi Developer</a>

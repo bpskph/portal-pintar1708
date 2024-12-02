@@ -31,15 +31,20 @@ $this->title = 'Daftar Surat Internal Agenda # ' . $dataagenda->id_agenda;
     .callout-default h4 {
         color: #777;
     }
+    .callout-dark {
+        border: 1px solid #212529;
+        border-left-color: #007bff;
+        background-color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity))!important;
+    }
 </style>
 <div class="container-fluid" data-aos="fade-up">
     <h1 class="text-center"><?= Html::encode($this->title) ?></h1>
     <hr class="bps" />
-    <div id="w0" class="callout callout-default">
+    <div id="w0" class="callout <?= ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? 'callout-default' : 'callout-dark') ?>">
         <h5>Surat-surat</h5>
         <p><?php echo $dataagenda->kegiatan ?> pada <?php echo $waktutampil ?></p>
     </div>
-    <div class="card transparan alert">
+    <div class="card alert <?= ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? 'bg-light' : 'bg-dark') ?>">
         <div class="card-body table-responsive p-0">
             <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->username == $dataagenda->reporter) : ?>
                 <p class="text-right">

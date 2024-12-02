@@ -1,5 +1,9 @@
 label.form-check-label {
-    color: #fff !important;
+    color: #000 !important;
+    background-color: #ffc107;
+    border-radius: 5px;
+    padding: 0 5px;
+    margin-bottom: 10px;
 }
 
 .p-2 {

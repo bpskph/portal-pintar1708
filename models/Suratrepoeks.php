@@ -41,7 +41,7 @@ class Suratrepoeks extends \yii\db\ActiveRecord
             ['tanggal_suratrepoeks', 'validateSembilanBelasMei'],
             ['nomor_suratrepoeks', 'validateDuplikasi'],
             [['filepdf'], 'file', 'extensions' => 'pdf'],
-            [['fileword'], 'file', 'extensions' => 'doc, docx'],
+            [['fileword'], 'file', 'extensions' => 'doc, docx, pdf'],
         ];
     }
     /**

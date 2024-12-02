@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Agenda;
+use app\models\Suratrepo;
 use app\models\AgendaSearch;
 use app\models\EmailblastForm;
 use app\models\Pengguna;
@@ -69,6 +70,8 @@ class AgendaController extends BaseController
         }
         return parent::beforeAction($action);
     }
+
+    // action dibawah Untuk menampilkan agenda dalam bentuk kalender
     public function actionCalendar()
     {
         $todayList = new AgendaSearch();
@@ -124,7 +127,7 @@ class AgendaController extends BaseController
         ]);
     }
 
-
+    // action dibawah adalah untuk menampilkan menu agenda
     public function actionIndex($owner, $year, $nopage)
     {
         $searchModel = new AgendaSearch();
@@ -152,6 +155,7 @@ class AgendaController extends BaseController
     {
         return $this->render('picker');
     }
+    // action dibawah adalah untuk melihat rincian suatu agenda berdasarkan id
     public function actionView($id)
     {
         if (Yii::$app->request->isAjax) {
@@ -264,8 +268,8 @@ class AgendaController extends BaseController
                 $model->waktuselesai = date("Y-m-d H:i:s", strtotime($_POST['Agenda']['waktuselesai']));
             }
             if ($model->validate()) {
-                if ($_POST['Agenda']['pilihpelaksana'] == 1) {
-                    if ($_POST['Agenda']['pelaksanatext'] != "") {
+                if ($_POST['Agenda']['pilihpelaksana'] == 1) { //jika pelaksana eksternal
+                    if ($_POST['Agenda']['pelaksanatext'] != "") { //pelaksana eksternal ada
                         $model->pelaksana = $_POST['Agenda']['pelaksanatext'];
                     } else {
                         Yii::$app->session->setFlash('warning', "Detail Pelaksana Eksternal harus terisi jika Anda memilih Cakupan Eksternal. Terima kasih.");
@@ -276,9 +280,11 @@ class AgendaController extends BaseController
                         ]);
                     }
                 } else {
-                    if ($_POST['Agenda']['pelaksana'] != "") {
+                    $model->surat_lanjutan = $_POST['Agenda']['surat_lanjutan'];
+                    // die ($model->surat_lanjutan);
+                    if ($_POST['Agenda']['pelaksana'] != "") { //pelaksana internal ada
                         $model->pelaksana = $_POST['Agenda']['pelaksana'];
-                    } else {
+                    } else { //pelaksana internal tidak ada
                         Yii::$app->session->setFlash('warning', "Detail Pelaksana Internal (Project) harus terisi jika Anda memilih Cakupan Internal. Terima kasih.");
                         return $this->render('create', [
                             'model' => $model,
@@ -340,7 +346,12 @@ class AgendaController extends BaseController
                             \app\models\Notification::createNotification($userId, 'Anda diundang dalam Kegiatan <strong>' . $model->kegiatan . '</strong> dari Project/Tim <strong>' . $pelaksana . '</strong> yang akan dilaksanakan pada <strong>' . $waktuFormatted . '</strong>', Yii::$app->controller->id, $agendaId);
                         }
                     }
-                    if (($model->metode == 0 || $model->tempat == 13) && $model->progress == 0) {
+                    if (($model->pelaksana <= 65 && $model->peserta_lain == NULL && $model->surat_lanjutan == 1)) { //65: jumlah tim
+                        Yii::$app->session->setFlash('success', "Agenda berhasil ditambahkan. Jika memerlukan, silahkan lanjutkan pengisian Surat Internal. Terima kasih.");
+                        return $this->redirect(['suratrepo/create/', 'id' => $model->id_agenda]);
+                    }
+
+                    if (($model->metode == 0 || $model->tempat == 13) && $model->progress == 0 && $model->surat_lanjutan == 0) {
                         Yii::$app->session->setFlash('success', "Agenda berhasil ditambahkan. Jika memerlukan, silahkan lanjutkan pengisian Permohonan Zoom. Terima kasih.");
                         return $this->redirect(['zooms/create', 'fk_agenda' => $model->id_agenda]);
                     } else {
@@ -458,9 +469,9 @@ class AgendaController extends BaseController
                 $model->timestamp_lastupdate = date('Y-m-d H:i:s');
                 $zoom = Zooms::find()->select('*')->where('fk_agenda = ' . $model->id_agenda)->andWhere('deleted = 0')->count();
                 if ($model->save()) {
-                    if ($model->metode == 0 && $zoom == 0) { // belum ada zoom yang diajukan
-                        Yii::$app->session->setFlash('success', "Agenda berhasil dimutakhirkan. Silahkan lanjutkan pengisian Permohonan Zoom. Terima kasih.");
-                        return $this->redirect(['zooms/create', 'fk_agenda' => $model->id_agenda]);
+                    if (($model->pelaksana <= 65 && $model->peserta_lain == NULL && $model->surat_lanjutan == 1)) {
+                        Yii::$app->session->setFlash('success', "Agenda berhasil ditambahkan. Jika memerlukan, silahkan lanjutkan pengisian Surat Internal. Terima kasih.");
+                        return $this->redirect(['suratrepo/create/0']);
                     } else {
                         Yii::$app->session->setFlash('success', "Agenda berhasil dimutakhirkan. Terima kasih.");
                         return $this->redirect(['view', 'id' => $model->id_agenda]);
@@ -586,6 +597,8 @@ class AgendaController extends BaseController
     {
         $dataagenda = Agenda::findOne(['id_agenda' => $id_laporan]);
         $waktutampil = LaporanController::findWaktutampil($id_laporan);
+        $pemimpin = Pengguna::findOne($dataagenda->pemimpin);
+        $nama_pimpinan = $pemimpin->nama;
         $header = '
             <div class="row" style="margin-left:38pt;">
                 <div class="col-sm-12 d-flex">
@@ -593,16 +606,24 @@ class AgendaController extends BaseController
                         <table class="table table-sm align-self-end">
                             <tbody>
                                 <tr>
-                                    <td class="col-sm-2" ' . (Yii::$app->user->identity->theme == 1 ? 'style="color: #fff"' : '') . '>Waktu</td>
-                                    <td ' . (Yii::$app->user->identity->theme == 1 ? 'style="color: #fff"' : '') . '>: ' . $waktutampil . '</td>
+                                    <td class="col-sm-2" style="vertical-align: top">Waktu</td>
+                                    <td style="vertical-align: top">: </td>
+                                    <td style="vertical-align: top">' . $waktutampil . '</td>
                                 </tr>                            
                                 <tr>
-                                    <td ' . (Yii::$app->user->identity->theme == 1 ? 'style="color: #fff"' : '') . '>Tempat</td>
-                                    <td ' . (Yii::$app->user->identity->theme == 1 ? 'style="color: #fff"' : '') . '>: ' . $dataagenda->tempate . '</td>
+                                    <td style="vertical-align: top">Tempat</td>
+                                    <td style="vertical-align: top">: </td>
+                                    <td style="vertical-align: top"> ' . $dataagenda->tempate . '</td>
                                 </tr>
                                 <tr>
-                                    <td ' . (Yii::$app->user->identity->theme == 1 ? 'style="color: #fff"' : '') . '>Agenda</td>
-                                    <td ' . (Yii::$app->user->identity->theme == 1 ? 'style="color: #fff"' : '') . '>: ' . $dataagenda->kegiatan . '</td>
+                                    <td style="vertical-align: top">Agenda</td>
+                                    <td style="vertical-align: top">: </td>
+                                    <td style="vertical-align: top"> ' . $dataagenda->kegiatan . '</td>
+                                </tr>
+                                <tr>
+                                    <td class="col-sm-2" style="vertical-align: top">Pemimpin Agenda</td>
+                                    <td style="vertical-align: top">: </td>
+                                    <td style="vertical-align: top">' . $nama_pimpinan . '</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -621,6 +642,15 @@ class AgendaController extends BaseController
             return $this->redirect(['index', 'owner' => '', 'year' => '', 'nopage' => 0]);
         }
         $header = AgendaController::findHeader($id);
+        $pelaksana = $dataagenda->getPelaksanalengkape();
+        $surat = Suratrepo::findOne(['fk_agenda' => $id, 'is_undangan' => 1]);
+        $waktutampil = '';
+        $formatter = Yii::$app->formatter;
+        $formatter->locale = 'id-ID'; // set the locale to Indonesian
+        $timezone = new \DateTimeZone('Asia/Jakarta'); // create a timezone object for WIB
+        $waktutampil = new \DateTime($surat->tanggal_suratrepo, new \DateTimeZone('UTC')); // create a datetime object for waktumulai with UTC timezone
+        $waktutampil->setTimeZone($timezone); // set the timezone to WIB
+        $waktutampil = $formatter->asDatetime($waktutampil, 'd MMMM Y'); // format the waktumulai datetime value
         $autofillString =
             "
                         <p style=''>Kepada Yth.</p>
@@ -630,7 +660,27 @@ class AgendaController extends BaseController
                         bersama ini kami mengundang Bapak/Ibu untuk hadir pada:</p>
                         " . $header . "                        
                         <p style='text-indent:.5in;text-align:justify'>Demikian disampaikan, atas perhatian dan kehadiran Bapak/Ibu diucapkan terima kasih.</p>
-                        ";
+                        <br/>
+                        <table width='500' border='0' bordercolor='33FFFF' align='center' cellpadding='0' cellspacing='0'>
+                            <tr>
+                                <td width='250'></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <center>
+                                        Bengkulu, " . $waktutampil . "
+                                        <br />
+                                        <br />
+                                        <br />
+                                        <br />
+                                        <b>" . $pelaksana . "</b>
+                                        <center>
+                                </td>
+                            </tr>
+                        </table>                                              
+                        <br/>
+                        <br/>
+                        " . ($surat->tembusan != null ? "Tembusan: " . $surat->tembusan : "") . "<br/>";
         // Step 1: Get the list of email addresses from the peserta attribute in the agenda table
         $emailList = explode(', ', $dataagenda->peserta);
         // Step 2: Extract the username (without "@bps.go.id") from each email address
@@ -654,6 +704,7 @@ class AgendaController extends BaseController
         $autofillString2 =  $autofillString2 . (($dataagenda->peserta_lain != null) ? '<b>Peserta Tambahan : </b><br/>' . $dataagenda->peserta_lain : '');
 
         $model->body = $autofillString . $autofillString2;
+
         if ($model->load(Yii::$app->request->post())) {
             $recipients = [];
             $recipients = array_merge($recipients, explode(', ', $dataagenda->peserta));
@@ -663,6 +714,9 @@ class AgendaController extends BaseController
                     $recipients[] = $email;
                 }
             }
+            $recipients = array_merge(['rb1700@bps.go.id'], $recipients);
+            $recipients = array_merge([$dataagenda->pemimpin . '@bps.go.id'], $recipients);
+            // die(var_dump($recipients));
             if ($model->contact($recipients)) {
                 Yii::$app->session->setFlash('contactFormSubmitted');
                 return $this->refresh();
@@ -706,20 +760,33 @@ class AgendaController extends BaseController
     public function actionGetlistpeserta()
     {
         $selectedTeams = Yii::$app->request->post('teams', []);
-        $members = Projectmember::find()
-            ->select('pegawai')
-            ->where(['in', 'fk_project', $selectedTeams])
-            ->andWhere('member_status <> 0')
-            ->asArray()
-            ->column();
+
+        if (in_array('all', $selectedTeams)) {
+            // Get all members if "all" is selected
+            $members = Projectmember::find()
+                ->select('pegawai')
+                ->where('member_status <> 0')
+                ->asArray()
+                ->column();
+        } else {
+            // Get members for selected teams only
+            $members = Projectmember::find()
+                ->select('pegawai')
+                ->where(['in', 'fk_project', $selectedTeams])
+                ->andWhere('member_status <> 0')
+                ->asArray()
+                ->column();
+        }
+
         $response = ['members' => $members];
         return Json::encode($response);
     }
+
     public static function wa_engine($nomor_tujuan, $isi_notif)
     {
         // URL tujuan
         $url = 'https://dialogwa.id/api/send-text';
-        $token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NmNjNjA4ZGM2NDQyMmVkOTE1MzdjMiIsInVzZXJuYW1lIjoibm9mcmlhbmkiLCJpYXQiOjE3MjE3OTg3NDgsImV4cCI6NDg3NzU1ODc0OH0.5dnMRRM-G0bktsNFvArEnBkH1Qr5Snn8LvEBpswVhtw';
+        $token = 'tokenxxx';
 
         // Data yang akan dikirim dalam body request
         $data = array(
@@ -813,11 +880,26 @@ class AgendaController extends BaseController
             $nama_peserta = $name->nama;
             $isi_notif = '*Portal Pintar 2.0 - WhatsApp Notification Blast*
 
-Bapak/Ibu ' . $nama_peserta . ', Anda diundang dalam Kegiatan *' . $dataagenda->kegiatan . '* dari Project/Tim *' . $pelaksana . '* yang akan dilaksanakan pada *' . $waktuFormatted . '*
+Bapak/Ibu ' . $nama_peserta . ', Anda diundang dalam Kegiatan *' . $dataagenda->kegiatan . '* dari Project/Tim *' . $pelaksana . '* yang akan dilaksanakan pada:
+Jadwal : *' . $waktuFormatted . '*
+Tempat : *' . $dataagenda->getTempate() . '*
             
 _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
             $response = $this->wa_engine($nomor_tujuan, $isi_notif);
         }
+
+        $pemimpin = Pengguna::findOne($dataagenda->pemimpin);
+        $nomor_tujuan_pimpinan = $pemimpin->nomor_hp;
+        $nama_pimpinan = $pemimpin->nama;
+        $isi_notif_pimpinan = '*Portal Pintar 2.0 - WhatsApp Notification Blast*
+
+Bapak/Ibu ' . $nama_pimpinan . ', Anda diundang untuk memimpin agenda dalam Kegiatan *' . $dataagenda->kegiatan . '* dari Project/Tim *' . $pelaksana . '* yang akan dilaksanakan pada:
+Jadwal : *' . $waktuFormatted . '*
+Tempat : *' . $dataagenda->getTempate() . '*
+        
+_#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
+        $response = $this->wa_engine($nomor_tujuan_pimpinan, $isi_notif_pimpinan);
+
         Yii::info($response, 'wa_blast'); // Log the response instead of outputting it
 
         if (strpos($response, 'Error:') !== false) {
@@ -827,5 +909,47 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
         }
 
         return $this->redirect(['index', 'owner' => '', 'year' => '', 'nopage' => 0]);
+    }
+
+    public function actionCeksurat($id)
+    {
+        $model = new Suratrepo();
+        $surats = Suratrepo::find()
+            ->select('*')
+            ->where(['owner' => Yii::$app->user->identity->username])
+            ->andWhere(['deleted' => 0])
+            ->andWhere(
+                ['>', 'DATEDIFF(NOW(), DATE(timestamp_suratrepo_lastupdate))', 3], // diinput dalam span 3 hari
+            )
+            ->asArray()
+            ->all();
+        // Get the current date and time
+        $currentDate = new DateTime();
+        // Subtract 2 days from the current date
+        $threeDaysAgo = $currentDate->modify('-2 days');
+        // Loop through each $surats and check if the file exists
+        $missingFiles = [];
+        $missingNumbers = [];
+        $missingTitles = [];
+        foreach ($surats as $surat) {
+            $filePath = Yii::getAlias('@webroot/surat/internal/pdf/' . $surat['id_suratrepo'] . '.pdf');
+            if (!file_exists($filePath)) {
+                // File does not exist, add the id_suratrepoeks to the missingFiles array
+                $missingFiles[] = $surat['id_suratrepo'];
+                $missingNumbers[] = $surat['nomor_suratrepo'];
+                $missingTitles[] = $surat['perihal_suratrepo'];
+            }
+        }
+        // Print the list of id_suratrepoeks without corresponding files
+        if (!empty($missingFiles)) {
+            $teks = '<ol>';
+            for ($i = 0; $i < count($missingFiles); $i++) {
+                // $teks .= Html::a('<li><i class="fas fa-upload"></i>  ' . $missingNumbers[$i] . ' - ' . $missingTitles[$i] . '</li>', ['suratrepoeks/uploadscan/' . $missingFiles[$i]], []);
+                $teks .= '<li>' . $missingNumbers[$i] . ' - ' . $missingTitles[$i] . Html::a(' <i class="fas fa-upload"></i> ', ['suratrepo/uploadscan/' . $missingFiles[$i]], []) . '</li>';
+            }
+            $teks .= '</ol>';
+            Yii::$app->session->setFlash('warning', "Maaf. Mohon upload terlebih dahulu, scan surat-surat Anda sebelum " . $threeDaysAgo->format('d F Y') . " berikut:" . $teks);
+            return $this->redirect(['index', 'owner' => '', 'year' => '']);
+        }
     }
 }

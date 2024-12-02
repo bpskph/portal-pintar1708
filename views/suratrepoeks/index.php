@@ -306,6 +306,8 @@ $surats = Suratrepoeks::find()->select('*')
                                             return true;
                                         elseif (file_exists(Yii::getAlias('@webroot/surat/eksternal/word/' . $model->id_suratrepoeks . '.docx')))
                                             return true;
+                                        elseif (file_exists(Yii::getAlias('@webroot/surat/eksternal/word/' . $model->id_suratrepoeks . '.pdf')))
+                                            return true;
                                         else
                                             return false;
                                     }
@@ -339,6 +341,10 @@ $surats = Suratrepoeks::find()->select('*')
                                         ]);
                                     elseif (file_exists(Yii::getAlias('@webroot/surat/eksternal/word/' . $model->id_suratrepoeks . '.docx')))
                                         return Html::a('<i class="fas fa-file-word"></i> ', ['surat/eksternal/word/' . $model->id_suratrepoeks . '.docx'], [
+                                            'title' => 'Unduh draft surat ini',
+                                        ]);
+                                    elseif (file_exists(Yii::getAlias('@webroot/surat/eksternal/word/' . $model->id_suratrepoeks . '.pdf')))
+                                        return Html::a('<i class="fas fa-file-download"></i> ', ['surat/eksternal/word/' . $model->id_suratrepoeks . '.pdf'], [
                                             'title' => 'Unduh draft surat ini',
                                         ]);
                                     else

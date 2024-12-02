@@ -7,7 +7,8 @@ h5,
 h6,
 a,
 p,
-li {
+li,
+.redactor-editor {
     font-family: "Poppins", Helvetica, "sans-serif" !important;
 }
 
@@ -199,18 +200,22 @@ section {
     background: #fff;
     color: #000;
 }
+
 #footer .footer-top {
     background: #fff;
     border-top: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
     color: #000;
 }
+
 #footer .footer-top .footer-info p {
     color: #000;
 }
+
 #footer .footer-top .footer-links ul a {
     color: #d48912;
 }
+
 .table-secondary {
-    --bs-table-color: #6C757D!important;
+    --bs-table-color: #6C757D !important;
 }

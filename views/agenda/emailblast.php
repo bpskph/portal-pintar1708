@@ -51,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="wrapper">
     <div class="row">
         <div class="col-12">
-            <div class="card alert">
+            <div class="card alert <?= ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? '' : 'bg-dark') ?>">
                 <h1><?= Html::encode($this->title) ?></h1>
                 <?php if (Yii::$app->session->hasFlash('contactFormSubmitted')) : ?>
                     <div class="callout callout-default <?= ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? '' : 'bg-dark') ?>">
@@ -66,19 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php else : ?>
                     <p>
                         Berikut adalah template undangan. Anda dapat mengubah sesuai kebutuhan.
-                    </p>
-                    <?php
-                    $autofillString =
-                        "
-                        <p style=''>Kepada Yth.</p>
-                        <p style='margin-left:20pt;'>(terlampir nama)</p>
-                        <p style='margin-left:20pt;'>di tempat</p>
-                        <p style='text-indent:.5in;text-align:justify'>Dalam rangka <b>" . $dataagenda->kegiatan . "</b>, 
-                        bersama ini kami mengundang Bapak/Ibu untuk hadir pada:</p>
-                        " . $header . "                        
-                        <p style='text-indent:.5in;text-align:justify'>Demikian disampaikan, atas perhatian dan kehadiran Bapak/Ibu diucapkan terima kasih.</p>
-                        ";
-                    ?>
+                    </p>                    
                     <?php
                     // Step 1: Get the list of email addresses from the peserta attribute in the agenda table
                     $emailList = explode(', ', $dataagenda->peserta);
@@ -109,7 +97,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>
                             <?= $form->field($model, 'name')->textInput(['value' => 'Portal Pintar', 'readonly' => true])->label('Nama Pengirim Email') ?>
                             <?= $form->field($model, 'email')->textInput(['value' => 'portalpintar@bps.go.id', 'readonly' => true])->label('Email') ?>
-                            <?= $form->field($model, 'subject')->textInput(['value' => 'Undangan Digital Portal Pintar'])->label('Subjek Email') ?>
+                            <?= $form->field($model, 'subject')->textInput(['value' => '[Undangan Digital Portal Pintar] ' . $dataagenda->kegiatan])->label('Subjek Email') ?>
                             <?php
                             echo $form->field($model, 'body')->widget(Redactor::className(), [
                                 'clientOptions' => [

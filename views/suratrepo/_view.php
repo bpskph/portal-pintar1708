@@ -20,48 +20,41 @@ $waktutampil = new \DateTime($model->tanggal_suratrepo, new \DateTimeZone('UTC')
 $waktutampil->setTimeZone($timezone); // set the timezone to WIB
 $waktutampil = $formatter->asDatetime($waktutampil, 'd MMMM Y'); // format the waktumulai datetime value
 ?>
-<div class="card dashboard">
+<div class="card dashboard <?= ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? 'bg-light' : 'bg-dark') ?>">
     <div class="card-body">
-        <h5 class="card-title"><?= $model->agendae->kegiatan ?> <sup> <?= Html::a('<i class="fas fa-glasses"></i> Detail', ['suratrepo/' . $model->id_suratrepo], ['class' => 'cetak modalButton badge bg-secondary', 'data-pjax' => '0']) ?></sup></h5>
+        <h5 class="card-title <?= ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? '' : 'text-light') ?>" >
+            <?= $model->agendae->kegiatan ?> 
+            <sup><?= Html::a('<i class="fas fa-glasses"></i> Detail', ['suratrepo/' . $model->id_suratrepo], ['class' => 'cetak modalButton badge bg-secondary', 'data-pjax' => '0']) ?></sup>
+        </h5>
         <div class="activity">
-            <div class="activity-item d-flex">
-                <div class="activite-label">Kepada</div>
-                <i class="bi bi-circle-fill activity-badge text-success align-self-start"></i>
-                <div class="activity-content">
-                    <?= $model->penerima_suratrepo ?>
-                </div>
-            </div><!-- End activity item-->
-            <div class="activity-item d-flex">
-                <div class="activite-label">Tanggal</div>
-                <i class="bi bi-circle-fill activity-badge text-danger align-self-start"></i>
-                <div class="activity-content">
-                    <?= $waktutampil ?>
-                </div>
-            </div><!-- End activity item-->
-            <div class="activity-item d-flex">
-                <div class="activite-label">Perihal</div>
-                <i class="bi bi-circle-fill activity-badge text-primary align-self-start"></i>
-                <div class="activity-content">
-                    <?= $model->perihal_suratrepo ?>
-                </div>
-            </div><!-- End activity item-->
-            <div class="activity-item d-flex">
-                <div class="activite-label">Subjek</div>
-                <i class="bi bi-circle-fill activity-badge text-info align-self-start"></i>
-                <div class="activity-content">
-                    <?= $model->suratsubkodee->fk_suratkode . '-' . $model->suratsubkodee->rincian_suratsubkode ?>
-                </div>
-            </div><!-- End activity item-->
-            <div class="activity-item d-flex">
-                <div class="activite-label">Nomor</div>
-                <i class="bi bi-circle-fill activity-badge text-warning align-self-start"></i>
-                <div class="activity-content">
-                    <?= $model->nomor_suratrepo ?>
-                </div>
-            </div><!-- End activity item-->
+            <table class="table table-bordered table-striped <?= ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? 'table-light' : 'table-dark') ?>">
+                <tbody>
+                    <tr>
+                        <th><i class="bi bi-circle-fill text-success"></i> Kepada</th>
+                        <td><?= $model->penerima_suratrepo ?></td>
+                    </tr>
+                    <tr>
+                        <th><i class="bi bi-circle-fill text-danger"></i> Tanggal</th>
+                        <td><?= $waktutampil ?></td>
+                    </tr>
+                    <tr>
+                        <th><i class="bi bi-circle-fill text-primary"></i> Perihal</th>
+                        <td><?= $model->perihal_suratrepo ?></td>
+                    </tr>
+                    <tr>
+                        <th><i class="bi bi-circle-fill text-info"></i> Subjek</th>
+                        <td><?= $model->suratsubkodee->fk_suratkode . '-' . $model->suratsubkodee->rincian_suratsubkode ?></td>
+                    </tr>
+                    <tr>
+                        <th><i class="bi bi-circle-fill text-warning"></i> Nomor</th>
+                        <td><?= $model->nomor_suratrepo ?></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
+
 <?php
 Modal::begin([
     'title' => '',

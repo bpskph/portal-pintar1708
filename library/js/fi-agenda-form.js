@@ -4,8 +4,14 @@ $(document).ready(function () {
         var selectedTeams = $('#team-checkboxes input[type="checkbox"]:checked').map(function () {
             return this.value;
         }).get();
+        
+        // Check if "all" (value 0) is selected
+        if (selectedTeams.includes("0")) {
+            selectedTeams = ["all"]; // Send "all" as the value
+        }
+
         $.ajax({
-            url: 'getlistpeserta',
+            url: window.location.href + "/../../agenda/getlistpeserta",
             type: 'POST',
             data: {
                 teams: selectedTeams
@@ -19,6 +25,7 @@ $(document).ready(function () {
         });
     });
 });
+
 if (actionId === 'create') {
     var d = document.getElementById("team-checkboxes");
     d.className += " row";

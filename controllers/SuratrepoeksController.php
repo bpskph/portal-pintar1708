@@ -1048,7 +1048,7 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
                 }
             }
             if ($model->uploadWord()) {
-                Yii::$app->session->setFlash('success', "Upload draft/word file surat berhasil. Terima kasih.");
+                Yii::$app->session->setFlash('success', "Upload draft surat berhasil. Terima kasih.");
                 return $this->redirect(['view', 'id' => $model->id_suratrepoeks]);
             }
         }

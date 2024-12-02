@@ -38,19 +38,7 @@ if (!Yii::$app->user->isGuest)
         ->andWhere(['>', 'id_agenda', 340])
         ->andWhere([
             'or',
-            // ['laporan.id_laporan' => null],
-            [
-                'and',
-                ['laporan.id_laporan' => null],
-                ['deleted' => 0],
-                // ['progress <> 3'],
-                [
-                    'or',
-                    ['progress' => 0],
-                    ['progress' => 1],
-                    ['progress' => 2],
-                ],
-            ],
+            ['laporan.id_laporan' => null],
             [
                 'and',
                 ['approval' => 0],
@@ -101,7 +89,7 @@ if (!Yii::$app->user->isGuest)
                                 <?php
                                 // if (isset($agenda['laporane']) && $agenda['laporane'] !== null) {
                                 if (isset($agenda['laporane'])) {
-                                    if ($agenda['laporane']['approval'] === 1) {
+                                    if ($agenda['laporane']['approval'] == 1) {
                                         $tampil = 'Disetujui';
                                         $link = 'laporan';
                                     } else {

@@ -15,8 +15,10 @@ use Yii;
  * @property string|null $pelaksana
  * @property string $tempat
  * @property int $progress
+ * @property string $presensi
  * @property string $peserta
  * @property int|null $id_lanjutan
+ * @property int $surat_lanjutan
  * @property string $reporter
  * @property string $timestamp
  * @property string $timestamp_lastupdate
@@ -37,7 +39,7 @@ class Agenda extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['kegiatan', 'metode', 'progress', 'peserta', 'reporter', 'waktumulai', 'waktuselesai', 'pemimpin', 'fk_kategori'], 'required'],
+            [['kegiatan', 'metode', 'progress', 'peserta', 'reporter', 'waktumulai', 'waktuselesai', 'pemimpin', 'fk_kategori', 'surat_lanjutan'], 'required'],
             [['pilihpelaksana', 'pilihtempat'], 'required', 'on' => ['create', 'update']],
             [['waktumulai_tunda', 'waktuselesai_tunda', 'peserta_lain', 'hashtags'], 'safe'],
             [['kegiatan'], 'string'],
@@ -45,10 +47,13 @@ class Agenda extends \yii\db\ActiveRecord
             [['metode', 'progress', 'id_lanjutan', 'pilihpelaksana'], 'integer'],
             [['pelaksana', 'tempat'], 'string', 'max' => 255],
             [['reporter'], 'string', 'max' => 50],
+            [['presensi'], 'string', 'max' => 100],
             [['waktumulai', 'waktumulai_tunda', 'waktuselesai', 'waktuselesai_tunda'], 'validateSembilanBelasMei'],
             ['waktumulai', 'validateDates'],
             ['waktumulai_tunda', 'validateDatesTunda'],
             ['tempat', 'validateRooms'],
+            ['surat_lanjutan', 'validateSuratOtomatis'],
+            ['presensi', 'url', 'validSchemes' => ['http', 'https']],
         ];
     }
     /**
@@ -68,8 +73,10 @@ class Agenda extends \yii\db\ActiveRecord
             'tempat' => 'Ruang di Kantor',
             'tempattext' => 'Lokasi Luar Kantor',
             'progress' => 'Progress',
+            'presensi' => 'Link Presensi',
             'peserta' => 'Peserta',
             'id_lanjutan' => 'Agenda Sebelumnya',
+            'surat_lanjutan' => 'Apakah ingin lanjut buat surat internal?',
             'reporter' => 'Reporter',
             'timestamp' => 'Timestamp',
             'timestamp_lastupdate' => 'Timestamp Lastupdate',
@@ -156,6 +163,39 @@ class Agenda extends \yii\db\ActiveRecord
             $this->addError('tempat', "Ruangan dan jadwal tersebut sudah digunakan untuk " . $agenda[0]['kegiatan']);
         } elseif (Yii::$app->controller->action->id != 'editpeserta' && count($agenda) > 1 && $ruangan == 13) {
             $this->addError('tempat', "Zoom dan jadwal tersebut sudah digunakan untuk " . $agenda[0]['kegiatan']);
+        }
+    }
+
+    public function validateSuratOtomatis(){
+        $surats = Suratrepo::find()
+            ->select('*')
+            ->where(['owner' => Yii::$app->user->identity->username])
+            ->andWhere(['deleted' => 0])
+            ->andWhere(
+                ['>', 'DATEDIFF(NOW(), DATE(timestamp_suratrepo_lastupdate))', 3], // diinput dalam span 3 hari
+            )
+            ->asArray()
+            ->all();
+        // Get the current date and time
+        $currentDate = new \DateTime();
+        // Subtract 2 days from the current date
+        $threeDaysAgo = $currentDate->modify('-2 days');
+        // Loop through each $surats and check if the file exists
+        $missingFiles = [];
+        $missingNumbers = [];
+        $missingTitles = [];
+        foreach ($surats as $surat) {
+            $filePath = Yii::getAlias('@webroot/surat/internal/pdf/' . $surat['id_suratrepo'] . '.pdf');
+            if (!file_exists($filePath)) {
+                // File does not exist, add the id_suratrepoeks to the missingFiles array
+                $missingFiles[] = $surat['id_suratrepo'];
+                $missingNumbers[] = $surat['nomor_suratrepo'];
+                $missingTitles[] = $surat['perihal_suratrepo'];
+            }
+        }
+        // Print the list of id_suratrepoeks without corresponding files
+        if (!empty($missingFiles) && $this->surat_lanjutan == 1) {            
+            $this->addError('pelaksana', "Untuk memanfaatkan fitur 'Generator Surat Undangan', mohon upload terlebih dahulu, scan surat-surat Anda sebelum " . $threeDaysAgo->format('d F Y') .".");
         }
     }
 

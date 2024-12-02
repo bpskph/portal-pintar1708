@@ -22,17 +22,6 @@ if ($model->isNewRecord) {
     $model->waktuselesai = date("Y-m-d 12:00:00");
 }
 
-// $actionId = Yii::$app->controller->action->id;
-// $script = <<< JS
-//     var actionId = '$actionId';
-// JS;
-// $this->registerJs($script, \yii\web\View::POS_HEAD);
-
-// Registering flatpickr CSS and JS files
-// $this->registerCssFile('https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css', ['position' => View::POS_END]);
-// $this->registerJsFile('https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.9/flatpickr.min.js', ['position' => View::POS_END]);
-// $this->registerJsFile('https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js', ['position' => View::POS_END]);
-
 // Registering your custom JS and CSS files
 $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-agenda-form.js', ['position' => View::POS_END, 'depends' => [\yii\web\JqueryAsset::class]]);
 ?>
@@ -216,9 +205,11 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-agenda-form.
                                         if(state) {
                                             $("#no").show();
                                             $("#yes").hide();
+                                            $("#maybe").hide();
                                         } else {
                                             $("#no").hide();
                                             $("#yes").show();
+                                            $("#maybe").show();
                                         }
                                     }'
                                     ]
@@ -256,6 +247,9 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-agenda-form.
                                         ->hint('Isikan Pelaksana Agenda (Eksternal)', ['class' => '', 'style' => 'color: #999']) ?>
                                 </div>
                             </div>
+                            <div id="maybe" <?= $model->pilihpelaksana == true ? ' style="display:none"' : '' ?>>
+                                <?= $form->field($model, 'surat_lanjutan')->checkbox()->label('&nbsp;Tandai ini jika Anda ingin lanjut membuat Surat Undangan,&nbsp;<br/><strong>&nbsp;Khusus Agenda Internal</strong>&nbsp;', ['style' => 'background-color: #ffc107; border-radius: 5px']); ?>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -277,6 +271,8 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-agenda-form.
                     ?>
                     <?php $model->peserta = $array; ?>
                 <?php endif; ?>
+                <?= $form->field($model, 'presensi')->textInput([])
+                    ->label('Link Presensi')->hint('<strong>Isikan jika sudah ada.</strong>', ['class' => '', 'style' => 'color: #999']); ?>
                 <?= $form->field($model, 'pemimpin')->widget(Select2::classname(), [
                     'data' => ArrayHelper::map(
                         \app\models\Pengguna::find()->select('*')->where('level<>2')->asArray()->all(),
@@ -301,7 +297,11 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-agenda-form.
                         ->andWhere('tahun=' . date("Y"))
                         ->asArray()
                         ->all();
+
                     $listteams = \yii\helpers\ArrayHelper::map($teams, 'id_project', 'panggilan_project');
+
+                    // Add "all" option
+                    $listteams = ['0' => '<span class="badge bg-warning text-dark">Semua Pegawai</span>'] + $listteams;
                     ?>
                     <?= $form->field($searchModel, 'teams')->checkboxList($listteams, [
                         'id' => 'team-checkboxes',
@@ -314,7 +314,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-agenda-form.
                             // return $teamName . $checkbox;
                             return "<div class='col-sm-3'>$checkbox&nbsp;$teamName</div>";
                         },
-                    ])->label('Pilih Daftar Tim <strong>(Tahun ' . date("Y") . ')</strong> yang Diundang') ?>
+                    ])->label('Pilih Daftar Tim <strong>(Tahun ' . date("Y") . ')</strong> yang Diundang <span class="badge bg-warning text-dark">(klik nama tim)</span>') ?>
                     <?php $chosenmembers = [];
                     ?>
                 <?php endif; ?>
@@ -368,6 +368,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-agenda-form.
                     ],
                 ]);
                 ?>
+
                 <div class="form-group text-end mb-3">
                     <?= Html::submitButton('<i class="fas fa-save"></i> Simpan', ['class' => 'btn btn btn-outline-warning btn-block']) ?>
                 </div>
