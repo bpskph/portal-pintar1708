@@ -51,7 +51,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     <!-- ======= Hero Section ======= -->
     <section id="hero" class="d-flex flex-column justify-content-center">
         <div class="container" data-aos="zoom-in" data-aos-delay="100">
-            <h1>PORTAL PINTAR 2.0 - TODAY INFO</h1>
+            <h1>PORTAL PINTAR - TODAY INFO</h1>
             <p>P A S T I | <span class="typed" data-typed-items="PROFESIONAL, DATA BERKUALITAS, MELAYANI DENGAN HATI"></p>
         </div>
     </section><!-- End Hero -->
@@ -70,9 +70,10 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     <!-- ======= Footer ======= -->
     <footer id="footer">
         <div class="container">
-            <h5 style="font-style: normal" ;>Portal Pusat Informasi Terkini Dalam Layar 2.0</h5>
+            <h5 style="font-style: normal" ;>Portal Pusat Informasi Terkini Dalam Layar</h5>
             <div style="font-style: normal" class="credits">
-                Initiated by Sekretariat Reformasi Birokrasi BPS Kabupaten Bengkulu Selatan in 2023 | Coded and Maintained by <a href="https://khansasafira19.github.io/" target="_blank">nofriani@bps.go.id</a>
+            &copy; Copyright <strong><span>Tim PTM BPS Provinsi Bengkulu</span></strong>. All Rights Reserved | <span class="text-secondary"> App Version:</span> <?= Yii::$app->params['appVersion']; ?>
+            Coded by <a href="https://khansasafira19.github.io/">nofriani@bps.go.id</a> | <a href="https://wa.me/6285664991937?text=Salam+Senyum,+Developer+Portal+Pintar%0ASaya+ingin+berdiskusi+terkait+Sistem+Portal+Pintar" target="_blank">Hubungi Developer</a>
             </div>
         </div>
     </footer><!-- End Footer -->

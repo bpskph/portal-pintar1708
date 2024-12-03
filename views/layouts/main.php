@@ -183,7 +183,7 @@ $this->registerJs($script, \yii\web\View::POS_HEAD);
         </div>
         <div class="container">
             <div class="copyright">
-                &copy; Copyright <strong><span>Tim PTM BPS Kabupaten Bengkulu Selatan</span></strong>. All Rights Reserved | <span class="text-secondary"> App Version:</span> <?= Yii::$app->params['appVersion']; ?>
+                &copy; Copyright <strong><span>Tim PTM BPS Provinsi Bengkulu</span></strong>. All Rights Reserved | <span class="text-secondary"> App Version:</span> <?= Yii::$app->params['appVersion']; ?>
             </div>
             <div class="credits" style="color: #aaa">
                 Coded by <a href="https://khansasafira19.github.io/">nofriani@bps.go.id</a> | <a href="https://wa.me/6285664991937?text=Salam+Senyum,+Developer+Portal+Pintar%0ASaya+ingin+berdiskusi+terkait+Sistem+Portal+Pintar" target="_blank">Hubungi Developer</a>
