@@ -395,7 +395,7 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
         }
         $suratsubkode = Suratsubkode::findOne(['id_suratsubkode' => $id]);
         if (count($jadwal) < 1) {
-            return $kode . '-' . '001' . '/17000/' . $suratsubkode->fk_suratkode . '.' . $suratsubkode->kode_suratsubkode . '/' . (($tahun == 2023) ? ($bulan . '/' . $tahun) : $tahun);
+            return $kode . '-' . '001' . '/17010/' . $suratsubkode->fk_suratkode . '.' . $suratsubkode->kode_suratsubkode . '/' . (($tahun == 2023) ? ($bulan . '/' . $tahun) : $tahun);
         } else {
             $suratajuan = strtotime($tanggal); //tanggal pada form
             $suratterakhir = strtotime($sortedJadwal->tanggal_suratrepoeks); //tanggal surat dengan ID terakhir
@@ -411,7 +411,7 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
                     $nosurat = '0' . $nosurat;
                 elseif (strlen($nosurat) == 1)
                     $nosurat = '00' . $nosurat;
-                return $kode . '-' . $nosurat . '/17000/' . $suratsubkode->fk_suratkode . '.' . $suratsubkode->kode_suratsubkode . '/' . (($tahun == 2023) ? ($bulan . '/' . $tahun) : $tahun);
+                return $kode . '-' . $nosurat . '/17010/' . $suratsubkode->fk_suratkode . '.' . $suratsubkode->kode_suratsubkode . '/' . (($tahun == 2023) ? ($bulan . '/' . $tahun) : $tahun);
             } else { //tanggal yang diajukan sebelum tanggal dengan ID terakhir
                 $jadwalsisip = Suratrepoeks::find()->where(['<=', 'tanggal_suratrepoeks', $tanggal])->andWhere(['deleted' => 0])->andWhere(['YEAR(tanggal_suratrepoeks)' => $tahun])->all();
                 if (count($jadwalsisip) < 1)
@@ -485,9 +485,9 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
                             ->one();
                     }
                     // Code execution continues after the loop
-                    return $kode . '-' . $newChecksuratsisip . '/17000/' . $suratsubkode->fk_suratkode . '.' . $suratsubkode->kode_suratsubkode . '/' . (($tahun == 2023) ? ($bulan . '/' . $tahun) : $tahun);
+                    return $kode . '-' . $newChecksuratsisip . '/17010/' . $suratsubkode->fk_suratkode . '.' . $suratsubkode->kode_suratsubkode . '/' . (($tahun == 2023) ? ($bulan . '/' . $tahun) : $tahun);
                 } else {
-                    return $kode . '-' . $nosurat . 'A' . '/17000/' . $suratsubkode->fk_suratkode . '.' . $suratsubkode->kode_suratsubkode . '/' . (($tahun == 2023) ? ($bulan . '/' . $tahun) : $tahun);
+                    return $kode . '-' . $nosurat . 'A' . '/17010/' . $suratsubkode->fk_suratkode . '.' . $suratsubkode->kode_suratsubkode . '/' . (($tahun == 2023) ? ($bulan . '/' . $tahun) : $tahun);
                 }
             }
         }
@@ -1359,7 +1359,7 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
                         <td width="40%" colspan="0" style="padding: 0;">
                             <b>Lampiran Surat:</b>
                             <br />
-                            Nomor : B-809/17000/KU.010/06/2023
+                            Nomor : B-809/17010/KU.010/06/2023
                             <br />
                             Tanggal : 31 Mei 2023
                         </td>

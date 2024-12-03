@@ -1749,7 +1749,7 @@ class SuratrepoController extends BaseController
                         <td width="40%" colspan="0" style="padding: 0;">
                             <b>Lampiran Surat:</b>
                             <br />
-                            Nomor : B-809/17000/KU.010/06/2023
+                            Nomor : B-809/17010/KU.010/06/2023
                             <br />
                             Tanggal : 31 Mei 2023
                         </td>
