@@ -126,8 +126,8 @@ $this->registerCssFile(Yii::$app->request->baseUrl . '/library/css/fi-agenda-ind
                             'class' => ActionColumn::class,
                             'header' => 'Aksi',
                             'template' => (Yii::$app->user->isGuest || Yii::$app->user->identity->theme == 0)
-                                ? '{update}{view}{agenda}{cetak}'
-                                : '{update}{view}{agenda}{cetak}',
+                                ? '{update}{view}{agenda}'
+                                : '{update}{view}{agenda}',
                             'visibleButtons' => [
                                 'update' => function ($model, $key, $index) {
                                     if (!file_exists(Yii::getAlias('@webroot/surat/internal/pdf/' . $model->id_suratrepo . '.pdf'))) {
@@ -138,9 +138,6 @@ $this->registerCssFile(Yii::$app->request->baseUrl . '/library/css/fi-agenda-ind
                                 },
                                 'agenda' => function ($model) {
                                     return $model->fk_agenda ? true : false;
-                                },
-                                'cetak' => function ($model) {
-                                    return $model->isi_suratrepo != null ? true : false;
                                 },
                             ],
                             'buttons'  => [
@@ -157,9 +154,6 @@ $this->registerCssFile(Yii::$app->request->baseUrl . '/library/css/fi-agenda-ind
                                 },
                                 'agenda' => function ($url, $model, $key) {
                                     return Html::a('<i class="fas fa-calendar-alt"></i> ',  ['agenda/' . $model->fk_agenda], ['title' => 'Lihat rincian agenda ini', 'class' => 'modalButton', 'data-pjax' => '0']);
-                                },
-                                'cetak' => function ($url, $model, $key) {
-                                    return Html::a('<i class="fas fa-file-pdf"></i> ',  ['suratrepo/cetaksurat/' . $model->id_suratrepo], ['title' => 'Cetak surat ini', 'target' => '_blank']);
                                 },
                             ],
                         ],

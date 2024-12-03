@@ -205,6 +205,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-suratrepo-fo
 
                 <?php endif; ?>
                 <?php if ($dataagenda == 'noagenda') : ?>
+                    <?= var_dump($dataagenda)?>
                     <?= $form->errorSummary($model) ?>
                     <?= $form->field($model, 'id_suratrepo')->hiddenInput()->label(false) ?>
                     <?= $form->field($model, 'penerima_suratrepo')->textarea(['rows' => 3])
@@ -223,7 +224,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-suratrepo-fo
 
                     <?= $form->field($model, 'perihal_suratrepo')->textarea(['rows' => 3])
                         ->hint('Jika ingin memisahkan perihal menjadi beberapa baris, pisahkan dengan "&ltbr/&gt". Contoh: <b>Usulan Penetapan Penggunaan (PSP) &ltbr/&gt BMN Wilayah BPS Kabupaten Bengkulu Selatan</b>', ['class' => '', 'style' => 'color: #999']) ?>
-                    <?= $form->field($model, 'is_undangan')->checkbox()->label('&nbsp;Checklist jika ini merupakan &nbsp;<strong>Surat Undangan</strong>&nbsp;', ['style' => 'background-color: #ffc107; border-radius: 5px']); ?>
+                    <?php // $form->field($model, 'is_undangan')->checkbox()->label('&nbsp;Checklist jika ini merupakan &nbsp;<strong>Surat Undangan</strong>&nbsp;', ['style' => 'background-color: #ffc107; border-radius: 5px']); ?>
                     <?= $form->field($model, 'lampiran')->textInput(['maxlength' => true])
                         ->hint('Contoh Pengisian: <b>1 (Satu) Berkas</b><br/>Kosongkan bila tidak ada lampiran. ', ['class' => '', 'style' => 'color: #999']) ?>
                     <?= $form->field($model, 'fk_suratsubkode')->widget(Select2::classname(), [

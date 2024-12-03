@@ -106,10 +106,7 @@ $this->registerJs($script, \yii\web\View::POS_HEAD);
             <?php } elseif (!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) { //light theme
             ?>
                 <a href="<?= Yii::$app->request->baseUrl . '/site/theme?choice=1' ?>" class="book-a-table-btn scrollto d-none d-lg-flex" style="background-color: #cda45e"><i class="icon fa fa-moon text-dark"></i></a>
-            <?php } ?>
-            <a href="https://www.canva.com/design/DAGQgVxVcSI/NPzAMvj5-fVqwimvxD6DkQ/view?utm_content=DAGQgVxVcSI&utm_campaign=designshare&utm_medium=link&utm_source=editor" class="book-a-table-btn scrollto d-none d-lg-flex text-warning d-flex align-items-center justify-content-center" title="Panduan Portal Pintar" target="_blank">
-                <i class="fas fa-book-open"></i>
-            </a>
+            <?php } ?>            
         </div>
     </header><!-- End Header -->
     <!-- Navigation -->

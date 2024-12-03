@@ -7,7 +7,6 @@ use kartik\detail\DetailView;
 $this->title = 'Detail Surat # ' . $model->id_suratrepo;
 $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-copy-clipboard.js', ['position' => View::POS_END, 'depends' => [\yii\web\JqueryAsset::class]]);
 ?>
-<link href="<?php echo Yii::$app->request->baseUrl; ?>/library/fi-page-invoice.css" rel="stylesheet">
 <div class="container-fluid" data-aos="fade-up">
     <h1><?= Html::encode($this->title) ?></h1>
     <div class="d-flex justify-content-between">
@@ -120,44 +119,6 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-copy-clipboa
                     ])
                     ?>
                     <br />
-                    <?php if ($model->isi_suratrepo != NULL) { ?>
-                        <hr class="bps" />
-                        <div class="text-center">
-                            <h3>
-                                <span class="badge bg-primary">Isi Surat</span>
-                            </h3>
-                            <?= Html::a('<i class="fas fa-file-pdf"></i> Cetak PDF', ['cetaksurat', 'id' => $model->id_suratrepo], ['class' => 'btn btn-sm btn btn-outline-warning', 'target' => '_blank']) ?>
-                            <button id="btn-export" onclick="exportHTMLWord('<?php echo $model->perihal_suratrepo ?>')" type="button" class="btn btn-sm btn-outline-success">
-                                <i class="fas fa-file-word"></i> Export to Word
-                            </button>
-                        </div>
-                        <br />
-                        <div class="container" id="source-html">
-                            <div data-size="A4" style="min-height: 1200px">
-                                <?php //echo $model->isi_suratrepo;
-                                echo $html; ?>
-                            </div>
-                        </div>
-                    <?php } ?>
-                    <?php if ($model->isi_lampiran != NULL) { ?>
-                        <hr class="bps" />
-                        <div class="text-center">
-                            <h3>
-                                <span class="badge bg-primary">Lampiran Surat</span>
-                            </h3>
-                            <?= Html::a('<i class="fas fa-file-pdf"></i> Cetak PDF', ['cetaklampiran', 'id' => $model->id_suratrepo], ['class' => 'btn btn-sm btn btn-outline-warning', 'target' => '_blank']) ?>
-                            <button id="btn-export" onclick="exportHTMLWordLampiran('Lampiran - <?php echo $model->perihal_suratrepo ?>')" type="button" class="btn btn-sm btn-outline-success">
-                                <i class="fas fa-file-word"></i> Export to Word
-                            </button>
-                        </div>
-                        <br />
-                        <div class="container" id="source-html-lampiran">
-                            <div data-size="A4" style="min-height: 1200px">
-                                <?php //echo $model->isi_suratrepoeks;
-                                echo $model->isi_lampiran; ?>
-                            </div>
-                        </div>
-                    <?php } ?>
                 </div>
             </div>
         </div>
@@ -179,51 +140,4 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-copy-clipboa
             </div>
         <?php endif; ?>
     </div>
-
 </div>
-<script src="https://unpkg.com/html-docx-js/dist/html-docx.js"></script>
-<script>
-    function exportHTMLWord(rapat) {
-        var sourceHTML = document.getElementById("source-html").innerHTML;
-        var converted = htmlDocx.asBlob(sourceHTML, {
-            margins: {
-                top: -100,
-                bottom: 1200,
-                left: 1200,
-                right: 1200
-            },
-            padding: {
-                left: 40,
-                right: 40
-            }
-        });
-        var fileDownload = document.createElement("a");
-        document.body.appendChild(fileDownload);
-        fileDownload.href = URL.createObjectURL(converted);
-        fileDownload.download = rapat + '.docx';
-        fileDownload.click();
-        document.body.removeChild(fileDownload);
-    }
-
-    function exportHTMLWordLampiran(rapat) {
-        var sourceHTML = document.getElementById("source-html-lampiran").innerHTML;
-        var converted = htmlDocx.asBlob(sourceHTML, {
-            margins: {
-                top: -100,
-                bottom: 1200,
-                left: 1200,
-                right: 1200
-            },
-            padding: {
-                left: 40,
-                right: 40
-            }
-        });
-        var fileDownload = document.createElement("a");
-        document.body.appendChild(fileDownload);
-        fileDownload.href = URL.createObjectURL(converted);
-        fileDownload.download = rapat + '.docx';
-        fileDownload.click();
-        document.body.removeChild(fileDownload);
-    }
-</script>
