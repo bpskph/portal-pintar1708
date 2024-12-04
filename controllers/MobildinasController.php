@@ -169,10 +169,8 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
 
                     \app\models\Notification::createNotification($userId, 'Terdapat usulan peminjaman mobil dinas untuk <strong>' . $waktuFormatted . '</strong> dari <strong>' . $borrower->nama . '</strong>', Yii::$app->controller->id, $model->id_mobildinas);
                 }
-                if (strpos($response, 'Error:') !== false) {
-                    Yii::$app->session->setFlash('success', "Usulan peminjaman mobil dinas sudah ditambahkan dan notifikasi WA sudah dikirimkan. Terima kasih.");
-                    return $this->redirect(['view', 'id' => $model->id_mobildinas]);
-                }
+                Yii::$app->session->setFlash('success', "Usulan peminjaman mobil dinas sudah ditambahkan dan notifikasi WA sudah dikirimkan. Terima kasih.");
+                return $this->redirect(['view', 'id' => $model->id_mobildinas]);
             }
         } else {
             $model->loadDefaultValues();
