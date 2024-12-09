@@ -226,8 +226,8 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-suratrepoeks
                             ->where(['project.tahun' => date("Y")])
                             ->andWhere(['member_status' => 2])
                             ->orWhere(['leader_status' => 1])
-                            ->orWhere(['username' => 'sahranudin'])
-                            ->orWhere(['username' => 'winrizal'])
+                            ->orWhere(['username' => 'engkyhendarmandi'])
+                            ->orWhere(['username' => 'fathan'])
                             ->orderBy(['nipbaru' => SORT_ASC])
                             ->asArray()->all(),
                         'username',

@@ -32,7 +32,7 @@ $config = [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'RLXOJYUIJZ3lrNN1b8OWBF5gKq5WiCgK',
-            'hostInfo' => 'http://localhost:8080',
+            'hostInfo' => 'http://localhost',
             //'hostInfo' => 'https://webapps.bps.go.id/bengkuluselatankab',
         ],
         'cache' => [
