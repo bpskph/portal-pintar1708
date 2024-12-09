@@ -2,7 +2,6 @@
 
 use app\models\Agenda;
 use app\models\Agendapimpinan;
-use app\models\Laporan;
 use app\models\Project;
 use app\models\Projectmember;
 use app\models\Rooms;
@@ -21,15 +20,6 @@ $this->title = 'Agenda Kantor BPS Kabupaten Bengkulu Selatan';
 
 ?>
 <?php
-// $agendas = Agenda::find()->select('*')
-//     ->joinWith(['laporane'])
-//     ->andWhere(['pemimpin' => Yii::$app->user->identity->username])
-//     ->andWhere(['approval' => 0])
-//     ->andWhere(['deleted' => 0])
-//     ->andWhere(['progress' => 1])
-//     // ->andWhere('id_agenda > 340')
-//     ->orderBy(['waktumulai' => SORT_ASC])
-//     ->all();
 if (!Yii::$app->user->isGuest)
     $agendas = Agenda::find()
         ->select('*')
@@ -335,9 +325,7 @@ $kolomTampil = [
     [
         'class' => ActionColumn::class,
         'header' => 'Atur Jadwal',
-        'template' => (Yii::$app->user->isGuest || Yii::$app->user->identity->theme == 0)
-            ? '{selesai}{tunda}{batal}{rencana}'
-            : '{selesai}{tunda}{batal}{rencana}',
+        'template' => '{selesai}{tunda}{batal}{rencana}',
         'visible' => Yii::$app->user->isGuest ? false : true,
         'visibleButtons' => [
             'batal' => function ($model, $key, $index) {
@@ -398,9 +386,7 @@ $kolomTampil = [
     [
         'class' => ActionColumn::class,
         'header' => 'Aksi',
-        'template' => (Yii::$app->user->isGuest || Yii::$app->user->identity->theme == 0)
-            ? '{view}{update}{share}{emailblast}{wa_blast}{editpeserta}'
-            : '{view}{update}{share}{emailblast}{wa_blast}{editpeserta}',
+        'template' => '{view}{update}{share}{emailblast}{wa_blast}{editpeserta}',
         'visibleButtons' => [
             'delete' => function ($model, $key, $index) {
                 return (!Yii::$app->user->isGuest
@@ -531,9 +517,7 @@ $kolomTampil = [
     [
         'class' => ActionColumn::class,
         'header' => 'Laporan',
-        'template' => (Yii::$app->user->isGuest || Yii::$app->user->identity->theme == 0)
-            ? '{laporan}'
-            : '{laporan}',
+        'template' => '{laporan}',
         'visibleButtons' => [
             'laporan' => function ($model, $key, $index) {
                 return ($model['progress'] == 1
@@ -577,9 +561,7 @@ $kolomTampil = [
     [
         'class' => ActionColumn::class,
         'header' => 'Surat',
-        'template' => (Yii::$app->user->isGuest || Yii::$app->user->identity->theme == 0)
-            ? '{listsurat}{createsurat}'
-            : '{listsurat}{createsurat}',
+        'template' => '{listsurat}{createsurat}',
         'visibleButtons' => [
             'listsurat' => function ($model, $key, $index) {
                 return $model->getSuratrepoe()->count() > 0;
@@ -604,7 +586,36 @@ $kolomTampil = [
     ],
 ];
 ?>
+<style>
+    .dropdown-item-container {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 5px;
+    }
 
+    .icon-container {
+        flex-shrink: 0;
+        width: 20px;
+        text-align: center;
+    }
+
+    .text-container {
+        flex-grow: 1;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    .dropdown-item {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .dropdown-menu {
+        padding-top: 2px;
+        padding-bottom: 2px;
+    }
+</style>
 <div class="container-fluid" data-aos="fade-up">
     <h1 class="text-center"><?= Html::encode($this->title) ?></h1>
     <hr class="bps" />
@@ -652,28 +663,134 @@ $kolomTampil = [
         <?php endif; ?>
         <div class="p-2">
         </div>
-        <div class="p-2">
+        <div class="p-2 d-flex align-items-center flex-wrap gap-2">
             <?= Html::a('<i class="fas fa-file-archive"></i> Arsip Agenda', ['agenda/index?owner=&year=&nopage=0'], ['class' => 'btn btn-outline-warning btn-sm']) ?>
             |
-            <?= Html::a('<i class="fas fa-book-reader"></i> Agenda Pimpinan', ['agendapimpinan/index'], ['class' => 'btn btn-outline-warning btn-sm']) ?>
-            |
-            <?php if (!Yii::$app->user->isGuest) : ?>
-                <?= Html::a('<i class="fas fa-scroll"></i> Surat Internal', ['suratrepo/index?owner=&year=' . date("Y")], ['class' => 'btn btn ' . ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? 'btn-outline-dark' : 'btn-outline-light') . ' btn-sm']) ?>
-                |
-                <?= Html::a('<i class="fas fa-scroll"></i> Surat Eksternal', ['suratrepoeks/index?owner=&year=' . date("Y")], ['class' => 'btn btn-outline-success btn-sm']) ?>
+            <?php if (!Yii::$app->user->isGuest) : ?>                
+                <div class="dropdown">
+                    <button class="btn btn-outline-warning btn-sm dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-chevron-down"></i> Surat-surat
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                        <li>
+                            <?= Html::a(
+                                '<div class="dropdown-item-container">
+                                    <div class="icon-container"><i class="fab fa-invision"></i></div>
+                                    <div class="text-container">Surat Internal</div>
+                                </div>',
+                                ['suratrepo/index?owner=&year=' . date("Y")],
+                                ['class' => 'btn btn-outline-warning btn-sm dropdown-item']
+                            ) ?>
+                        </li>
+                        <li>
+                            <?= Html::a(
+                                '<div class="dropdown-item-container">
+                                    <div class="icon-container"><i class="fab fa-xing-square"></i></div>
+                                    <div class="text-container">Surat Eksternal</div>
+                                </div>',
+                                ['suratrepoeks/index?owner=&year=' . date("Y")],
+                                ['class' => 'btn btn-outline-warning btn-sm dropdown-item']
+                            ) ?>
+                        </li>
+                        <li>
+                            <?= Html::a(
+                                '<div class="dropdown-item-container">
+                                    <div class="icon-container"><i class="fas fa-user-md"></i></div>
+                                    <div class="text-container">Surat Masuk/Disposisi</div>
+                                </div>',
+                                ['suratmasuk/index?year=' . date("Y")],
+                                ['class' => 'btn btn-outline-warning btn-sm dropdown-item']
+                            ) ?>
+                        </li>
+                    </ul>
+                </div>
                 |
             <?php endif; ?>
-            <?= Html::a('<i class="fas fa-handshake"></i> Zoom', ['zooms/index'], ['class' => 'btn btn btn-outline-warning btn-sm']) ?>
+            <div class="dropdown">
+                <button class="btn btn-outline-warning btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-chevron-down"></i> Agenda Lainnya
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li>
+                        <?= Html::a(
+                            '<div class="dropdown-item-container">
+                                <div class="icon-container"><i class="fas fa-book-reader"></i></div>
+                                <div class="text-container">Agenda Pimpinan</div>
+                            </div>',
+                            ['agendapimpinan/index'],
+                            ['class' => 'btn btn-outline-warning btn-sm dropdown-item']
+                        ) ?>
+                    </li>
+                    <li>
+                        <?= Html::a(
+                            '<div class="dropdown-item-container">
+                                <div class="icon-container"><i class="fas fa-business-time"></i></div>
+                                <div class="text-container">Jadwal Rilis</div>
+                            </div>',
+                            ['beritarilis/index'],
+                            ['class' => 'btn btn-outline-warning btn-sm dropdown-item']
+                        ) ?>
+                    </li>
+                    <li>
+                        <?= Html::a(
+                            '<div class="dropdown-item-container">
+                                <div class="icon-container"><i class="fas fa-suitcase-rolling"></i></div>
+                                <div class="text-container">Dinas Luar</div>
+                            </div>',
+                            ['dl/index'],
+                            ['class' => 'btn btn-outline-warning btn-sm dropdown-item']
+                        ) ?>
+                    </li>
+                    <li>
+                        <?= Html::a(
+                            '<div class="dropdown-item-container">
+                                <div class="icon-container"><i class="fas fa-flag"></i></div>
+                                <div class="text-container">Apel</div>
+                            </div>',
+                            ['apel/index'],
+                            ['class' => 'btn btn-outline-warning btn-sm dropdown-item']
+                        ) ?>
+                    </li>
+                    <li>
+                        <?= Html::a(
+                            '<div class="dropdown-item-container">
+                                <div class="icon-container"><i class="fas fa-file-signature"></i></div>
+                                <div class="text-container">Portal SK</div>
+                            </div>',
+                            ['sk/index'],
+                            ['class' => 'btn btn-outline-warning btn-sm dropdown-item']
+                        ) ?>
+                    </li>
+                </ul>
+            </div>
             |
-            <?= Html::a('<i class="fas fa-car"></i> Mobil Dinas', ['mobildinas/index'], ['class' => 'btn btn btn-outline-warning btn-sm']) ?>
-            |
-            <?= Html::a('<i class="fas fa-file-signature"></i> Portal SK', ['sk/index'], ['class' => 'btn btn btn-outline-warning btn-sm']) ?>
-            |
-            <?= Html::a('<i class="fas fa-suitcase-rolling"></i> Dinas Luar', ['dl/index'], ['class' => 'btn btn btn-outline-warning btn-sm']) ?>
-            |
-            <?= Html::a('<i class="fas fa-business-time"></i> Jadwal Rilis', ['beritarilis/index'], ['class' => 'btn btn btn-outline-warning btn-sm']) ?>
-            |
-            <?= Html::a('<i class="fas fa-flag"></i> Apel', ['apel/index'], ['class' => 'btn btn btn-outline-warning btn-sm']) ?>
+            <div class="dropdown">
+                <button class="btn btn-outline-warning btn-sm dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-chevron-down"></i> Manajemen Pemakaian Fasilitas
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                    <li>
+                        <?= Html::a(
+                            '<div class="dropdown-item-container">
+                                <div class="icon-container"><i class="fas fa-handshake"></i></div>
+                                <div class="text-container">Zoom Meetings</div>
+                            </div>',
+                            ['zooms/index'],
+                            ['class' => 'btn btn-outline-warning btn-sm dropdown-item']
+                        ) ?>
+                    </li>
+                    <li>
+                        <?= Html::a(
+                            '<div class="dropdown-item-container">
+                                <div class="icon-container"><i class="fas fa-car"></i></div>
+                                <div class="text-container">Mobil Dinas</div>
+                            </div>',
+                            ['mobildinas/index'],
+                            ['class' => 'btn btn-outline-warning btn-sm dropdown-item']
+                        ) ?>
+                    </li>
+                </ul>
+            </div>
             |
             <?= Html::a('<i class="fas fa-plus-square"></i> Usulkan Agenda', ['create'], ['class' => 'btn btn btn-outline-warning btn-sm']) ?>
         </div>

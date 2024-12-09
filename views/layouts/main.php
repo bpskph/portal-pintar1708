@@ -48,17 +48,44 @@ $this->registerJs($script, \yii\web\View::POS_HEAD);
                 <ul>
                     <li><a class="nav-link scrollto <?= (Yii::$app->controller->id == 'site' && Yii::$app->controller->action->id == 'index') ? 'active' : '' ?>" href="<?php echo Yii::$app->request->baseUrl; ?>/site/index">Dashboard</a></li>
                     <?php if (!Yii::$app->user->isGuest) : ?>
-                        <li class="dropdown"><a href="#" class="nav-link scrollto <?= (Yii::$app->controller->id == 'agenda' || Yii::$app->controller->id == 'zooms' || Yii::$app->controller->id == 'beritarilis' || Yii::$app->controller->id == 'apel' || Yii::$app->controller->id == 'suratrepo' || Yii::$app->controller->id == 'suratrepoeks' || Yii::$app->controller->id == 'laporan' || Yii::$app->controller->id == 'agendapimpinan')
+                        <li class="dropdown"><a href="#" class="nav-link scrollto <?= (
+                                                                                        Yii::$app->controller->id == 'agenda'
+                                                                                        || Yii::$app->controller->id == 'zooms'
+                                                                                        || Yii::$app->controller->id == 'beritarilis'
+                                                                                        || Yii::$app->controller->id == 'apel'
+                                                                                        || Yii::$app->controller->id == 'dl'
+                                                                                        || Yii::$app->controller->id == 'sk'
+                                                                                        || Yii::$app->controller->id == 'mobildinas'
+                                                                                        || Yii::$app->controller->id == 'suratrepo'
+                                                                                        || Yii::$app->controller->id == 'suratrepoeks'
+                                                                                        || Yii::$app->controller->id == 'suratmasuk'
+                                                                                        || Yii::$app->controller->id == 'laporan'
+                                                                                        || Yii::$app->controller->id == 'agendapimpinan')
                                                                                         ? 'active' : '' ?>">Agenda & Surat<i class="bi bi-chevron-down"></i></a>
                             <ul>
-                                <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/agenda/index?owner=&year=<?php echo date("Y") ?>&nopage=0" class="<?= (Yii::$app->controller->id == 'agenda' && Yii::$app->controller->action->id != 'calendar') ? 'aktip' : '' ?>">Agenda (Utama)</a></li>
-                                <?php if (Yii::$app->user->identity->username == 'sekbps17'): ?>
-                                    <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/agendapimpinan/index" class="<?= (Yii::$app->controller->id == 'agendapimpinan') ? 'aktip' : '' ?>">Agenda Pimpinan</a></li>
-                                <?php endif; ?>
-                                <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/agenda/calendar" class="<?= (Yii::$app->controller->id == 'agenda' && Yii::$app->controller->action->id == 'calendar') ? 'aktip' : '' ?>">Kalender Agenda</a></li>
-                                <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/suratrepo/index?owner=&year=<?php echo date("Y") ?>" class="<?= (Yii::$app->controller->id == 'suratrepo') ? 'aktip' : '' ?>">Surat Internal</a></li>
-                                <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/suratrepoeks/index?owner=&year=<?php echo date("Y") ?>" class="<?= (Yii::$app->controller->id == 'suratrepoeks') ? 'aktip' : '' ?>">Surat Eksternal</a></li>
-                                <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/zooms/index" class="<?= (Yii::$app->controller->id == 'zooms') ? 'aktip' : '' ?>">Zoom Meetings</a></li>
+                                <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/agenda/index?owner=&year=<?php echo date("Y") ?>&nopage=0" class="<?= (Yii::$app->controller->id == 'agenda' && Yii::$app->controller->action->id != 'calendar') ? 'aktip' : '' ?>">Agenda Utama</a></li>
+                                <li class="dropdown"><a href="#"><span class="<?= (
+                                                                                    (Yii::$app->controller->id == 'agenda' && Yii::$app->controller->action->id == 'calendar')
+                                                                                    || Yii::$app->controller->id == 'agendapimpinan')
+                                                                                    ? 'aktip' : '' ?>">Agenda Lainnya</span> <i class="bi bi-chevron-right"></i></a>
+                                    <ul>
+                                        <?php if (Yii::$app->user->identity->username == 'sekbps17' || Yii::$app->user->identity->level == 0): ?>
+                                            <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/agendapimpinan/index" class="<?= (Yii::$app->controller->id == 'agendapimpinan') ? 'aktip' : '' ?>">Agenda Pimpinan</a></li>
+                                        <?php endif; ?>
+                                        <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/agenda/calendar" class="<?= (Yii::$app->controller->id == 'agenda' && Yii::$app->controller->action->id == 'calendar') ? 'aktip' : '' ?>">Kalender Agenda</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown"><a href="#"><span class="<?= (
+                                                                                    Yii::$app->controller->id == 'suratrepo'
+                                                                                    || Yii::$app->controller->id == 'suratrepoeks'
+                                                                                    || Yii::$app->controller->id == 'suratmasuk')
+                                                                                    ? 'aktip' : '' ?>">
+                                            Surat-surat</span> <i class="bi bi-chevron-right"></i></a>
+                                    <ul>
+                                        <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/suratrepo/index?owner=&year=<?php echo date("Y") ?>" class="<?= (Yii::$app->controller->id == 'suratrepo') ? 'aktip' : '' ?>">Surat Internal</a></li>
+                                        <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/suratrepoeks/index?owner=&year=<?php echo date("Y") ?>" class="<?= (Yii::$app->controller->id == 'suratrepoeks') ? 'aktip' : '' ?>">Surat Eksternal</a></li>
+                                    </ul>
+                                </li>
                             </ul>
                         </li>
                     <?php else : ?>
@@ -84,13 +111,28 @@ $this->registerJs($script, \yii\web\View::POS_HEAD);
                                         ) . Html::endForm()  ?>
                                     </a>
                                 </li>
-                                <li><a href="<?= Yii::$app->request->baseUrl . '/notification/index' ?>" data-bs-toggle="modal" data-bs-target="#exampleModal" class="modal-link">Notifikasi Saya <?= ($notifikasi > 0 ? ' <span class="position-absolute bottom-10 start-50 translate-middle badge rounded-pill bg-danger">' . $notifikasi . '</span>' : '') ?></a></li>
-                                <li><a href="<?= Yii::$app->request->baseUrl . '/pengguna/view?username=' . Yii::$app->user->identity->username ?>" data-bs-toggle="modal" data-bs-target="#exampleModal" class="modal-link">Profil Saya</a></li>
-                                <li><a href="<?= Yii::$app->request->baseUrl . '/patches/index' ?>" data-bs-toggle="modal" data-bs-target="#exampleModal" class="modal-link">Riwayat Pemutakhiran Aplikasi</a></li>
-                                <li><a href="<?= Yii::$app->request->baseUrl . '/site/dashboard' ?>" data-bs-toggle="modal" data-bs-target="#exampleModal" class="modal-link">Riwayat Akses Aplikasi</a></li>
-                                <li><a href="<?= Yii::$app->request->baseUrl . '/popups/index' ?>" data-bs-toggle="modal" data-bs-target="#exampleModal" class="modal-link">Riwayat Pengumuman</a></li>
-                                <li><a href="<?= Yii::$app->request->baseUrl; ?>/site/evaluasi?year=<?php echo date("Y") ?>">Evaluasi Pemakaian Aplikasi</a></li>
-                                <li><a href="https://wa.me/6285664991937?text=Salam+Senyum,+Developer+Portal+Pintar%0ASaya+ingin+berdiskusi+terkait+Sistem+Portal+Pintar" target="_blank">Hubungi Developer</a></li>
+                                <li><a href="<?= Yii::$app->request->baseUrl . '/notification/index' ?>" data-bs-toggle="modal" data-bs-target="#exampleModal" class="modal-link">Notifikasi <?= ($notifikasi > 0 ? ' <span class="position-absolute bottom-10 start-50 translate-middle badge rounded-pill bg-danger">' . $notifikasi . '</span>' : '') ?></a></li>
+                                <li class="dropdown"><a href="#"><span class="<?= (
+                                                                                    Yii::$app->controller->id == 'patches'
+                                                                                    || Yii::$app->controller->id == 'popups'
+                                                                                    || (Yii::$app->controller->id == 'site'
+                                                                                        && Yii::$app->controller->action->id == 'dashboard')
+                                                                                    || (Yii::$app->controller->id == 'site'
+                                                                                        && Yii::$app->controller->action->id == 'evaluasi')
+                                                                                    || (Yii::$app->controller->id == 'pengguna'
+                                                                                        && Yii::$app->controller->action->id == 'view')
+                                                                                )
+                                                                                    ? 'aktip' : '' ?>">
+                                            Fitur Lainnya</span> <i class="bi bi-chevron-right"></i></a>
+                                    <ul>
+                                        <li><a class="<?= (Yii::$app->controller->id == 'pengguna' && Yii::$app->controller->action->id == 'view') ? 'aktip' : '' ?>" href="<?= Yii::$app->request->baseUrl . '/pengguna/view?username=' . Yii::$app->user->identity->username ?>">Profil Saya</a></li>
+                                        <li><a class="<?= (Yii::$app->controller->id == 'patches') ? 'aktip' : '' ?>" href="<?= Yii::$app->request->baseUrl . '/patches/index' ?>">Riwayat Pemutakhiran Aplikasi</a></li>
+                                        <li><a class="<?= (Yii::$app->controller->id == 'site' && Yii::$app->controller->action->id == 'dashboard') ? 'aktip' : '' ?>" href="<?= Yii::$app->request->baseUrl . '/site/dashboard' ?>">Riwayat Akses Aplikasi</a></li>
+                                        <li><a class="<?= (Yii::$app->controller->id == 'popups') ? 'aktip' : '' ?>" href="<?= Yii::$app->request->baseUrl . '/popups/index' ?>">Riwayat Pengumuman</a></li>
+                                        <li><a class="<?= (Yii::$app->controller->id == 'site' && Yii::$app->controller->action->id == 'evaluasi') ? 'aktip' : '' ?>" href="<?= Yii::$app->request->baseUrl; ?>/site/evaluasi?year=<?php echo date("Y") ?>">Evaluasi Pemakaian Aplikasi</a></li>
+                                        <li><a href="https://wa.me/6285664991937?text=Salam+Senyum,+Developer+Portal+Pintar%0ASaya+ingin+berdiskusi+terkait+Sistem+Portal+Pintar" target="_blank">Hubungi Developer</a></li>
+                                    </ul>
+                                </li>
                             </ul>
                         </li>
                     <?php else : ?>
@@ -106,7 +148,7 @@ $this->registerJs($script, \yii\web\View::POS_HEAD);
             <?php } elseif (!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) { //light theme
             ?>
                 <a href="<?= Yii::$app->request->baseUrl . '/site/theme?choice=1' ?>" class="book-a-table-btn scrollto d-none d-lg-flex" style="background-color: #cda45e"><i class="icon fa fa-moon text-dark"></i></a>
-            <?php } ?>            
+            <?php } ?>
         </div>
     </header><!-- End Header -->
     <!-- Navigation -->

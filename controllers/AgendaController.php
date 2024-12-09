@@ -786,11 +786,11 @@ class AgendaController extends BaseController
     {
         // URL tujuan
         $url = 'https://dialogwa.id/api/send-text';
-        $token = 'tokenxxx';
+        $token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NTZhYzMyMjY4Yzg2MGE1MGU5MWYzZSIsInVzZXJuYW1lIjoiYnBzMTcwMSIsImlhdCI6MTczMzczMzQyNiwiZXhwIjo0ODg5NDkzNDI2fQ.WAnpGxIQhVjbeglztzxUaJY_QoaclWyj2HPTV0jKIbE';
 
         // Data yang akan dikirim dalam body request
         $data = array(
-            'session' => 'portalpintar',
+            'session' => 'portalpintar1701',
             'target' => $nomor_tujuan . '@s.whatsapp.net', //format nomor tujuan harus menggunakan kode negara contoh : 628......@s.whatsapp.net
             'message' => $isi_notif
         );
