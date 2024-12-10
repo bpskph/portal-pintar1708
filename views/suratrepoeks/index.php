@@ -285,7 +285,7 @@ $surats = Suratrepoeks::find()->select('*')
                         [
                             'class' => ActionColumn::class,
                             'header' => 'Draft/Word dan Persetujuan',
-                            'template' => '{setujui}{cetak}{komentar}{uploadword}{lihatword}',
+                            'template' => '{setujui}{komentar}{uploadword}{lihatword}',
                             'visibleButtons' =>
                             [
                                 'setujui' => function ($model, $key, $index) {
@@ -296,13 +296,7 @@ $surats = Suratrepoeks::find()->select('*')
                                     return ((Yii::$app->user->identity->username === $model['owner'] && $model['komentar'] != null)
                                         || ($model->approval == 0 && Yii::$app->user->identity->username === $model['approver'] && $model->jumlah_revisi < 2)
                                         || Yii::$app->user->identity->issekretaris) ? true : false;
-                                },
-                                'cetak' => function ($model) {
-                                    return $model->isi_suratrepoeks != null &&
-                                        (Yii::$app->user->identity->username === $model['owner']
-                                            || Yii::$app->user->identity->username === $model['approver']
-                                            || Yii::$app->user->identity->issekretaris) ? true : false;
-                                },
+                                },                                
                                 'uploadword' => function ($model) {
                                     return (!Yii::$app->user->isGuest && Yii::$app->user->identity->username === $model['owner'] //datanya sendiri                               
                                     ) ? true : false;
@@ -338,10 +332,7 @@ $surats = Suratrepoeks::find()->select('*')
                                         return Html::a('<i class="fas fa-comment-alt"></i> ',  ['suratrepoeks/komentar/' . $model->id_suratrepoeks], ['title' => 'Beri koreksi untuk surat ini', 'class' => 'modalButton', 'data-pjax' => '0']);
                                     else
                                         return Html::a('<i class="fas fa-comment-alt"></i> ',  ['suratrepoeks/komentar/' . $model->id_suratrepoeks], ['title' => 'Beri koreksi untuk surat ini', 'class' => 'modalButton', 'data-pjax' => '0']);
-                                },
-                                'cetak' => function ($url, $model, $key) {
-                                    return Html::a('<i class="fas fa-file-pdf"></i> ',  ['suratrepoeks/cetaksurat/' . $model->id_suratrepoeks], ['title' => 'Cetak surat ini', 'target' => '_blank']);
-                                },
+                                },                                
                                 'uploadword' => function ($url, $model, $key) {
                                     return Html::a('<i class="fas fa-cloud-upload-alt"></i> ',  ['suratrepoeks/uploadword/' . $model->id_suratrepoeks], ['title' => 'Upload scan surat ini', 'target' => '_blank']);
                                 },

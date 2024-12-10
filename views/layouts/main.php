@@ -84,7 +84,6 @@ $this->registerJs($script, \yii\web\View::POS_HEAD);
                                     <ul>
                                         <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/suratrepo/index?owner=&year=<?php echo date("Y") ?>" class="<?= (Yii::$app->controller->id == 'suratrepo') ? 'aktip' : '' ?>">Surat Internal</a></li>
                                         <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/suratrepoeks/index?owner=&year=<?php echo date("Y") ?>" class="<?= (Yii::$app->controller->id == 'suratrepoeks') ? 'aktip' : '' ?>">Surat Eksternal</a></li>
-                                        <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/suratmasuk/index?year=<?php echo date("Y") ?>" class="<?= (Yii::$app->controller->id == 'suratmasuk') ? 'aktip' : '' ?>">Surat Masuk/Disposisi</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -211,8 +210,8 @@ $this->registerJs($script, \yii\web\View::POS_HEAD);
                             <p>
                                 Jalan Affan Bachsin No.108A, Kabupaten Bengkulu Selatan,
                                 Indonesia<br><br>
-                                <strong>Phone:</strong> (+62 736) 349119<br>
-                                <strong>Email:</strong> bengkulu@bps.go.id<br>
+                                <strong>Phone:</strong> (+62 739) 21048<br>
+                                <strong>Email:</strong> bps1701@bps.go.id<br>
                             </p>
                         </div>
                     </div>

@@ -691,17 +691,7 @@ $kolomTampil = [
                                 ['suratrepoeks/index?owner=&year=' . date("Y")],
                                 ['class' => 'btn btn-outline-warning btn-sm dropdown-item']
                             ) ?>
-                        </li>
-                        <li>
-                            <?= Html::a(
-                                '<div class="dropdown-item-container">
-                                    <div class="icon-container"><i class="fas fa-user-md"></i></div>
-                                    <div class="text-container">Surat Masuk/Disposisi</div>
-                                </div>',
-                                ['suratmasuk/index?year=' . date("Y")],
-                                ['class' => 'btn btn-outline-warning btn-sm dropdown-item']
-                            ) ?>
-                        </li>
+                        </li>                        
                     </ul>
                 </div>
                 |
