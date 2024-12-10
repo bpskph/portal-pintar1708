@@ -72,7 +72,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         <div class="container">
             <h5 style="font-style: normal" ;>Portal Pusat Informasi Terkini Dalam Layar</h5>
             <div style="font-style: normal" class="credits">
-                &copy; Copyright <strong><span>Tim PTM BPS Kabupaten Bengkulu Selatan</span></strong>. All Rights Reserved | <span class="text-secondary"> App Version:</span> <?= Yii::$app->params['appVersion']; ?> | Coded and Maintained by <a href="https://khansasafira19.github.io/" target="_blank">nofriani@bps.go.id</a>
+                &copy; Copyright <strong><span>Tim PTM BPS Provinsi Bengkulu</span></strong>. All Rights Reserved | <span class="text-secondary"> App Version:</span> <?= Yii::$app->params['appVersion']; ?> | Coded by <a href="https://khansasafira19.github.io/" target="_blank">nofriani@bps.go.id</a>
             </div>
         </div>
     </footer><!-- End Footer -->
