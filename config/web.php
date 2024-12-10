@@ -32,8 +32,8 @@ $config = [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'RLXOJYUIJZ3lrNN1b8OWBF5gKq5WiCgK',
-            // 'hostInfo' => 'http://localhost',
-            'hostInfo' => 'https://bengkuluselatankab.web.bps.go.id',
+            'hostInfo' => 'http://localhost',
+            // 'hostInfo' => 'https://bengkuluselatankab.web.bps.go.id',
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
