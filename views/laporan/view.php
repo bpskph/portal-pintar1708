@@ -1,6 +1,4 @@
 <?php
-
-use app\models\Pengguna;
 use yii\helpers\Html;
 use yii\web\View;
 
@@ -28,7 +26,7 @@ $this->registerCssFile(Yii::$app->request->baseUrl . '/library/css/fi-page-invoi
     <div class=" d-flex justify-content-center mb-2">
         <?php
         $homeUrl = ['agenda/index?owner=&year=' . date("Y") . '&nopage=0'];
-        echo Html::a('<i class="fas fa-home"></i> Beranda Agenda', $homeUrl, ['class' => 'btn btn btn-outline-warning btn-sm']);
+        echo Html::a('<i class="fas fa-home"></i> Agenda Utama', $homeUrl, ['class' => 'btn btn btn-outline-warning btn-sm']);
         ?>
     </div>
     <div class="d-flex justify-content-between">

@@ -2,9 +2,6 @@
 
 use yii\helpers\Html;
 
-/** @var yii\web\View $this */
-/** @var app\models\Zooms $model */
-
 $this->title = 'Pengajuan Permohonan Zoom';
 ?>
 <div class="zooms-create">

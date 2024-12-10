@@ -10,14 +10,8 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\controllers\AgendaController;
 
-/**
- * PatchesController implements the CRUD actions for Patches model.
- */
 class PatchesController extends Controller
 {
-    /**
-     * @inheritDoc
-     */
     public function behaviors()
     {
         return array_merge(
@@ -151,7 +145,6 @@ class PatchesController extends Controller
 
         return $text;
     }
-
     public function actionWa_blast($id)
     {
         $model = $this->findModel($id);

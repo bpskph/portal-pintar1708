@@ -1,39 +1,20 @@
 <?php
 namespace app\models;
 use Yii;
-/**
- * This is the model class for table "suratrepoeks".
- *
- * @property int $id_suratrepoeks
- * @property int $fk_agenda
- * @property string $penerima_suratrepoeks
- * @property string $tanggal_suratrepoeks
- * @property string $perihal_suratrepoeks
- * @property int $fk_suratsubkode
- * @property string $nomor_suratrepoeks
- * @property string $owner
- * @property string $timestamp
- * @property string $timestamp_suratrepoeks_lastupdate
- */
+
 class Suratrepoeks extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
     public $filepdf, $fileword;
     public static function tableName()
     {
         return 'suratrepoeks';
     }
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
             [['penerima_suratrepoeks', 'tanggal_suratrepoeks', 'perihal_suratrepoeks', 'fk_suratsubkode', 'nomor_suratrepoeks', 'owner', 'sifat', 'jenis', 'ttd_by', 'approver'], 'required'],
             [['fk_agenda', 'fk_suratsubkode'], 'integer'],
-            [['tanggal_suratrepoeks', 'timestamp', 'timestamp_suratrepoeks_lastupdate', 'tembusan', 'lampiran', 'komentar', 'invisibility', 'shared_to'], 'safe'],
+            [['tanggal_suratrepoeks', 'timestamp', 'timestamp_suratrepoeks_lastupdate', 'isi_suratrepoeks', 'tembusan', 'lampiran', 'komentar', 'invisibility', 'isi_lampiran', 'isi_lampiran_orientation', 'shared_to'], 'safe'],
             [['perihal_suratrepoeks'], 'string'],
             [['nomor_suratrepoeks'], 'unique'],
             [['penerima_suratrepoeks', 'nomor_suratrepoeks'], 'string', 'max' => 255],
@@ -44,9 +25,6 @@ class Suratrepoeks extends \yii\db\ActiveRecord
             [['fileword'], 'file', 'extensions' => 'doc, docx, pdf'],
         ];
     }
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [
@@ -60,6 +38,7 @@ class Suratrepoeks extends \yii\db\ActiveRecord
             'owner' => 'Owner',
             'timestamp' => 'Diinput',
             'timestamp_suratrepoeks_lastupdate' => 'Dimutakhirkan',
+            'isi_suratrepoeks' => 'Isi Surat (Opsional)',
             'ttd_by_jabatan' => 'TTD Oleh (Jabatannya)',
             'ttd_by' => 'Keterangan TTD',
             'invisibility' => 'Surat Anda Rahasiakan',

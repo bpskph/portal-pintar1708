@@ -1,9 +1,6 @@
 <?php
 use yii\helpers\Html;
 use yii\widgets\ListView;
-/* @var $this yii\web\View */
-/* @var $searchModel app\models\QuestionsCari */
-/* @var $dataProvider yii\data\ActiveDataProvider */
 $this->title = 'Daftar Surat Internal Agenda # ' . $dataagenda->id_agenda;
 ?>
 <style>

@@ -2,19 +2,12 @@
 namespace app\models;
 use Yii;
 use yii\base\Model;
-/**
- * LoginForm is the model behind the login form.
- *
- * @property User|null $user This property is read-only.
- *
- */
+
 class UbahPasswordForm extends Model
 {
     public $password_lama, $password_baru, $password_ulang;
     private $_user;
-    /**
-     * @return array the validation rules.
-     */
+
     public function rules()
     {
         return [

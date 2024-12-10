@@ -2,9 +2,6 @@
 
 use yii\helpers\Html;
 
-/** @var yii\web\View $this */
-/** @var app\models\Mobildinas $model */
-
 $this->title = 'Tambah Usulan Peminjaman Mobil Dinas';
 ?>
 <div class="mobildinas-create">

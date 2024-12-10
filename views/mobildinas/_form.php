@@ -1,6 +1,5 @@
 <?php
 
-use app\models\Agendapimpinan;
 use app\models\Mobildinaskeperluan;
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
@@ -8,27 +7,12 @@ use kartik\select2\Select2;
 use kartik\grid\GridView;
 use yii\helpers\ArrayHelper;
 use kartik\datetime\DateTimePicker;
-use yii\web\View;
-
-// $actionId = Yii::$app->controller->action->id;
-// $script = <<< JS
-//     var actionId = '$actionId';
-// JS;
-// $this->registerJs($script, \yii\web\View::POS_HEAD);
 
 // Assuming $model is an instance of your model class
 if ($model->isNewRecord) {
     $model->mulai = date("Y-m-d 10:00:00");
     $model->selesai = date("Y-m-d 12:00:00");
 }
-
-// Registering flatpickr CSS and JS files
-// $this->registerCssFile('https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css', ['position' => View::POS_END]);
-// $this->registerJsFile('https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.9/flatpickr.min.js', ['position' => View::POS_END]);
-// $this->registerJsFile('https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js', ['position' => View::POS_END]);
-
-// Registering your custom JS and CSS files
-// $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-mobildinas-form.js', ['position' => View::POS_END, 'depends' => [\yii\web\JqueryAsset::class]]);
 
 ?>
 <div class="container-fluid" data-aos="fade-up">

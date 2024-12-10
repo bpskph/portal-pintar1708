@@ -8,24 +8,16 @@ use app\models\SuratrepoeksSearch;
 use app\models\Suratsubkode;
 use DateTime;
 use Yii;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Dompdf\DOMPDF; //untuk di local
 //use Dompdf\Dompdf; //untuk di webapps
 use Dompdf\Options;
-use yii\db\Expression;
 use yii\helpers\Html;
 use yii\web\UploadedFile;
 
-/**
- * SuratrepoeksController implements the CRUD actions for Suratrepoeks model.
- */
 class SuratrepoeksController extends BaseController
 {
-    /**
-     * @inheritDoc
-     */
     public function behaviors()
     {
         return array_merge(
@@ -58,13 +50,17 @@ class SuratrepoeksController extends BaseController
                                 'update',
                                 'delete',
                                 'getnomorsurat',
+                                'cetaksurat',
                                 'view',
                                 'list',
                                 'setujui',
+                                'gettemplate',
                                 'lihatscan',
                                 'uploadscan',
                                 'uploadword',
                                 'komentar',
+                                'gettemplatelampiran',
+                                'cetaklampiran'
                             ], // add all actions to take guest to login page
                             'allow' => true,
                             'roles' => ['@'],
@@ -271,6 +267,7 @@ class SuratrepoeksController extends BaseController
                 $model->isi_lampiran = null;
                 $model->isi_lampiran_orientation = 0;
             }
+            date_default_timezone_set('Asia/Jakarta');
             $model->timestamp_suratrepoeks_lastupdate = date('Y-m-d H:i:s');
             $model->approval = 0;
             if ($model->save()) {
@@ -278,7 +275,11 @@ class SuratrepoeksController extends BaseController
                 return $this->redirect(['view', 'id' => $model->id_suratrepoeks]);
             }
         }
-
+        // if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+        //     // die($_POST['Suratrepoeks']['isi_suratrepoeks']);
+        //     Yii::$app->session->setFlash('success', "Surat berhasil dimutakhirkan. Terima kasih.");
+        //     return $this->redirect(['view', 'id' => $model->id_suratrepoeks]);
+        // }
         return $this->render('update', [
             'model' => $model,
             'dataagenda' => $dataagenda,
@@ -288,7 +289,7 @@ class SuratrepoeksController extends BaseController
     }
     public function actionDelete($id)
     {
-        $model = $this->findModel($id);
+        date_default_timezone_set('Asia/Jakarta');
         $affected_rows = Suratrepoeks::updateAll(['deleted' => 1, 'timestamp_suratrepoeks_lastupdate' => date('Y-m-d H:i:s')], 'id_suratrepoeks = "' . $id . '"');
         if ($affected_rows == 0) {
             Yii::$app->session->setFlash('warning', "Gagal. Mohon hubungi Admin.");
@@ -310,6 +311,7 @@ class SuratrepoeksController extends BaseController
         }
 
         $approver = \app\models\Pengguna::findOne($model->approver);
+        date_default_timezone_set('Asia/Jakarta');
         $affected_rows = Suratrepoeks::updateAll(['approval' => 1, 'timestamp_suratrepoeks_lastupdate' => date('Y-m-d H:i:s')], 'id_suratrepoeks = "' . $id . '"');
         if ($affected_rows == 0) {
             Yii::$app->session->setFlash('warning', "Gagal. Mohon hubungi Admin.");
@@ -331,7 +333,7 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
             $sekretaris = \app\models\Pengguna::findOne('sekbps17');
             $isi_notif_wa_sek = '*Portal Pintar 2.0 - WhatsApp Notification Blast*
 
-            Ykh. Sekretaris BPS Kabupaten Bengkulu Selatan, Surat dari ' . $pengguna->nama . ' dengan  Nomor *' . $model->nomor_suratrepoeks  . '* sudah disetujui oleh *' . $approver->nama . '*, mohon meng-upload PDF surat yang telah ditandatangani ke Sistem Portal Pintar 2.0 di https://webapps.bps.go.id/bengkulu/portalpintar/. Terima kasih.
+            Ykh. Sekretaris BPS Provinsi Bengkulu, Surat dari ' . $pengguna->nama . ' dengan  Nomor *' . $model->nomor_suratrepoeks  . '* sudah disetujui oleh *' . $approver->nama . '*, mohon meng-upload PDF surat yang telah ditandatangani ke Sistem Portal Pintar 2.0 di https://webapps.bps.go.id/bengkulu/portalpintar/. Terima kasih.
             
             _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
             $response2 = AgendaController::wa_engine($sekretaris->nomor_hp, $isi_notif_wa_sek);
@@ -387,7 +389,7 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
         }
         $suratsubkode = Suratsubkode::findOne(['id_suratsubkode' => $id]);
         if (count($jadwal) < 1) {
-            return $kode . '-' . '001' . '/17010/' . $suratsubkode->fk_suratkode . '.' . $suratsubkode->kode_suratsubkode . '/' . (($tahun == 2023) ? ($bulan . '/' . $tahun) : $tahun);
+            return $kode . '-' . '001' . '/17000/' . $suratsubkode->fk_suratkode . '.' . $suratsubkode->kode_suratsubkode . '/' . (($tahun == 2023) ? ($bulan . '/' . $tahun) : $tahun);
         } else {
             $suratajuan = strtotime($tanggal); //tanggal pada form
             $suratterakhir = strtotime($sortedJadwal->tanggal_suratrepoeks); //tanggal surat dengan ID terakhir
@@ -403,7 +405,7 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
                     $nosurat = '0' . $nosurat;
                 elseif (strlen($nosurat) == 1)
                     $nosurat = '00' . $nosurat;
-                return $kode . '-' . $nosurat . '/17010/' . $suratsubkode->fk_suratkode . '.' . $suratsubkode->kode_suratsubkode . '/' . (($tahun == 2023) ? ($bulan . '/' . $tahun) : $tahun);
+                return $kode . '-' . $nosurat . '/17000/' . $suratsubkode->fk_suratkode . '.' . $suratsubkode->kode_suratsubkode . '/' . (($tahun == 2023) ? ($bulan . '/' . $tahun) : $tahun);
             } else { //tanggal yang diajukan sebelum tanggal dengan ID terakhir
                 $jadwalsisip = Suratrepoeks::find()->where(['<=', 'tanggal_suratrepoeks', $tanggal])->andWhere(['deleted' => 0])->andWhere(['YEAR(tanggal_suratrepoeks)' => $tahun])->all();
                 if (count($jadwalsisip) < 1)
@@ -477,9 +479,9 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
                             ->one();
                     }
                     // Code execution continues after the loop
-                    return $kode . '-' . $newChecksuratsisip . '/17010/' . $suratsubkode->fk_suratkode . '.' . $suratsubkode->kode_suratsubkode . '/' . (($tahun == 2023) ? ($bulan . '/' . $tahun) : $tahun);
+                    return $kode . '-' . $newChecksuratsisip . '/17000/' . $suratsubkode->fk_suratkode . '.' . $suratsubkode->kode_suratsubkode . '/' . (($tahun == 2023) ? ($bulan . '/' . $tahun) : $tahun);
                 } else {
-                    return $kode . '-' . $nosurat . 'A' . '/17010/' . $suratsubkode->fk_suratkode . '.' . $suratsubkode->kode_suratsubkode . '/' . (($tahun == 2023) ? ($bulan . '/' . $tahun) : $tahun);
+                    return $kode . '-' . $nosurat . 'A' . '/17000/' . $suratsubkode->fk_suratkode . '.' . $suratsubkode->kode_suratsubkode . '/' . (($tahun == 2023) ? ($bulan . '/' . $tahun) : $tahun);
                 }
             }
         }
@@ -522,6 +524,430 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
             $result = $result * $base + $charValue;
         }
         return $result;
+    }
+    public function actionCetaksurat($id)
+    {
+        $model = $this->findModel($id);
+        if (Yii::$app->user->identity->username != $model['owner'] && Yii::$app->user->identity->username != $model['approver'] && !Yii::$app->user->identity->issekretaris) {
+            Yii::$app->session->setFlash('warning', "Surat eksternal hanya dapat dilihat oleh Sekretaris dan Pengguna yang menginput atau menyetujui. Terima kasih.");
+            return $this->redirect(['index', 'owner' => '', 'year' => '']);
+        }
+        // die($model);
+        include_once('_librarycetaksurat.php');
+        $fileName = Yii::$app->request->hostInfo . Yii::$app->request->baseUrl . Yii::getAlias("@images/bps.png");
+        $data = LaporanController::curl_get_file_contents($fileName);
+        $base64 = 'data:image/png;base64,' . base64_encode($data);
+        $waktutampil = '';
+        $formatter = Yii::$app->formatter;
+        $formatter->locale = 'id-ID'; // set the locale to Indonesian
+        $timezone = new \DateTimeZone('Asia/Jakarta'); // create a timezone object for WIB
+        $waktutampil = new \DateTime($model->tanggal_suratrepoeks, new \DateTimeZone('UTC')); // create a datetime object for waktumulai with UTC timezone
+        $waktutampil->setTimeZone($timezone); // set the timezone to WIB
+        $waktutampil = $formatter->asDatetime($waktutampil, 'd MMMM Y'); // format the waktumulai datetime value
+        // Ambil daftar KEPADA
+        $names = explode(', ', $model->penerima_suratrepoeks);
+        $listItems = '';
+        foreach ($names as $key => $name) {
+            $listItems .= '<li>' .  ' ' . $name . '</li>';
+        }
+        if (count($names) <= 1)
+            $autofillString = $names[0] . '<br/>';
+        else
+            $autofillString = '<ol style="margin-top: 0px">' . $listItems . '</ol>';
+        // Ambil daftar TEMBUSAN
+        if ($model->tembusan != null) {
+            $names = explode(', ', $model->tembusan);
+            $listItems = '';
+            foreach ($names as $key => $name) {
+                $listItems .= '<li>' .  ' ' . $name . '</li>';
+            }
+            $autofillString2 = '<ol>' . $listItems . '</ol>';
+        } else {
+            $autofillString2 = '';
+        }
+        $kop = '';
+        $jenis = $model->jenis;
+        switch ($jenis) {
+            case 0: // biasa
+                $kop = '
+                    <table width="500" border="0" bordercolor="33FFFF" align="center" cellpadding="3" cellspacing="00" style="margin-top: -50px;">
+                        <tr>
+                            <td height="40" colspan="0" width="10" align="left"><img src="data:image/png;base64,' . Yii::$app->params['imagebase64'] . '" height="60" width="82" /> 
+                            </td>
+                            <td height="40" vertical-align="middle"><h4 style="color: #007bff; margin-left: 6px;" class="tulisanbps"><i>BADAN PUSAT STATISTIK<br/>PROVINSI BENGKULU</h4></i></td>
+                            <td height="40" colspan="0" align="right"><img src="data:image/png;base64,' . Yii::$app->params['imagebase64_st2023'] . '" height="70" width="170" />
+                            </td>
+                        </tr>
+                    </table>
+                    <table width="500" border="0" bordercolor="33FFFF" align="center" cellpadding="3" cellspacing="00" >
+                        <p style="text-align: right; margin-top: -10px; margin-right: 2px">Bengkulu, ' . $waktutampil . '</p>
+                        <div class="row">
+                            <div class="col-sm-12 d-flex">
+                                <div class="table-responsive">
+                                    <table class="table table-sm align-self-end">
+                                        <tbody valign="top">
+                                            <tr>
+                                                <td width="75" style="padding: 0px;">Nomor </td>
+                                                <td width="8" style="padding: 0px;">: </td>
+                                                <td style="padding: 0px;">' . $model->nomor_suratrepoeks . '</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 0px;">Sifat </td>
+                                                <td style="padding: 0px;">: </td>
+                                                <td style="padding: 0px;">Biasa</td>
+                                            </tr>                            
+                                            <tr>
+                                                <td style="padding: 0px;">Lampiran </td>
+                                                <td style="padding: 0px;">: </td>
+                                                <td style="padding: 0px;">' . $model->lampiran . '</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 0px;">Hal </td>
+                                                <td style="padding: 0px;">: </td>
+                                                <td style="padding: 0px;">' . $model->perihal_suratrepoeks . '</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        </tr>
+                    </table>
+                    <table width="500" border="0" bordercolor="33FFFF" align="center" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <span style="font-size: 15px">
+                            <br/>
+                            Yang Terhormat : <br/>
+                            ' . $autofillString . '                        
+                            <span style="margin-top: -10px">di-</span>                       
+                            <p style="text-indent:.5in; margin-top: -10px">Tempat</p>
+                            <br/>
+                            </span>
+                        </tr>
+                    </table>
+                    ';
+                $kop2 =
+                    '
+                    <table width="500" border="0" bordercolor="33FFFF" align="center" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td width="300"></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <center>                                  
+                                    ' . (empty($model->ttd_by) ? '-' : $model->ttdbye->jabatan) . '
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <b>' . (empty($model->ttd_by) ? '-' : $model->ttdbye->nama) . '</b>
+                                <center>
+                            </td>
+                        </tr>
+                    </table>                    
+                    ';
+                break;
+            case 1: // surat perintah lembur
+                $kop = '
+                    <table width="500" border="0" bordercolor="33FFFF" align="center" cellpadding="3" cellspacing="00" style="margin-top: -50px;">
+                        <tr>
+                            <td height="40" colspan="0" width="10" align="left"><img src="data:image/png;base64,' . Yii::$app->params['imagebase64'] . '" height="60" width="82" /> 
+                            </td>
+                            <td height="40" vertical-align="middle"><h4 style="margin-left: 6px" class="tulisanbps"><i>BADAN PUSAT STATISTIK<br/>PROVINSI BENGKULU</h4></i></td>
+                            <td height="40" colspan="0" align="right"><br>
+                            </td>
+                        </tr>
+                    </table>
+                    <table width="500" border="0" bordercolor="33FFFF" align="center" cellpadding="3" cellspacing="00">                    
+                        <tr style="">
+                            <h4 style="text-align: center; text-decoration: underline">SURAT PERINTAH LEMBUR</h4> 
+                        </tr>
+                        <tr style="">
+                            <p style="text-align: center; margin-top:-10px">Nomor : ' . $model->nomor_suratrepoeks . '</p> 
+                        </tr>
+                    </table>
+                    <br/>
+                ';
+                $kop2 =
+                    '
+                    <table width="500" border="0" bordercolor="33FFFF" align="center" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td width="300"></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <center>
+                                    Bengkulu, ' . $waktutampil . '<br/>                                    
+                                    ' . (empty($model->ttd_by) ? '-' : $model->ttdbye->jabatan) . '
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <b>' . (empty($model->ttd_by) ? '-' : $model->ttdbye->nama) . '</b>
+                                <center>
+                            </td>
+                        </tr>
+                    </table>
+                    ';
+                break;
+            case 2: //keterangan
+                $kop = '
+                    <table width="500" border="0" bordercolor="33FFFF" align="center" cellpadding="3" cellspacing="00" style="margin-top: -50px;">
+                        <tr>
+                            <td height="40" colspan="0" width="10" align="left"><img src="data:image/png;base64,' . Yii::$app->params['imagebase64'] . '" height="60" width="82" /> 
+                            </td>
+                            <td height="40" vertical-align="middle"><h4 style="margin-left: 6px" class="tulisanbps"><i>BADAN PUSAT STATISTIK<br/>PROVINSI BENGKULU</h4></i></td>
+                            <td height="40" colspan="0" align="right"><br>
+                            </td>
+                        </tr>
+                    </table>
+                    <table width="500" border="0" bordercolor="33FFFF" align="center" cellpadding="3" cellspacing="00">                    
+                        <tr style="">
+                            <h4 style="text-align: center; text-decoration: underline">SURAT KETERANGAN</h4> 
+                        </tr>
+                        <tr style="">
+                            <p style="text-align: center; margin-top:-10px">Nomor : ' . $model->nomor_suratrepoeks . '</p> 
+                        </tr>
+                    </table>
+                    <br/>
+                ';
+                $kop2 =
+                    '
+                    <table width="500" border="0" bordercolor="33FFFF" align="center" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td width="300"></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <center>
+                                    Bengkulu, ' . $waktutampil . '<br/>                                    
+                                    ' . (empty($model->ttd_by) ? '-' : $model->ttdbye->jabatan) . '
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <b>' . (empty($model->ttd_by) ? '-' : $model->ttdbye->nama) . '</b>
+                                <center>
+                            </td>
+                        </tr>
+                    </table>
+                    ';
+                break;
+            default:
+                $kop = '';
+        }
+        $html =
+            '<!DOCTYPE html>
+                <html>
+                <head>
+                    ' . $style . $kop . '
+                </head>
+                <body>                   
+                    <table width="500" border="0" bordercolor="33FFFF" align="center" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <span  style="text-align: justify">' . $model->isi_suratrepoeks . '</span>
+                        </tr>
+                    </table>
+                    <br/>
+                    <br/>
+                    ' . $kop2 . '
+                    <br/>
+                    ' . ($model->tembusan != null ? '<p style="margin-bottom: 0px">Tembusan: </p>' . $autofillString2 : '') . '
+                </body>
+                <foot style="font-size:10px">
+                    <div class="footer">
+                        <center>Jalan Adam Malik Km.8 Bengkulu, 38225, Telepon (0736) 349117-118, Kepala (0736) 349116
+                            <br>Fax. (0736) 349115, E-mail: bps1700@bps.go.id
+                        </center>
+                        <i style="font-size: 8px;">
+                            Generated in Portal Pintar
+                        </i>
+                    </div>
+                </foot>
+                </html>';
+        $options = new Options();
+        $options->set('defaultFont', 'Courier');
+        $options->set('isRemoteEnabled', TRUE);
+        $options->set('debugKeepTemp', TRUE);
+        $options->set('isHtml5ParserEnabled', TRUE);
+        $dompdf = new DOMPDF($options);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        //$dompdf->stream('laporan_'.$nama.'.pdf');
+        // $canvas = $dompdf->getCanvas();
+        //require_once("dompdf/include/font_metrics.cls.php");
+        // $font = Font_Metrics::get_font("Times new roman", "");
+        // $canvas->page_text(16, 800, "Page: {PAGE_NUM} of {PAGE_COUNT}", $font, 8, array(0, 0, 0));
+        ob_end_clean();
+        $dompdf->stream($model->perihal_suratrepoeks . ".pdf", array("Attachment" => 0));
+        // $output = $dompdf->output();
+        // file_put_contents("report.pdf", $output);
+    }
+    public function actionGettemplate($id, $action, $surat)
+    {
+        if ($action == 'create') {
+            $template = '';
+            switch ($id) {
+                case 0: // surat biasa
+                    $template = '
+                    <p style="text-align: justify; text-indent: 0.5in">
+                        Berdasarkan Peraturan Menteri Keuangan nomor 246/PMK.06/2014 tentang Tata Cara Pelaksanaan Pengunaan Barang Milik Negara (BMN) sebagaimana telah diubah dengan Peraturan Menteri Keuangan nomor 76/PMK.06/2019 bahwa Usulan Penetapan Status Penggunaan (PSP) &nbsp;BMN paling lama 6 (enam) bulan setelah asset diterima/diperoleh.
+                    </p>
+                    <p style="text-align: justify; text-indent: 0.5in">
+                    Selanjutnya untuk mengimplementasikan peraturan tersebut, saudara diminta untuk melengkapi usulan PSP sesuai dengan petunjuk pada link: <a href="http://s.bps.go.id/SimpelPSP">http://s.bps.go.id/SimpelPSP</a>. Usulan PSP Semester I Tahun 2023 Ke BPS Pusat akan dilakukan secara kolektif pada minggu I Bulan Juni 2023. Oleh karena itu, berkas Usulan PSP sudah dapat dikirimkan ke BPS Provinsi selambat-lambatnya 26 Mei 2022 ke email &nbsp;<a href="mailto:tu1700@bps.go.id">tu1700@bps.go.id</a>&nbsp; dan ditembuskan (cc) <a href="mailto:reyronald@bps.go.id">reyronald@bps.go.id</a> untuk dikompilasi dan dikirim secara kolektif. Dokumen asli dan kebenaran isi dokumen menjadi tanggungjawab satker.
+                    </p>
+                    ';
+                    break;
+                case 1: //spk lembur
+                    $template = '
+                    <p>Yang bertandatangan di bawah ini :</p>
+                    <p>Nama&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;: Ir. Win Rizal, ME</p>
+                    <p>Jabatan &nbsp; &nbsp; : Kepala BPS Provinsi Bengkulu</p>
+                    <p style="text-align:center;"><strong>MEMERINTAHKAN :</strong></p>
+                    <br/>
+                    <table style="border-collapse:collapse;border: none;" width="100%">
+                        <tbody valign="top">
+                            <tr>
+                                <td width="5%" style="border:solid windowtext 1.0pt; text-align: center">No </td>
+                                <td width="25%" style="border:solid windowtext 1.0pt;">Nama Pegawai yang Ditugaskan </td>
+                                <td width="20%" style="border:solid windowtext 1.0pt;">Status</td>
+                                <td width="25%" style="border:solid windowtext 1.0pt;">Tugas</td>
+                                <td width="25%" style="border:solid windowtext 1.0pt;">Volume</td>
+                            </tr>
+                            <tr>
+                                <td width="5%" style="border:solid windowtext 1.0pt; text-align: center">1. </td>
+                                <td width="25%" style="border:solid windowtext 1.0pt;">Budi Ansori</td>
+                                <td width="20%" style="border:solid windowtext 1.0pt;">PNS</td>
+                                <td width="25%" style="border:solid windowtext 1.0pt;">
+                                    <ol>
+                                        <li>Mengawasi pembersihan dan pengecetan pondasi tiang bendera</li>
+                                        <li>Mengawasi pembersihan tumpukan barang tidak berguna di gudang</li>
+                                        <li>Mengawasi pemindahan barang BMN rusak ke gudang museum</li>
+                                        <li>Mengawasi dan membersihkan dinding koridor lantai 1</li>
+                                        <li>Mengawasi dan membersihkan toilet kantor (L/P) lantai 1</li>
+                                    </ol>
+                                </td>
+                                <td width="25%" style="border:solid windowtext 1.0pt;">
+                                <ol>
+                                    <li>1 unit tiang bendera</li>
+                                    <li>1 ruangan BMN</li>
+                                    <li>2 kali angkutan barang BMN</li>
+                                    <li>2 unit toilet di lantai 1 (toilet laki-laki dan perempuan)</li>
+                                </ol>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="5%" style="border:solid windowtext 1.0pt; text-align: center">2. </td>
+                                <td width="25%" style="border:solid windowtext 1.0pt;">Eka Putrawansyah </td>
+                                <td width="20%" style="border:solid windowtext 1.0pt;">PNS</td>
+                                <td width="25%" style="border:solid windowtext 1.0pt;">
+                                    <ol>
+                                        <li>Mengawasi pembersihan pondasi tiang bendera</li>
+                                        <li>Mengecet pondasi tiang bendera</li>
+                                        <li>Membersihkan tumpukan barang tidak berguna di gudang</li>
+                                        <li>Mengawasi pemindahan barang BMN rusak ke gudang museum</li>
+                                    </ol>
+                                </td>
+                                <td width="25%" style="border:solid windowtext 1.0pt;">
+                                <ol>
+                                    <li>1 unit tiang bendera</li>
+                                    <li>1 ruangan BMN</li>
+                                    <li>2 kali angkutan barang BMN</li>                                    
+                                </ol>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="5%" style="border:solid windowtext 1.0pt; text-align: center">3. </td>
+                                <td width="25%" style="border:solid windowtext 1.0pt;">Saharudin</td>
+                                <td width="20%" style="border:solid windowtext 1.0pt;">PNS</td>
+                                <td width="25%" style="border:solid windowtext 1.0pt;">
+                                    <ol>
+                                        <li>Membersihkan dinding koridor lantai 1 untuk persiapan plamir (3m2)</li>
+                                        <li>Memasang plamir dinding koridor lantai 1 (3m2)</li>
+                                        <li>Membersihkan toilet kantor (L/P) lantai 1</li>
+                                    </ol>
+                                </td>
+                                <td width="25%" style="border:solid windowtext 1.0pt;">
+                                <ol>
+                                    <li>2 unit toilet di lantai 1 (toilet laki-laki dan perempuan)</li>
+                                    <li>Dinding koridor lantai 1 seluas 6m<sup>2</sup></li>                                  
+                                </ol>
+                                </td>
+                            </tr>    
+                        </tbody>
+                    </table>
+                    <br/>
+                    <table class="table table-sm align-self-end" width="100%">
+                        <tbody valign="top">
+                            <tr>
+                                <td width="75" style="padding: 0px;">Untuk </td>
+                                <td width="8" style="padding: 0px;">: </td>
+                                <td style="padding: 0px; text-align: justify">
+                                Melaksanakan lembur Mempersiapkan kelengkapan berkas dan hal lainnya untuk kegiatan Pengambilan Sumpah dan Pelantikan Pejabat Pengawas serta Pejabat Fungsional yang dilaksanakan pada Tanggal 7-8 Januari 2023 hari Sabtu dan Minggu.
+                                </td>
+                            </tr>       
+                        </tbody>
+                    </table>
+                    <p style="text-align: justify; text-indent: 0.5in">
+                    Demikian surat perintah lembur ini dibuat, untuk dipergunakan sebagaimana mestinya dan dilaksanakan dengan penuh tanggung jawab.
+                    </p>
+                    ';
+                    break;
+                case 2: // surat keterangan
+                    $template = '
+                    <p>Saya yang bertanda tangan di bawah ini,</span></p>
+                    <br/>
+                    <p>Nama&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;:&nbsp; &nbsp;&nbsp;Ir. Win Rizal, M.E.</p>
+                    <p>NIP&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:&nbsp; &nbsp;&nbsp;196608251988021001</p>
+                    <p>Jabatan&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:&nbsp; &nbsp;&nbsp;Kepala BPS Provinsi Bengkulu selaku Kuasa Pengguna Barang</p>
+                    <p>
+                    dengan ini menerangkan bahwa di BPS Provinsi Bengkulu terdapat Barang Milik Negara (BMN) yang diaktifkan kembali penggunaannya. Dengan rincian sebagai berikut:
+                    </p>
+                    <br/>
+                    <table style="border-collapse:collapse;border: none;" width="100%">
+                        <tbody valign="top">
+                            <tr>
+                                <td width="5%" style="border:solid windowtext 1.0pt; text-align: center">No. </td>
+                                <td width="15%" style="border:solid windowtext 1.0pt;">Kode Barang</td>
+                                <td width="10%" style="border:solid windowtext 1.0pt;">NUP</td>
+                                <td width="10%" style="border:solid windowtext 1.0pt;">Nama Barang</td>
+                                <td width="10%" style="border:solid windowtext 1.0pt;">Merk/Tipe</td>
+                                <td width="10%" style="border:solid windowtext 1.0pt;">Nilai Perolehan (Rp)</td>
+                            </tr>
+                            <tr>
+                                <td width="5%" style="border:solid windowtext 1.0pt; text-align: center">1. </td>
+                                <td width="15%" style="border:solid windowtext 1.0pt;">3.06.02.01.010</td>
+                                <td width="10%" style="border:solid windowtext 1.0pt;">1</td>
+                                <td width="10%" style="border:solid windowtext 1.0pt;">Facsimile</td>
+                                <td width="10%" style="border:solid windowtext 1.0pt;">Panasonic</td>
+                                <td width="10%" style="border:solid windowtext 1.0pt;">926.000</td>
+                            </tr>
+                            <tr>
+                                <td width="5%" style="border:solid windowtext 1.0pt; text-align: center">2. </td>
+                                <td width="15%" style="border:solid windowtext 1.0pt;">6.01.01.02.999</td>
+                                <td width="10%" style="border:solid windowtext 1.0pt;">5.645</td>
+                                <td width="10%" style="border:solid windowtext 1.0pt;">Serial Lainnya</td>
+                                <td width="10%" style="border:solid windowtext 1.0pt;">Statistik Daerah Kota Bengkulu 2013</td>
+                                <td width="10%" style="border:solid windowtext 1.0pt;">178.200.000</td>
+                            </tr>        
+                        </tbody>
+                    </table>
+                    <p style="text-align: justify">
+                    Adapun koreksi ini dilakukan setelah Tim Kerja BMN melakukan evaluasi terhadap kondisi BMN yang ada di Laporan BMN dengan kondisi sebenarnya.
+                    </p>
+                    <p style="text-align: justify; text-indent: 0.5in">
+                    Demikian surat keterangan ini dibuat dengan sebenarnya untuk dipergunakan sebagaimana mestinya.
+                    </p>
+                    ';
+                default:
+                    $template = $template;
+            }
+            return $template;
+        } elseif ($action = 'update') {
+            $isisurat = Suratrepoeks::findOne(['id_suratrepoeks' => $surat]);
+            return $isisurat->isi_suratrepoeks;
+        }
     }
     public function actionLihatscan($id)
     {
@@ -571,13 +997,13 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
 
                     $isi_notif_wa = '*Portal Pintar 2.0 - WhatsApp Notification Blast*
 
-Bapak/Ibu ' . $pengguna->nama . ', Berkas Surat Anda Nomor *' . $model->nomor_suratrepoeks  . '* sudah diupload oleh *Sekretaris BPS Kabupaten Bengkulu Selatan*, dan dapat diunduh di Sistem Portal Pintar 2.0 di https://webapps.bps.go.id/bengkulu/portalpintar/. Terima kasih.
+Bapak/Ibu ' . $pengguna->nama . ', Berkas Surat Anda Nomor *' . $model->nomor_suratrepoeks  . '* sudah diupload oleh *Sekretaris BPS Provinsi Bengkulu*, dan dapat diunduh di Sistem Portal Pintar 2.0 di https://webapps.bps.go.id/bengkulu/portalpintar/. Terima kasih.
 
 _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
 
                     $isi_notif_wa_approver = '*Portal Pintar 2.0 - WhatsApp Notification Blast*
 
-Bapak/Ibu ' . $approver->nama . ', Berkas Surat Nomor *' . $model->nomor_suratrepoeks  . '* dari ' . $pengguna->nama . ' sudah diupload oleh *Sekretaris BPS Kabupaten Bengkulu Selatan*, dan dapat diunduh di Sistem Portal Pintar 2.0 di https://webapps.bps.go.id/bengkulu/portalpintar/. Terima kasih.
+Bapak/Ibu ' . $approver->nama . ', Berkas Surat Nomor *' . $model->nomor_suratrepoeks  . '* dari ' . $pengguna->nama . ' sudah diupload oleh *Sekretaris BPS Provinsi Bengkulu*, dan dapat diunduh di Sistem Portal Pintar 2.0 di https://webapps.bps.go.id/bengkulu/portalpintar/. Terima kasih.
 
 _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
 
@@ -632,6 +1058,7 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
             return $this->redirect(['index', 'owner' => '', 'year' => '']);
         }
         if (Yii::$app->request->isPost) {
+            date_default_timezone_set('Asia/Jakarta');
             $model->timestamp_suratrepoeks_lastupdate = date('Y-m-d H:i:s');
             $model->approval = 0;
             $model->jumlah_revisi = $model->jumlah_revisi + 1;
@@ -668,6 +1095,10 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
             Yii::$app->session->setFlash('warning', "Surat ini bersifat rahasia atau diatur invisibility-nya dan hanya dapat dilihat oleh yang menginput dan/atau Sekretaris. Terima kasih.");
             return $this->redirect(['index', 'owner' => '', 'year' => '']);
         }
+        if ($model->deleted == 1) {
+            Yii::$app->session->setFlash('warning', "Surat ini sudah dihapus.");
+            return $this->redirect(['index', 'owner' => '', 'year' => '']);
+        }
         if (isset($model->fk_agenda)) {
             $header = LaporanController::findHeader($model->fk_agenda);
             $waktutampil = LaporanController::findWaktutampil($model->fk_agenda);
@@ -690,19 +1121,331 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
         foreach ($names as $key => $name) {
             $listItems .= '<li>' .  ' ' . $name . '</li>';
         }
-
+        if (count($names) <= 1)
+            $autofillString = $names[0] . '<br/>';
+        else
+            $autofillString = '<ol style="margin-top: 0px">' . $listItems . '</ol>';
+        // Ambil daftar TEMBUSAN
+        if ($model->tembusan != null) {
+            $names = explode(', ', $model->tembusan);
+            $listItems = '';
+            foreach ($names as $key => $name) {
+                $listItems .= '<li>' .  ' ' . $name . '</li>';
+            }
+            $autofillString2 = '<ol>' . $listItems . '</ol>';
+        } else {
+            $autofillString2 = '';
+        }
+        $kop = '';
+        $jenis = $model->jenis;
+        switch ($jenis) {
+            case 0: // biasa
+                $kop = '
+                    <table width="100%" border="0" bordercolor="33FFFF" align="center" cellpadding="3" cellspacing="00" style="margin-top: -30px;">
+                        <tr>
+                            <td height="40" colspan="0" width="10" align="left"><img src="data:image/png;base64,' . Yii::$app->params['imagebase64'] . '" height="60" width="82" /> 
+                            </td>
+                            <td height="40" vertical-align="middle"><h4 style="color: #007bff; margin-left: 6px; font-family: Tahoma, sans-serif !important;font-size: 18.7px; font-weight: bold;"><i>BADAN PUSAT STATISTIK<br/>PROVINSI BENGKULU</h4></i></td>
+                            <td height="40" colspan="0" align="right"><img src="data:image/png;base64,' . Yii::$app->params['imagebase64_st2023'] . '" height="70" width="170" />
+                            </td>
+                        </tr>
+                    </table>
+                    <table width="100%" border="0" bordercolor="33FFFF" align="center" cellpadding="3" cellspacing="00" >
+                        <p style="text-align: right;">Bengkulu, ' . $waktutampil . '</p>
+                        <br/>  
+                                    <table class="table table-sm align-self-end">
+                                        <tbody valign="top">
+                                            <tr>
+                                                <td width="75" style="padding: 0px;">Nomor </td>
+                                                <td width="8" style="padding: 0px;">: </td>
+                                                <td style="padding: 0px;">' . $model->nomor_suratrepoeks . '</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 0px;">Sifat </td>
+                                                <td style="padding: 0px;">: </td>
+                                                <td style="padding: 0px;">Biasa</td>
+                                            </tr>                            
+                                            <tr>
+                                                <td style="padding: 0px;">Lampiran </td>
+                                                <td style="padding: 0px;">: </td>
+                                                <td style="padding: 0px;">' . $model->lampiran . '</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 0px;">Hal </td>
+                                                <td style="padding: 0px;">: </td>
+                                                <td style="padding: 0px;">' . $model->perihal_suratrepoeks . '</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>                                
+                        </tr>
+                    </table>
+                    <table width="500" border="0" bordercolor="33FFFF" align="center" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <span style="font-size: 15px">
+                            <br/>
+                            <span class="tulisan">Yang Terhormat :<br/>
+                            ' . $autofillString . '</span>                        
+                            <p style="">di- </p>                
+                            <p style="text-indent:.5in;">Tempat</p>
+                            <br/>
+                            </span>
+                        </tr>
+                    </table>
+                    ';
+                $kop2 =
+                    '
+                    <table width="100%" border="0" bordercolor="33FFFF" align="center" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td width="60%"></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <center>                                  
+                                    ' . (empty($model->ttd_by) ? '-' : $model->ttdbye->jabatan) . '
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <b>' . (empty($model->ttd_by) ? '-' : $model->ttdbye->nama) . '</b>
+                                <center>
+                            </td>
+                        </tr>
+                    </table>                    
+                    ';
+                break;
+            case 1: // surat perintah lembur
+                $kop = '
+                    <table width="100%" border="0" bordercolor="33FFFF" align="center" cellpadding="3" cellspacing="00">
+                        <tr>
+                            <td height="40" colspan="0" width="10" align="left"><img src="data:image/png;base64,' . Yii::$app->params['imagebase64'] . '" height="60" width="82" /> 
+                            </td>
+                            <td height="40" vertical-align="middle"><h4 style="margin-left: 6px; font-family: Tahoma, sans-serif !important;font-size: 18.7px; font-weight: bold;"><i>BADAN PUSAT STATISTIK<br/>PROVINSI BENGKULU</h4></i></td>
+                            <td height="40" colspan="0" align="right"><br>
+                            </td>
+                        </tr>
+                    </table>
+                    <table width="100%" border="0" bordercolor="33FFFF" align="center" cellpadding="3" cellspacing="00">                    
+                        <tr style="">
+                            <h4 style="text-align: center; text-decoration: underline">SURAT PERINTAH LEMBUR</h4> 
+                        </tr>
+                        <tr style="">
+                            <p style="text-align: center; margin-top:-10px">Nomor : ' . $model->nomor_suratrepoeks . '</p> 
+                        </tr>
+                    </table>
+                    <br/>
+                ';
+                $kop2 =
+                    '
+                    <table width="100%" border="0" bordercolor="33FFFF" align="center" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td width="60%"></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <center>
+                                    Bengkulu, ' . $waktutampil . '<br/>                                    
+                                    ' . (empty($model->ttd_by) ? '-' : $model->ttdbye->jabatan) . '
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <b>' . (empty($model->ttd_by) ? '-' : $model->ttdbye->nama) . '</b>
+                                <center>
+                            </td>
+                        </tr>
+                    </table>
+                    ';
+                break;
+            case 2: //keterangan
+                $kop = '
+                    <table width="100%" border="0" bordercolor="33FFFF" align="center" cellpadding="3" cellspacing="00" style="margin-top: -50px;">
+                        <tr>
+                            <td height="40" colspan="0" width="10" align="left"><img src="data:image/png;base64,' . Yii::$app->params['imagebase64'] . '" height="60" width="82" /> 
+                            </td>
+                            <td height="40" vertical-align="middle"><h4 style="margin-left: 6px; font-family: Tahoma, sans-serif !important;font-size: 18.7px; font-weight: bold;"><i>BADAN PUSAT STATISTIK<br/>PROVINSI BENGKULU</h4></i></td>
+                            <td height="40" colspan="0" align="right"><br>
+                            </td>
+                        </tr>
+                    </table>
+                    <table width="100%" border="0" bordercolor="33FFFF" align="center" cellpadding="3" cellspacing="00">                    
+                        <tr style="">
+                            <h4 style="text-align: center; text-decoration: underline">SURAT KETERANGAN</h4> 
+                        </tr>
+                        <tr style="">
+                            <p style="text-align: center; margin-top:-10px">Nomor : ' . $model->nomor_suratrepoeks . '</p> 
+                        </tr>
+                    </table>
+                    <br/>
+                ';
+                $kop2 =
+                    '
+                    <table width="100%" border="0" bordercolor="33FFFF" align="center" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td width="50%"></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <center>
+                                    Bengkulu, ' . $waktutampil . '<br/>                                    
+                                    ' . (empty($model->ttd_by) ? '-' : $model->ttdbye->jabatan) . '
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <b>' . (empty($model->ttd_by) ? '-' : $model->ttdbye->nama) . '</b>
+                                <center>
+                            </td>
+                        </tr>
+                    </table>
+                    ';
+                break;
+            default:
+                $kop = '';
+        }
+        $html =
+            '<!DOCTYPE html>
+                <html>                
+                    <head>
+                        ' . $style . $kop . '
+                    </head>
+                    <body>                   
+                        <table width="500" border="0" bordercolor="33FFFF" align="center" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <span  style="text-align: justify">' . $model->isi_suratrepoeks . '</span>
+                            </tr>
+                        </table>
+                        <br/>
+                        <br/>
+                        ' . $kop2 . '
+                        <br/>
+                        ' . ($model->tembusan != null ? '<p style="margin-bottom: 0px">Tembusan: </p>' . $autofillString2 : '') . '                   
+                        <div style="font-size:10px" class="tulisan">                    
+                                <center>Jalan Adam Malik Km.8 Bengkulu, 38225, Telepon (0736) 349117-118, Kepala (0736) 349116
+                                    <br>Fax. (0736) 349115, E-mail: bps1700@bps.go.id
+                                </center>
+                                <i style="font-size: 8px;">
+                                    <center>Generated in Portal Pintar</center>
+                                </i>                   
+                        </div>
+                    </body>                
+                </html>';
         if (Yii::$app->request->isAjax) {
             return $this->renderAjax('view', [
                 'model' => $this->findModel($id),
                 'header' => $header,
                 'waktutampil' => $waktutampil,
+                'html' => $html
             ]);
         } else {
             return $this->render('view', [
                 'model' => $this->findModel($id),
                 'header' => $header,
                 'waktutampil' => $waktutampil,
+                'html' => $html
             ]);
         }
+    }
+    public function actionGettemplatelampiran($id, $action, $surat)
+    {
+        if ($action == 'create' || $action == 'update') {
+            $template = '';
+            if ($id !== '-' && !empty($id))
+                $template = '
+                <table width="100%" border="0">
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td width="40%" colspan="0" style="padding: 0;">
+                            <b>Lampiran Surat:</b>
+                            <br />
+                            Nomor : B-809/17000/KU.010/06/2023
+                            <br />
+                            Tanggal : 31 Mei 2023
+                        </td>
+                    </tr>
+                </table>
+                <br/>
+                <center><b>Ketentuan dan Persyaratan Rekrutmen Petugas Pengolahan ST2023</b></center>
+                <br/>
+                <ol>
+                    <li>Rekrutmen petugas pengolahan dilaksanakan pada bulan Mei s/d Juni 2023 dengan rincian sebagai berikut:<br />
+                        <ol type="a">
+                            <li>Proses pendaftaran petugas pengolahan dilaksanakan tanggal 31 Mei s/d 14 Juni 2023 melalui aplikasi
+                                SOBAT BPS.</li>
+                            <li>Seluruh calon petugas pengolahan ST2023 harus mendaftar terlebih dahulu di aplikasi SOBAT BPS, termasuk
+                                untuk calon petugas pengolahan ST2023 yang baru pertama kali melamar sebagai mitra BPS.</li>
+                            <li>Tim Pelaksana ST2023 BPS RI telah menyediakan aplikasi e-learning untuk melakukan seleksi secara online.
+                                Penjelasan mengenai admin e-learning, pedoman seleksi petugas pengolahan ST2023 menggunakan aplikasi
+                                e-learning, serta rencana jadwal pelaksanaan seleksi secara online dapat dilihat pada Lampiran 2.
+                                Narahubung untuk penggunaan aplikasi e-learning adalah:
+                                <ul>
+                                    <li>Sdri. Ndaru Nuswantari (No HP/WA: 0856 9472 7488) – terkait prosedur rekrutmen</li>
+                                    <li>Sdri. Erika Siregar (No HP/WA: 0812 2590 5757) – terkait e-learning.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </li>
+                    <li>
+                        Petugas pengolahan data terdiri dari:
+                        <ol type="a">
+                            <li>Petugas <i>Receiving-Batching</i></li>
+                            <li>Petugas <i>Editing-Coding</i></li>
+                            <li>Petugas Operator Entri</li>
+                            <li>Pengawas Pengolahan</li>
+                        </ol>
+                    </li>
+                </ol>
+                ';
+            else
+                $template = '';
+            return $template;
+        } elseif ($action = 'hoho') {
+            $isisurat = Suratrepoeks::findOne(['id_suratrepoeks' => $surat]);
+            if (isset($isisurat))
+                return $isisurat->isi_lampiran;
+            else
+                return '';
+        }
+    }
+    public function actionCetaklampiran($id)
+    {
+        $model = $this->findModel($id);
+        if (Yii::$app->user->identity->username != $model['owner'] && Yii::$app->user->identity->username != $model['approver'] && !Yii::$app->user->identity->issekretaris) {
+            Yii::$app->session->setFlash('warning', "Surat eksternal hanya dapat dilihat oleh Sekretaris dan Pengguna yang menginput atau menyetujui. Terima kasih.");
+            return $this->redirect(['index', 'owner' => '', 'year' => '']);
+        }
+        // die($model);
+        include_once('_librarycetaksurat.php');
+        $html =
+            '<!DOCTYPE html>
+                <html>
+                <head>
+                    ' . $style . '
+                </head>
+                <body>  
+                    ' . $model->isi_lampiran . '
+                </body>
+                </html>';
+        $options = new Options();
+        $options->set('defaultFont', 'Courier');
+        $options->set('isRemoteEnabled', TRUE);
+        $options->set('debugKeepTemp', TRUE);
+        $options->set('isHtml5ParserEnabled', TRUE);
+        $dompdf = new DOMPDF($options);
+        $dompdf->loadHtml($html);
+        if ($model->isi_lampiran_orientation == 0)
+            $dompdf->setPaper('A4', 'portrait');
+        else
+            $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+        //$dompdf->stream('laporan_'.$nama.'.pdf');
+        // $canvas = $dompdf->getCanvas();
+        //require_once("dompdf/include/font_metrics.cls.php");
+        // $font = Font_Metrics::get_font("Times new roman", "");
+        // $canvas->page_text(16, 800, "Page: {PAGE_NUM} of {PAGE_COUNT}", $font, 8, array(0, 0, 0));
+        ob_end_clean();
+        $dompdf->stream("Lampiran - " . $model->perihal_suratrepoeks . ".pdf", array("Attachment" => 0));
+        // $output = $dompdf->output();
+        // file_put_contents("report.pdf", $output);
     }
 }

@@ -1,17 +1,14 @@
 <?php
+
 namespace app\models;
+
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Linkmat;
 use Yii;
-/**
- * LinkmatSearch represents the model behind the search form of `app\models\Linkmat`.
- */
+
 class LinkmatSearch extends Linkmat
 {
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -19,21 +16,11 @@ class LinkmatSearch extends Linkmat
             [['judul', 'link', 'keyword', 'owner', 'keterangan', 'timestamp', 'timestamp_lastupdate'], 'safe'],
         ];
     }
-    /**
-     * {@inheritdoc}
-     */
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
-    /**
-     * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     *
-     * @return ActiveDataProvider
-     */
     public function search($params)
     {
         $query = Linkmat::find();
@@ -43,10 +30,12 @@ class LinkmatSearch extends Linkmat
             'query' => $query,
             'sort' => ['defaultOrder' => ['views' => SORT_DESC]]
         ]);
-        // $level = Yii::$app->user->identity->level;
-        if (!Yii::$app->user->isGuest && Yii::$app->user->identity->level != 0) { //cuma admin yang bisa lihat
+        if (Yii::$app->user->isGuest) { //cuma admin yang bisa lihat
+            $dataProvider->query->where('active = 1');
+        } elseif (!Yii::$app->user->isGuest && Yii::$app->user->identity->level != 0) { //cuma admin yang bisa lihat
             $dataProvider->query->where('active = 1 OR (active = 2 AND owner = "' . Yii::$app->user->identity->username . '") OR (active = 0 AND owner = "' . Yii::$app->user->identity->username . '")');
         }
+
         $this->load($params);
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails

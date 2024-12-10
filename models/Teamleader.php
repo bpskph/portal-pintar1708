@@ -1,25 +1,12 @@
 <?php
 namespace app\models;
-use Yii;
-/**
- * This is the model class for table "teamleader".
- *
- * @property int $id_teamleader
- * @property string $nama_teamleader
- * @property int $fk_team
- */
+
 class Teamleader extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName()
     {
         return 'teamleader';
     }
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -28,9 +15,6 @@ class Teamleader extends \yii\db\ActiveRecord
             [['nama_teamleader'], 'string', 'max' => 50],
         ];
     }
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [
@@ -38,5 +22,15 @@ class Teamleader extends \yii\db\ActiveRecord
             'nama_teamleader' => 'Nama Teamleader',
             'fk_team' => 'Fk Team',
         ];
+    }
+
+    public function getTeame()
+    {
+        return $this->hasOne(Team::className(), ['id_team' => 'fk_team']);
+    }
+
+    public function getPenggunae()
+    {
+        return $this->hasOne(Pengguna::className(), ['username' => 'nama_teamleader']);
     }
 }

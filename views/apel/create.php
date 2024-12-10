@@ -1,7 +1,5 @@
 <?php
 use yii\helpers\Html;
-/** @var yii\web\View $this */
-/** @var app\models\Apel $model */
 $this->title = 'Tambah Jadwal Apel/Upacara';
 ?>
 <div class="apel-create">

@@ -1,26 +1,13 @@
 <?php
 namespace app\models;
-use Yii;
-/**
- * This is the model class for table "laporan".
- *
- * @property int $id_laporan
- * @property string $laporan
- * @property string $dokumentasi
- */
+
 class Laporan extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
     public $filepdf;
     public static function tableName()
     {
         return 'laporan';
     }
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -30,9 +17,6 @@ class Laporan extends \yii\db\ActiveRecord
             [['filepdf'], 'file', 'extensions' => 'pdf'],
         ];
     }
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [

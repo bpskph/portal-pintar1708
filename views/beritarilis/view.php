@@ -2,8 +2,6 @@
 use app\models\Pengguna;
 use yii\helpers\Html;
 use kartik\detail\DetailView;
-/** @var yii\web\View $this */
-/** @var app\models\Linkmat $model */
 $this->title = 'Detail Berita Rilis # ' . $model->id_beritarilis;
 \yii\web\YiiAsset::register($this);
 ?>

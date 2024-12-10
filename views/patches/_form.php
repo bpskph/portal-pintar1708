@@ -3,9 +3,6 @@
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
 
-/** @var yii\web\View $this */
-/** @var app\models\Patches $model */
-/** @var yii\widgets\ActiveForm $form */
 ?>
 <div class="container" data-aos="fade-up">
     <div class="card alert <?= ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? 'bg-light' : 'bg-dark') ?>">

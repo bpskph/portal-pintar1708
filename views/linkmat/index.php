@@ -4,12 +4,10 @@ use yii\web\View;
 use kartik\grid\SerialColumn;
 use kartik\grid\ActionColumn;
 use kartik\grid\GridView;
-use yii\bootstrap5\Modal;
 use app\controllers\LinkColumnLinkmat;
 
 $this->title = 'Portal Sharing';
 $baseUrl = Yii::$app->request->baseUrl;
-// $baseUrl = '/bengkulu'. Yii::$app->request->baseUrl; untuk di webapps
 $script = <<< JS
     var baseUrl = '$baseUrl';
 JS;
@@ -100,9 +98,7 @@ $this->registerCssFile(Yii::$app->request->baseUrl . '/library/css/fi-linkapp.cs
                     [
                         'class' => ActionColumn::class,
                         'header' => 'Aksi',
-                        'template' => (Yii::$app->user->isGuest || Yii::$app->user->identity->theme == 0)
-                            ? '{update}{view}{share}{delete}{moderasi}'
-                            : '{update}{view}{share}{delete}{moderasi}',
+                        'template' => '{update}{view}{share}{delete}{moderasi}',
                         'visibleButtons' => [
                             'delete' => function ($model, $key, $index) {
                                 return ((!Yii::$app->user->isGuest && Yii::$app->user->identity->username === $model['owner'] //datanya sendiri

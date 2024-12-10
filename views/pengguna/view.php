@@ -3,8 +3,6 @@
 use yii\helpers\Html;
 use kartik\detail\DetailView;
 
-/** @var yii\web\View $this */
-/** @var app\models\Pengguna $model */
 $this->title = "Detail Pegawai #" . $model->nama;
 \yii\web\YiiAsset::register($this);
 ?>

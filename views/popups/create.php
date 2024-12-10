@@ -2,9 +2,6 @@
 
 use yii\helpers\Html;
 
-/** @var yii\web\View $this */
-/** @var app\models\Popups $model */
-
 $this->title = 'Create Popups';
 $this->params['breadcrumbs'][] = ['label' => 'Popups', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;

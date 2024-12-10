@@ -57,7 +57,7 @@ $surats = Suratrepoeks::find()->select('*')
         <div class="p-2">
             <?php
             $homeUrl = ['agenda/index?owner=&year=' . date("Y") . '&nopage=0'];
-            echo Html::a('<i class="fas fa-home"></i> Beranda Agenda', $homeUrl, ['class' => 'btn btn btn-outline-warning btn-sm']);
+            echo Html::a('<i class="fas fa-home"></i> Agenda Utama', $homeUrl, ['class' => 'btn btn btn-outline-warning btn-sm']);
             ?>
             |
             <?= Html::a('<i class="fas fa-file-archive"></i> Arsip Surat Eskternal', ['suratrepoeks/index?owner=&year='], ['class' => 'btn btn btn-outline-warning btn-sm']) ?>
@@ -161,9 +161,14 @@ $surats = Suratrepoeks::find()->select('*')
                                     return '<center><span title="Biasa" class="badge bg-primary rounded-pill"><i class="fas fa-scroll"></i> Biasa</span></center>';
                                 elseif ($data->sifat == 1)
                                     return '<center><span title="Penting" class="badge bg-success rounded-pill"><i class="fas fa-star"></i> Penting</span></center>';
-                                elseif ($data->sifat == 2)
-                                    return '<center><span title="Rahasia" class="badge bg-danger rounded-pill"><i class="fas fa-key"></i> Rahasia</span></center>';
-                                else
+                                elseif ($data->sifat == 2) {
+                                    if (!Yii::$app->user->isGuest && $data->sifat != 2 || ($data->sifat == 2 && Yii::$app->user->identity->username === $data['owner'])) //datanya sendiri                          
+                                    {
+                                        return $data->invisibility == 0 ? '<center><span title="Rahasia" class="badge bg-danger rounded-pill"><i class="fas fa-key"></i> Rahasia</span></center>' : '~';
+                                    } else {
+                                        return '';
+                                    }
+                                } else
                                     return '';
                             },
                             'header' => 'Sifat',
@@ -172,7 +177,17 @@ $surats = Suratrepoeks::find()->select('*')
                             'vAlign' => 'middle',
                             'hAlign' => 'center'
                         ],
-                        'nomor_suratrepoeks',
+                        [
+                            'attribute' => 'nomor_suratrepoeks',
+                            'value' => function ($model) {
+                                if (!Yii::$app->user->isGuest && $model->sifat != 2 || ($model->sifat == 2 && Yii::$app->user->identity->username === $model['owner'])) //datanya sendiri                          
+                                {
+                                    return $model->invisibility == 0 ? $model->nomor_suratrepoeks : '~';
+                                } else {
+                                    return '';
+                                }
+                            },
+                        ],
                         [
                             'attribute' => 'jenis',
                             'value' => function ($data) {
@@ -207,9 +222,7 @@ $surats = Suratrepoeks::find()->select('*')
                         [
                             'class' => ActionColumn::class,
                             'header' => 'Aksi',
-                            'template' => (Yii::$app->user->isGuest || Yii::$app->user->identity->theme == 0)
-                                ? '{update}{view}{agenda}'
-                                : '{update}{view}{agenda}',
+                            'template' => '{update}{view}{agenda}',
                             'visibleButtons' => [
                                 'update' => function ($model, $key, $index) {
                                     return (!Yii::$app->user->isGuest &&
@@ -272,9 +285,7 @@ $surats = Suratrepoeks::find()->select('*')
                         [
                             'class' => ActionColumn::class,
                             'header' => 'Draft/Word dan Persetujuan',
-                            'template' => (Yii::$app->user->isGuest || Yii::$app->user->identity->theme == 0)
-                                ? '{setujui}{komentar}{uploadword}{lihatword}'
-                                : '{setujui}{komentar}{uploadword}{lihatword}',
+                            'template' => '{setujui}{cetak}{komentar}{uploadword}{lihatword}',
                             'visibleButtons' =>
                             [
                                 'setujui' => function ($model, $key, $index) {
@@ -285,7 +296,13 @@ $surats = Suratrepoeks::find()->select('*')
                                     return ((Yii::$app->user->identity->username === $model['owner'] && $model['komentar'] != null)
                                         || ($model->approval == 0 && Yii::$app->user->identity->username === $model['approver'] && $model->jumlah_revisi < 2)
                                         || Yii::$app->user->identity->issekretaris) ? true : false;
-                                },                                
+                                },
+                                'cetak' => function ($model) {
+                                    return $model->isi_suratrepoeks != null &&
+                                        (Yii::$app->user->identity->username === $model['owner']
+                                            || Yii::$app->user->identity->username === $model['approver']
+                                            || Yii::$app->user->identity->issekretaris) ? true : false;
+                                },
                                 'uploadword' => function ($model) {
                                     return (!Yii::$app->user->isGuest && Yii::$app->user->identity->username === $model['owner'] //datanya sendiri                               
                                     ) ? true : false;
@@ -321,7 +338,10 @@ $surats = Suratrepoeks::find()->select('*')
                                         return Html::a('<i class="fas fa-comment-alt"></i> ',  ['suratrepoeks/komentar/' . $model->id_suratrepoeks], ['title' => 'Beri koreksi untuk surat ini', 'class' => 'modalButton', 'data-pjax' => '0']);
                                     else
                                         return Html::a('<i class="fas fa-comment-alt"></i> ',  ['suratrepoeks/komentar/' . $model->id_suratrepoeks], ['title' => 'Beri koreksi untuk surat ini', 'class' => 'modalButton', 'data-pjax' => '0']);
-                                },                                
+                                },
+                                'cetak' => function ($url, $model, $key) {
+                                    return Html::a('<i class="fas fa-file-pdf"></i> ',  ['suratrepoeks/cetaksurat/' . $model->id_suratrepoeks], ['title' => 'Cetak surat ini', 'target' => '_blank']);
+                                },
                                 'uploadword' => function ($url, $model, $key) {
                                     return Html::a('<i class="fas fa-cloud-upload-alt"></i> ',  ['suratrepoeks/uploadword/' . $model->id_suratrepoeks], ['title' => 'Upload scan surat ini', 'target' => '_blank']);
                                 },
@@ -346,9 +366,7 @@ $surats = Suratrepoeks::find()->select('*')
                         [
                             'class' => ActionColumn::class,
                             'header' => 'Scan Surat',
-                            'template' => (Yii::$app->user->isGuest || Yii::$app->user->identity->theme == 0)
-                                ? '{uploadscan}{lihatscan}'
-                                : '{uploadscan}{lihatscan}',
+                            'template' => '{uploadscan}{lihatscan}',
                             'visibleButtons' => [
                                 'uploadscan' => function ($model) {
                                     return ((Yii::$app->user->identity->username === $model['owner'] || Yii::$app->user->identity->issekretaris) //data sendiri atau sekretaris

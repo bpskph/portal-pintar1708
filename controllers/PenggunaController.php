@@ -4,23 +4,12 @@ use Yii;
 use app\models\Pengguna;
 use app\models\PenggunaSearch;
 use app\models\Projectmember;
-use app\models\ResetPasswordForm;
-use app\models\ResetPasswordProceedForm;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\helpers\Json;
-use yii\web\UploadedFile;
 use Exception;
-/**
- * PenggunaController implements the CRUD actions for Pengguna model.
- */
-// Yii::$app->params['uploadPath'] = Yii::getAlias("@app") . '/suratket';
+
 class PenggunaController extends BaseController
 {
-    /**
-     * {@inheritdoc}
-     */
     public function behaviors()
     {
         return array_merge(
@@ -60,7 +49,6 @@ class PenggunaController extends BaseController
     {
         $searchModel = new PenggunaSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        // $dataProvider->pagination = false;
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -75,8 +63,8 @@ class PenggunaController extends BaseController
         $url_base = 'https://sso.bps.go.id/auth/';
         $url_token = $url_base . 'realms/pegawai-bps/protocol/openid-connect/token';
         $url_api = $url_base . 'admin/realms/pegawai-bps/users';
-        $client_id      = 'xxx';
-        $client_secret  = 'xxx';
+        $client_id      = '11700-portalpintar-g64';
+        $client_secret  = '1de86905-2d74-46f3-b609-3594f2855287';
         $ch = curl_init($url_token);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
         curl_setopt($ch, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
@@ -134,9 +122,9 @@ class PenggunaController extends BaseController
                     $ada = 'YA';
                 else
                     $ada = 'TIDAK';
-                /* ngecek bahwa pengguna ada di BPS Kabupaten Bengkulu Selatan menurut Community */
+                /* ngecek bahwa pengguna ada di BPS Provinsi Bengkulu menurut Community */
                 $lokasi = $json[$key]['attributes']['attribute-kabupaten'][0];
-                if ($lokasi == 'Kab. Bengkulu Selatan')
+                if ($lokasi == 'Prov. Bengkulu')
                     $bengkulu = 'YA';
                 else
                     $bengkulu = 'TIDAK';
@@ -195,6 +183,7 @@ class PenggunaController extends BaseController
         $bengkulu = '';
         $model = $this->findModel($id);
         if ($this->request->isPost && $model->load($this->request->post())) {
+            date_default_timezone_set('Asia/Jakarta');
             $model->tgl_update = date('Y-m-d H:i:s');
             if ($model->save()) {
                 return $this->redirect(['view', 'username' => $model->username]);
@@ -239,6 +228,7 @@ class PenggunaController extends BaseController
             Yii::$app->session->setFlash('warning', "Saudara <b>" . $model->nama . "</b> masih terdaftar di Tim <b>" . $panggilanProjects . "</b>.<br/> Pegawai yang masih terdaftar di satu atau lebih tim belum dapat dihapus dari sistem. Terima kasih.");
             return $this->redirect(['index']);
         }
+        date_default_timezone_set('Asia/Jakarta');
         $affected_rows = Pengguna::updateAll(['level' => 2, 'tgl_update' => date('Y-m-d H:i:s')], 'username = "' . $id . '"');
         if ($affected_rows == 0) {
             Yii::$app->session->setFlash('warning', "Gagal. Mohon hubungi Admin.");
@@ -295,9 +285,9 @@ class PenggunaController extends BaseController
         ]);
     }
     public function actionApproverevokelevel($id)
-    {
-        //$model = $this->findModel($id);
+    {        
         $model = Pengguna::findOne($id);
+        date_default_timezone_set('Asia/Jakarta');
         if ($model->level == 1) {
             $affected_rows = Pengguna::updateAll(['level' => 0, 'tgl_update' => date('Y-m-d H:i:s')], ['username' => $id]);
         } else
@@ -313,6 +303,7 @@ class PenggunaController extends BaseController
     public function actionAktifkanlagi($id)
     {
         $model = $this->findModel($id);
+        date_default_timezone_set('Asia/Jakarta');
         $affected_rows = Pengguna::updateAll(['level' => 1, 'tgl_update' => date('Y-m-d H:i:s')], 'username = "' . $id . '"');
         if ($affected_rows == 0) {
             Yii::$app->session->setFlash('warning', "Gagal. Mohon hubungi Admin.");

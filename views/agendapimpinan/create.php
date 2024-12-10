@@ -1,7 +1,5 @@
 <?php
 use yii\helpers\Html;
-/** @var yii\web\View $this */
-/** @var app\models\Agendapimpinan $model */
 $this->title = 'Tambah Agenda Pimpinan';
 ?>
 <div class="agendapimpinan-create">

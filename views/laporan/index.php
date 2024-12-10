@@ -1,14 +1,9 @@
 <?php
-use app\models\Laporan;
 use yii\helpers\Html;
-use yii\helpers\Url;
 use kartik\grid\SerialColumn;
 use kartik\grid\ActionColumn;
 use kartik\grid\GridView;
 use yii\bootstrap5\Modal;
-/** @var yii\web\View $this */
-/** @var app\models\LaporanSearch $searchModel */
-/** @var yii\data\ActiveDataProvider $dataProvider */
 $this->title = 'Daftar Laporan';
 ?>
 <style>
@@ -24,8 +19,6 @@ $this->title = 'Daftar Laporan';
             <?= Html::a('<i class="fas fa-folder-plus"></i> Tambah Data Baru', ['create'], ['class' => 'btn btn btn-outline-warning btn-sm']) ?>
         </p>
     <?php endif; ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]);
-    ?>
     <div class="card <?= ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? '' : 'bg-dark') ?>">
         <div class="card-body table-responsive p-0">
             <?php
@@ -67,9 +60,7 @@ $this->title = 'Daftar Laporan';
                     [
                         'class' => ActionColumn::class,
                         'header' => 'Aksi',
-                        'template' => (Yii::$app->user->isGuest || Yii::$app->user->identity->theme == 0)
-                            ? '{update}{view}{agenda}'
-                            : '{update}{view}{agenda}',
+                        'template' => '{update}{view}{agenda}',
                         'visibleButtons' => [
                             'update' => function ($model, $key, $index) {
                                 return (!Yii::$app->user->isGuest && Yii::$app->user->identity->username === $model['agendae']['reporter'] //datanya sendiri                               

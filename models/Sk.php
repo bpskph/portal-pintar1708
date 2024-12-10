@@ -2,36 +2,16 @@
 
 namespace app\models;
 
-use Yii;
 use yii\web\UploadedFile;
 
-/**
- * This is the model class for table "sk".
- *
- * @property int $id_sk
- * @property string $nomor_sk
- * @property string $tanggal_sk
- * @property string $tentang_sk
- * @property string|null $nama_dalam_sk
- * @property string $reporter
- * @property int $deleted
- * @property string $timestamp
- * @property string $timestamp_lastupdate
- */
 class Sk extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
     public $filepdf;
     public static function tableName()
     {
         return 'sk';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -45,10 +25,6 @@ class Sk extends \yii\db\ActiveRecord
             [['filepdf'], 'file', 'extensions' => 'pdf'],
         ];
     }
-
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [

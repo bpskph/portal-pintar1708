@@ -37,14 +37,14 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                 <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/site/index" class="nav-link scrollto active"><i class="bx bx-home"></i> <span>Dashboard</span></a></li>
                 <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/agenda/index?owner=&year=<?php echo date("Y") ?>&nopage=0" class="nav-link scrollto"><i class="bx bx-paperclip"></i> <span>Agenda dan Surat-surat</span></a></li>
                 <?php if (!Yii::$app->user->isGuest) { ?>
-                <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/agenda/calendar" class="nav-link scrollto"><i class="bx bx-calendar-event"></i> <span>Kalender Agenda</span></a></li>
+                    <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/agenda/calendar" class="nav-link scrollto"><i class="bx bx-calendar-event"></i> <span>Kalender Agenda</span></a></li>
                 <?php } ?>
                 <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/linkapp/index" class="nav-link scrollto"><i class="bx bx-globe"></i> <span>Portal Aplikasi</span></a></li>
                 <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/linkmat/index" class="nav-link scrollto"><i class="bx bx-book"></i> <span>Portal Sharing</span></a></li>
                 <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/projectmember/index?year=<?php echo date("Y") ?>" class="nav-link scrollto"><i class="bx bx-user-pin"></i> <span>Tim Kerja</span></a></li>
                 <?php if (Yii::$app->user->isGuest) { ?>
                     <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/site/login" class="nav-link scrollto"><i class="bx bx-right-arrow"></i> <span>Login</span></a></li>
-                <?php } ?>                
+                <?php } ?>
             </ul>
         </nav><!-- .nav-menu -->
     </header><!-- End Header -->
@@ -72,8 +72,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         <div class="container">
             <h5 style="font-style: normal" ;>Portal Pusat Informasi Terkini Dalam Layar</h5>
             <div style="font-style: normal" class="credits">
-            &copy; Copyright <strong><span>Tim PTM BPS Provinsi Bengkulu</span></strong>. All Rights Reserved | <span class="text-secondary"> App Version:</span> <?= Yii::$app->params['appVersion']; ?>
-            Coded by <a href="https://khansasafira19.github.io/">nofriani@bps.go.id</a> | <a href="https://wa.me/6285664991937?text=Salam+Senyum,+Developer+Portal+Pintar%0ASaya+ingin+berdiskusi+terkait+Sistem+Portal+Pintar" target="_blank">Hubungi Developer</a>
+                &copy; Copyright <strong><span>Tim PTM BPS Provinsi Bengkulu</span></strong>. All Rights Reserved | <span class="text-secondary"> App Version:</span> <?= Yii::$app->params['appVersion']; ?> | Coded and Maintained by <a href="https://khansasafira19.github.io/" target="_blank">nofriani@bps.go.id</a>
             </div>
         </div>
     </footer><!-- End Footer -->

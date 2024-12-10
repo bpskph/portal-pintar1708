@@ -7,14 +7,8 @@ use yii\data\ActiveDataProvider;
 use app\models\Mobildinas;
 use DateTime;
 
-/**
- * MobildinasSearch represents the model behind the search form of `app\models\Mobildinas`.
- */
 class MobildinasSearch extends Mobildinas
 {
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -22,23 +16,11 @@ class MobildinasSearch extends Mobildinas
             [['mulai', 'selesai', 'keperluan', 'borrower', 'timestamp', 'timestamp_lastupdate'], 'safe'],
         ];
     }
-
-    /**
-     * {@inheritdoc}
-     */
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
-
-    /**
-     * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     *
-     * @return ActiveDataProvider
-     */
     public function search($params)
     {
         $query = Mobildinas::find();

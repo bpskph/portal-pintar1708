@@ -2,18 +2,9 @@
 
 use app\models\Dl;
 use yii\helpers\Html;
-use yii\web\View;
 use yii\bootstrap5\ActiveForm;
 use kartik\select2\Select2;
 use kartik\date\DatePicker;
-
-// Registering flatpickr CSS and JS files
-// $this->registerCssFile('https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css', ['position' => View::POS_END]);
-// $this->registerJsFile('https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.9/flatpickr.min.js', ['position' => View::POS_END]);
-// $this->registerJsFile('https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js', ['position' => View::POS_END]);
-
-// Registering your custom JS and CSS files
-// $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-dl-form.js', ['position' => View::POS_END, 'depends' => [\yii\web\JqueryAsset::class]]);
 
 if ($model->isNewRecord) {
     $model->tanggal_mulai = date("Y-m-d");

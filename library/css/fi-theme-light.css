@@ -219,3 +219,24 @@ section {
 .table-secondary {
     --bs-table-color: #6C757D !important;
 }
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown:hover .dropdown-toggle {
+    background-color: #a34013;
+    color: #fff;
+}
+
+.d-flex {
+    gap: 8px;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}

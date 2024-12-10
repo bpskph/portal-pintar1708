@@ -2,32 +2,13 @@
 
 namespace app\models;
 
-use Yii;
-
-/**
- * This is the model class for table "pengguna".
- *
- * @property string $username
- * @property string $password
- * @property int $nip
- * @property string $nama
- * @property string $tgl_daftar
- * @property int $admin
- * @property int $theme
- */
 class Pengguna extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
     public $password_repeat;
     public static function tableName()
     {
         return 'pengguna';
     }
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -45,9 +26,6 @@ class Pengguna extends \yii\db\ActiveRecord
             ['password_repeat', 'compare', 'compareAttribute' => 'password', 'message' => "Password tidak sesuai"],
         ];
     }
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [

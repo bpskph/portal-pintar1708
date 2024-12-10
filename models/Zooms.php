@@ -4,34 +4,14 @@ namespace app\models;
 
 use Yii;
 
-/**
- * This is the model class for table "zooms".
- *
- * @property int $id_zooms
- * @property int $fk_agenda
- * @property int $jenis_zoom
- * @property int $jenis_surat
- * @property int $fk_surat
- * @property string $proposer
- * @property int $deleted
- * @property string $timestamp
- * @property string $timestamp_lastupdate
- */
 class Zooms extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
     public $waktumulai;
 
     public static function tableName()
     {
         return 'zooms';
     }
-
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -44,9 +24,6 @@ class Zooms extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [
@@ -76,7 +53,7 @@ class Zooms extends \yii\db\ActiveRecord
     }
     public function getSurate()
     {
-        if ($this->jenis_surat == 0) {
+        if ($this->jenis_surat == 0 && $this->fk_surat != '') {
             $fk_surat = str_replace('0-', '', $this->fk_surat);
             $surat = Suratrepo::findOne($fk_surat);
             $surat = $surat->nomor_suratrepo;

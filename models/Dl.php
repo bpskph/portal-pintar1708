@@ -2,36 +2,12 @@
 
 namespace app\models;
 
-use Yii;
-
-/**
- * This is the model class for table "dl".
- *
- * @property int $id_dl
- * @property string $pegawai
- * @property string $tanggal_mulai
- * @property string $tanggal_selesai
- * @property string $fk_tujuan
- * @property string $tugas
- * @property string|null $tim
- * @property string $reporter
- * @property int $deleted
- * @property string $timestamp
- * @property string $timestamp_lastupdate
- */
 class Dl extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName()
     {
         return 'dl';
     }
-
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -44,10 +20,6 @@ class Dl extends \yii\db\ActiveRecord
             [['reporter'], 'string', 'max' => 50],
         ];
     }
-
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [

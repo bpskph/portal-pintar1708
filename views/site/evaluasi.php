@@ -1,7 +1,5 @@
 <?php
 
-use yii\helpers\Html;
-
 $this->title = 'Evaluasi Kinerja dalam Portal Pintar Tahun ' . $year;
 ?>
 <style>

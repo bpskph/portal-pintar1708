@@ -4,18 +4,12 @@ use app\models\Linkapp;
 use app\models\LinkappSearch;
 use Yii;
 use yii\db\Query;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
-/**
- * LinkappController implements the CRUD actions for Linkapp model.
- */
+
 class LinkappController extends BaseController
 {
-    /**
-     * @inheritDoc
-     */
     public function behaviors()
     {
         return array_merge(
@@ -110,6 +104,7 @@ class LinkappController extends BaseController
         Yii::$app->params['uploadPath'] = Yii::getAlias("@app") . '/images/linkapp';
         if ($this->request->isPost && $model->load($this->request->post())) {
             $screenshot = UploadedFile::getInstance($model, 'screenshot');
+            date_default_timezone_set('Asia/Jakarta');
             $model->timestamp_lastupdate = date('Y-m-d H:i:s');
             if ($screenshot) {
                 // The user has uploaded a new file, so update the file attribute
@@ -132,7 +127,7 @@ class LinkappController extends BaseController
     }
     public function actionDelete($id)
     {
-        $model = $this->findModel($id);
+        date_default_timezone_set('Asia/Jakarta');
         $affected_rows = Linkapp::updateAll(['active' => 0, 'timestamp_lastupdate' => date('Y-m-d H:i:s')], 'id_linkapp = "' . $id . '"');
         if ($affected_rows == 0) {
             Yii::$app->session->setFlash('warning', "Gagal. Mohon hubungi Admin.");

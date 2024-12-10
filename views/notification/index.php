@@ -69,32 +69,15 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-notification
                         'format' => 'html',
                         'vAlign' => 'middle'
                     ],
-                    // [
-                    //     'header' => '',
-                    //     'value' => function ($model) {
-                    //         return Url::to([$model->link . '/view', 'id' => $model->link_id]);
-                    //     }
-                    // ],
                     [
                         'class' => ActionColumn::class,
                         'header' => '',
                         'contentOptions' => ['style' => 'text-align: center'],
-                        'template' => (Yii::$app->user->isGuest || Yii::$app->user->identity->theme == 0)
-                            ? '{view}'
-                            : '{view}',
+                        'template' => '{view}',
                         'buttons'  => [
-                            // 'view' => function ($url, $model, $key) {
-                            //     return Html::a('<i class="fas fa-eye"></i> Lihat', [$model->link . '/view', 'id' => $model->link_id], [
-                            //         'title' => 'Lihat rincian notifikasi ini',
-                            //         'class' => 'btn btn-primary btn-sm',
-                            //     ]);
-                            // },
                             'view' => function ($url, $model, $key) {
                                 $viewUrl = Url::to([$model->link . '/view', 'id' => $model->link_id]);//localhost
-                                $markAsReadUrl = Url::to(['notification/mark-as-read', 'id' => $model->id]);//localhost
-
-                                // $viewUrl = Url::to(['../bengkulu/portalpintar/' . $model->link . '/view', 'id' => $model->link_id]);//webapps
-                                // $markAsReadUrl = Url::to(['../bengkulu/portalpintar/notification/mark-as-read', 'id' => $model->id]);//webapps
+                                $markAsReadUrl = Url::to(['notification/mark-as-read-and-view', 'id' => $model->id]);//localhost
 
                                 return Html::a('<i class="fas fa-eye"></i> Lihat', '#', [
                                     'title' => 'Lihat rincian notifikasi ini',

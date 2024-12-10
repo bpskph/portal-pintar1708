@@ -1,26 +1,12 @@
 <?php
 namespace app\models;
-use Yii;
-/**
- * This is the model class for table "project".
- *
- * @property int $id_project
- * @property string $nama_project
- * @property int $fk_team
- * @property string $panggilan_project
- */
+
 class Project extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName()
     {
         return 'project';
     }
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -30,9 +16,6 @@ class Project extends \yii\db\ActiveRecord
             [['panggilan_project'], 'string', 'max' => 255],
         ];
     }
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [

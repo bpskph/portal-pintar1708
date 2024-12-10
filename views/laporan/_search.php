@@ -1,9 +1,6 @@
 <?php
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-/** @var yii\web\View $this */
-/** @var app\models\LaporanSearch $model */
-/** @var yii\widgets\ActiveForm $form */
 ?>
 <div class="laporan-search">
     <?php $form = ActiveForm::begin([

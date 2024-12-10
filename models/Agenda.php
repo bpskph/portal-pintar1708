@@ -4,38 +4,15 @@ namespace app\models;
 
 use Yii;
 
-/**
- * This is the model class for table "agenda".
- *
- * @property int $id_agenda
- * @property string $kegiatan
- * @property string|null $waktumulai
- * @property string $waktuselesai
- * @property int $metode
- * @property string|null $pelaksana
- * @property string $tempat
- * @property int $progress
- * @property string $presensi
- * @property string $peserta
- * @property int|null $id_lanjutan
- * @property int $surat_lanjutan
- * @property string $reporter
- * @property string $timestamp
- * @property string $timestamp_lastupdate
- */
 class Agenda extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
+
     public $waktu, $pilihpelaksana, $pelaksanatext, $tempattext, $pilihtempat, $teams;
     public static function tableName()
     {
         return 'agenda';
     }
-    /**
-     * {@inheritdoc}
-     */
+
     public function rules()
     {
         return [

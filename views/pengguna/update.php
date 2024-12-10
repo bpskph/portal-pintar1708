@@ -1,7 +1,4 @@
 <?php
-use yii\helpers\Html;
-/** @var yii\web\View $this */
-/** @var app\models\Pengguna $model */
 $this->title = 'Update Pengguna: <br/>' . $model->nama;
 ?>
 <div class="container-fluid" data-aos="fade-up">

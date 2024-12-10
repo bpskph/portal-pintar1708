@@ -28,7 +28,7 @@ $this->registerCssFile(Yii::$app->request->baseUrl . '/library/css/fi-agenda-ind
         <div class="p-2">
             <?php
             $homeUrl = ['agenda/index?owner=&year=' . date("Y") . '&nopage=0'];
-            echo Html::a('<i class="fas fa-home"></i> Beranda Agenda', $homeUrl, ['class' => 'btn btn btn-outline-warning btn-sm']);
+            echo Html::a('<i class="fas fa-home"></i> Agenda Utama', $homeUrl, ['class' => 'btn btn btn-outline-warning btn-sm']);
             ?>
             |
             <?= Html::a('<i class="fas fa-file-archive"></i> Arsip Surat Internal', ['suratrepo/index?owner=&year='], ['class' => 'btn btn btn-outline-warning btn-sm']) ?>
@@ -125,9 +125,7 @@ $this->registerCssFile(Yii::$app->request->baseUrl . '/library/css/fi-agenda-ind
                         [
                             'class' => ActionColumn::class,
                             'header' => 'Aksi',
-                            'template' => (Yii::$app->user->isGuest || Yii::$app->user->identity->theme == 0)
-                                ? '{update}{view}{agenda}'
-                                : '{update}{view}{agenda}',
+                            'template' => '{update}{view}{agenda}{cetak}',
                             'visibleButtons' => [
                                 'update' => function ($model, $key, $index) {
                                     if (!file_exists(Yii::getAlias('@webroot/surat/internal/pdf/' . $model->id_suratrepo . '.pdf'))) {
@@ -138,6 +136,9 @@ $this->registerCssFile(Yii::$app->request->baseUrl . '/library/css/fi-agenda-ind
                                 },
                                 'agenda' => function ($model) {
                                     return $model->fk_agenda ? true : false;
+                                },
+                                'cetak' => function ($model) {
+                                    return $model->isi_suratrepo != null ? true : false;
                                 },
                             ],
                             'buttons'  => [
@@ -155,14 +156,15 @@ $this->registerCssFile(Yii::$app->request->baseUrl . '/library/css/fi-agenda-ind
                                 'agenda' => function ($url, $model, $key) {
                                     return Html::a('<i class="fas fa-calendar-alt"></i> ',  ['agenda/' . $model->fk_agenda], ['title' => 'Lihat rincian agenda ini', 'class' => 'modalButton', 'data-pjax' => '0']);
                                 },
+                                'cetak' => function ($url, $model, $key) {
+                                    return Html::a('<i class="fas fa-file-pdf"></i> ',  ['suratrepo/cetaksurat/' . $model->id_suratrepo], ['title' => 'Cetak surat ini', 'target' => '_blank']);
+                                },
                             ],
                         ],
                         [
                             'class' => ActionColumn::class,
                             'header' => 'Draft/Word',
-                            'template' => (Yii::$app->user->isGuest || Yii::$app->user->identity->theme == 0)
-                                ? '{uploadword}{lihatword}'
-                                : '{uploadword}{lihatword}',
+                            'template' => '{uploadword}{lihatword}',
                             'visibleButtons' => [
                                 'uploadword' => function ($model) {
                                     return (!Yii::$app->user->isGuest && Yii::$app->user->identity->username === $model['owner'] //datanya sendiri                               
@@ -203,9 +205,7 @@ $this->registerCssFile(Yii::$app->request->baseUrl . '/library/css/fi-agenda-ind
                         [
                             'class' => ActionColumn::class,
                             'header' => 'Scan Surat',
-                            'template' => (Yii::$app->user->isGuest || Yii::$app->user->identity->theme == 0)
-                                ? '{uploadscan}{lihatscan}'
-                                : '{uploadscan}{lihatscan}',
+                            'template' => '{uploadscan}{lihatscan}',
                             'visibleButtons' => [
                                 'uploadscan' => function ($model) {
                                     return (!Yii::$app->user->isGuest && Yii::$app->user->identity->username === $model['owner'] //datanya sendiri                               

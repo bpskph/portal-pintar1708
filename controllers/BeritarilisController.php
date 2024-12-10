@@ -4,17 +4,11 @@ use app\models\Beritarilis;
 use app\models\BeritarilisSearch;
 use DateTime;
 use Yii;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-/**
- * BeritarilisController implements the CRUD actions for Beritarilis model.
- */
+
 class BeritarilisController extends BaseController
 {
-    /**
-     * @inheritDoc
-     */
     public function behaviors()
     {
         return array_merge(
@@ -40,6 +34,13 @@ class BeritarilisController extends BaseController
     }
     public function actionView($id)
     {
+        $model =  $this->findModel($id);
+
+        if ($model->deleted == 1) {
+            Yii::$app->session->setFlash('warning', "Data jadwal rilis ini sudah dihapus.");
+            return $this->redirect(['index']);
+        }
+
         if (Yii::$app->request->isAjax) {
             return $this->renderAjax('view', [
                 'model' => $this->findModel($id),
@@ -139,6 +140,7 @@ class BeritarilisController extends BaseController
         $dataProvider->pagination = false;
         if ($this->request->isPost) {
             $model->load($this->request->post());
+            date_default_timezone_set('Asia/Jakarta');
             $model->timestamp_lastupdate = date('Y-m-d H:i:s');
             $narasumber = $model->narasumber;
             $cek = implode("@bps.go.id, ", $narasumber) . "@bps.go.id";
@@ -191,6 +193,7 @@ class BeritarilisController extends BaseController
                         ]);
                     }
                 }
+                date_default_timezone_set('Asia/Jakarta');
                 $model->timestamp_lastupdate = date('Y-m-d H:i:s');
                 if ($model->save()) {
                     Yii::$app->session->setFlash('success', "Berita Rilis berhasil dimutakhirkan. Terima kasih.");
@@ -204,7 +207,7 @@ class BeritarilisController extends BaseController
     }
     public function actionDelete($id)
     {
-        $model = $this->findModel($id);
+        date_default_timezone_set('Asia/Jakarta');
         $affected_rows = Beritarilis::updateAll(['deleted' => 1, 'timestamp_lastupdate' => date('Y-m-d H:i:s')], 'id_beritarilis = "' . $id . '"');
         if ($affected_rows == 0) {
             Yii::$app->session->setFlash('warning', "Gagal. Mohon hubungi Admin.");

@@ -1,9 +1,3 @@
-<?php
-// _list_item.php
-use yii\helpers\Html;
-use yii\helpers\Url;
-?>
-
 <?php if ($model->waktumulai <= date("Y-m-d") && $model->waktuselesai >= date("Y-m-d")) : ?>
     <div class="carikalender" id="proyek-<?php echo date("Y-m-d") ?>">
     <?php else : ?>

@@ -2,11 +2,8 @@
 
 use yii\helpers\Html;
 use kartik\detail\DetailView;
-use app\controllers\LinkColumnAgendaView;
 use app\models\Pengguna;
 
-/** @var yii\web\View $this */
-/** @var app\models\Agenda $model */
 $this->title = 'Detail Agenda # ' . $model->id_agenda;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -146,7 +143,6 @@ $this->title = 'Detail Agenda # ' . $model->id_agenda;
                 'format' => 'html',
                 'label' => 'Jenis Agenda',
             ],
-            // 'progress',
             [
                 'attribute' => 'progress',
                 'value' => $model->progress == 0 ? '<span title="Rencana" class="badge bg-primary rounded-pill"><i class="fas fa-plus-square"></i> Rencana</span>' : ($model->progress == 1 ? '<span title="Selesai" class="badge bg-success rounded-pill"><i class="fas fa-check"></i> Selesai</span>' : ($model->progress == 2 ? '<span title="Tunda" class="badge bg-secondary rounded-pill"><i class="fas fa-strikethrough"></i> Tunda</span>' : ($model->progress == 3 ? '<span title="Batal" class="badge bg-danger rounded-pill"><i class="fas fa-trash-alt"></i> Batal</span>' : ''))),

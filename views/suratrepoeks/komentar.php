@@ -1,13 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
-use dosamigos\ckeditor\CKEditor;
-use kartik\select2\Select2;
-use yii\helpers\ArrayHelper;
 use yii\redactor\widgets\Redactor;
-/** @var yii\web\View $this */
-/** @var app\models\Suratrepo $model */
-/** @var yii\widgets\ActiveForm $form */
 ?>
 <div class="container-fluid" data-aos="fade-up">
     <div class="card alert <?= ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? 'bg-light' : 'bg-dark') ?>">

@@ -1,7 +1,5 @@
 <?php
 use yii\helpers\Html;
-/** @var yii\web\View $this */
-/** @var app\models\Suratrepo $model */
 $this->title = 'Update Surat Internal # ' . $model->id_suratrepo;
 ?>
 <div class="suratrepo-update">

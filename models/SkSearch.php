@@ -6,14 +6,8 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Sk;
 
-/**
- * SkSearch represents the model behind the search form of `app\models\Sk`.
- */
 class SkSearch extends Sk
 {
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -21,23 +15,11 @@ class SkSearch extends Sk
             [['nomor_sk', 'tanggal_sk', 'tentang_sk', 'nama_dalam_sk', 'reporter', 'timestamp', 'timestamp_lastupdate'], 'safe'],
         ];
     }
-
-    /**
-     * {@inheritdoc}
-     */
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
-
-    /**
-     * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     *
-     * @return ActiveDataProvider
-     */
     public function search($params)
     {
         $query = Sk::find();

@@ -7,7 +7,7 @@ use kartik\grid\ActionColumn;
 use kartik\grid\GridView;
 use kartik\daterange\DateRangePicker;
 
-$this->title = 'Jadwal Request/Peminjaman Mobil Dinas BPS Kabupaten Bengkulu Selatan';
+$this->title = 'Jadwal Request/Peminjaman Mobil Dinas BPS Provinsi Bengkulu';
 
 ?>
 <div class="container-fluid" data-aos="fade-up">
@@ -22,7 +22,7 @@ $this->title = 'Jadwal Request/Peminjaman Mobil Dinas BPS Kabupaten Bengkulu Sel
         <div class="p-2">
             <?php
             $homeUrl = ['agenda/index?owner=&year=' . date("Y") . '&nopage=0'];
-            echo Html::a('<i class="fas fa-home"></i> Beranda Agenda', $homeUrl, ['class' => 'btn btn btn-outline-warning btn-sm']);
+            echo Html::a('<i class="fas fa-home"></i> Agenda Utama', $homeUrl, ['class' => 'btn btn btn-outline-warning btn-sm']);
             ?>
             <?php if (!Yii::$app->user->isGuest) : ?>
                 |
@@ -134,9 +134,7 @@ $this->title = 'Jadwal Request/Peminjaman Mobil Dinas BPS Kabupaten Bengkulu Sel
                     [
                         'class' => ActionColumn::class,
                         'header' => 'Aksi',
-                        'template' => (Yii::$app->user->isGuest || Yii::$app->user->identity->theme == 0)
-                            ? '{update}{view}{setujui}{tolak}{batal}'
-                            : '{update}{view}{setujui}{tolak}{batal}',
+                        'template' => '{update}{view}{setujui}{tolak}{batal}',
                         'visibleButtons' => [
                             'delete' => function ($model, $key, $index) {
                                 return (!Yii::$app->user->isGuest

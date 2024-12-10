@@ -8,20 +8,14 @@ use app\models\AgendaSearch;
 use app\models\EmailblastForm;
 use app\models\Pengguna;
 use app\models\Popups;
-use app\models\Project;
 use app\models\Projectmember;
 use app\models\Zooms;
 use DateTime;
 use Yii;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Html;
 use yii\helpers\Json;
-
-/**
- * AgendaController implements the CRUD actions for Agenda model.
- */
 class AgendaController extends BaseController
 {
     /**
@@ -71,7 +65,7 @@ class AgendaController extends BaseController
         return parent::beforeAction($action);
     }
 
-    // action dibawah Untuk menampilkan agenda dalam bentuk kalender
+    // Menampilkan agenda dalam bentuk kalender
     public function actionCalendar()
     {
         $todayList = new AgendaSearch();
@@ -126,8 +120,7 @@ class AgendaController extends BaseController
             'listdataProviderKalender' => $today,
         ]);
     }
-
-    // action dibawah adalah untuk menampilkan menu agenda
+    // Menampilkan menu agenda
     public function actionIndex($owner, $year, $nopage)
     {
         $searchModel = new AgendaSearch();
@@ -151,13 +144,15 @@ class AgendaController extends BaseController
             'popups' => $popups
         ]);
     }
-    public function actionPicker()
-    {
-        return $this->render('picker');
-    }
-    // action dibawah adalah untuk melihat rincian suatu agenda berdasarkan id
+    // Melihat rincian suatu agenda berdasarkan id
     public function actionView($id)
     {
+        $model =  $this->findModel($id);
+        if ($model->deleted == 1) {
+            Yii::$app->session->setFlash('warning', "Data agenda ini sudah dihapus.");
+            return $this->redirect(['index', 'owner' => '', 'year' => '', 'nopage' => 0]);
+        }
+
         if (Yii::$app->request->isAjax) {
             return $this->renderAjax('view', [
                 'model' => $this->findModel($id),
@@ -390,6 +385,7 @@ class AgendaController extends BaseController
 
         if ($this->request->isPost) {
             $model->load($this->request->post());
+            date_default_timezone_set('Asia/Jakarta');
             $model->timestamp_lastupdate = date('Y-m-d H:i:s');
             $peserta = $_POST['Agenda']['peserta'];
             $cek = implode("@bps.go.id, ", $peserta) . "@bps.go.id";
@@ -466,6 +462,7 @@ class AgendaController extends BaseController
                         ]);
                     }
                 }
+                date_default_timezone_set('Asia/Jakarta');
                 $model->timestamp_lastupdate = date('Y-m-d H:i:s');
                 $zoom = Zooms::find()->select('*')->where('fk_agenda = ' . $model->id_agenda)->andWhere('deleted = 0')->count();
                 if ($model->save()) {
@@ -505,6 +502,7 @@ class AgendaController extends BaseController
         $dataProvider->pagination = false;
         if ($this->request->isPost) {
             $model->load($this->request->post());
+            date_default_timezone_set('Asia/Jakarta');
             $model->timestamp_lastupdate = date('Y-m-d H:i:s');
             $model->progress = 2;
             if (str_contains($_POST['Agenda']['waktumulai_tunda'], 'WIB')) {
@@ -544,7 +542,7 @@ class AgendaController extends BaseController
     }
     public function actionDelete($id)
     {
-        $model = $this->findModel($id);
+        date_default_timezone_set('Asia/Jakarta');
         $affected_rows = Agenda::updateAll(['deleted' => 1, 'timestamp_lastupdate' => date('Y-m-d H:i:s')], 'id_agenda = "' . $id . '"');
         if ($affected_rows == 0) {
             Yii::$app->session->setFlash('warning', "Gagal. Mohon hubungi Admin.");
@@ -564,6 +562,7 @@ class AgendaController extends BaseController
     public function actionBatal($id)
     {
         $model = $this->findModel($id);
+        date_default_timezone_set('Asia/Jakarta');
         $affected_rows = Agenda::updateAll(['progress' => 3, 'timestamp_lastupdate' => date('Y-m-d H:i:s')], 'id_agenda = "' . $id . '"');
         if ($affected_rows == 0) {
             Yii::$app->session->setFlash('warning', "Gagal. Mohon hubungi Admin.");
@@ -584,6 +583,7 @@ class AgendaController extends BaseController
             Yii::$app->session->setFlash('warning', "Agenda yang sudah selesai tidak dapat diubah kembali. Terima kasih.");
             return $this->redirect(['index', 'owner' => '', 'year' => '', 'nopage' => 0]);
         }
+        date_default_timezone_set('Asia/Jakarta');
         $affected_rows = Agenda::updateAll(['progress' => 1, 'timestamp_lastupdate' => date('Y-m-d H:i:s')], 'id_agenda = "' . $id . '"');
         if ($affected_rows == 0) {
             Yii::$app->session->setFlash('warning', "Gagal. Mohon hubungi Admin.");
@@ -714,7 +714,7 @@ class AgendaController extends BaseController
                     $recipients[] = $email;
                 }
             }
-            $recipients = array_merge(['bps1701@bps.go.id'], $recipients);
+            $recipients = array_merge(['rb1700@bps.go.id'], $recipients);
             $recipients = array_merge([$dataagenda->pemimpin . '@bps.go.id'], $recipients);
             // die(var_dump($recipients));
             if ($model->contact($recipients)) {
@@ -741,11 +741,13 @@ class AgendaController extends BaseController
         }
         if ($this->request->isPost) {
             $model->load($this->request->post());
+            date_default_timezone_set('Asia/Jakarta');
             $model->timestamp_lastupdate = date('Y-m-d H:i:s');
             $peserta = $model->peserta;
             $cek = implode("@bps.go.id, ", $peserta) . "@bps.go.id";
             $model->peserta = $cek;
             if ($model->validate()) {
+                date_default_timezone_set('Asia/Jakarta');
                 $model->timestamp_lastupdate = date('Y-m-d H:i:s');
                 if ($model->save()) {
                     Yii::$app->session->setFlash('success', "Data Peserta berhasil dimutakhirkan. Terima kasih.");
@@ -781,16 +783,15 @@ class AgendaController extends BaseController
         $response = ['members' => $members];
         return Json::encode($response);
     }
-
     public static function wa_engine($nomor_tujuan, $isi_notif)
     {
         // URL tujuan
         $url = 'https://dialogwa.id/api/send-text';
-        $token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NTZhYzMyMjY4Yzg2MGE1MGU5MWYzZSIsInVzZXJuYW1lIjoiYnBzMTcwMSIsImlhdCI6MTczMzczMzQyNiwiZXhwIjo0ODg5NDkzNDI2fQ.WAnpGxIQhVjbeglztzxUaJY_QoaclWyj2HPTV0jKIbE';
+        $token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NmNjNjA4ZGM2NDQyMmVkOTE1MzdjMiIsInVzZXJuYW1lIjoibm9mcmlhbmkiLCJpYXQiOjE3MjE3OTg3NDgsImV4cCI6NDg3NzU1ODc0OH0.5dnMRRM-G0bktsNFvArEnBkH1Qr5Snn8LvEBpswVhtw';
 
         // Data yang akan dikirim dalam body request
         $data = array(
-            'session' => 'portalpintar1701',
+            'session' => 'portalpintar',
             'target' => $nomor_tujuan . '@s.whatsapp.net', //format nomor tujuan harus menggunakan kode negara contoh : 628......@s.whatsapp.net
             'message' => $isi_notif
         );

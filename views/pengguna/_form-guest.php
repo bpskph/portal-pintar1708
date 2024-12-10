@@ -1,9 +1,6 @@
 <?php
 use yii\helpers\Html;
 use kartik\form\ActiveForm;
-use kartik\builder\Form;
-use yii\helpers\ArrayHelper;
-use yii\bootstrap5\Modal;
 use yii\helpers\Url;
 ?>
 <style>
@@ -37,7 +34,6 @@ use yii\helpers\Url;
                         <span class="d-none d-lg-block">Daftar Portal Pintar</span>
                     </a>
                 </div><!-- End Logo -->
-                <!-- <div class=row" style="width:50%;"> -->
                 <div class="container">
                     <?php
                     $formnip = ActiveForm::begin([
@@ -58,7 +54,6 @@ use yii\helpers\Url;
                     ActiveForm::end();
                     ?>
                 </div>
-                <!-- </div> -->
                 <br />
                 <?php if ($ada == 'YA') : ?>
                     <div class="alert alert-secondary alert-dismissible">
@@ -83,7 +78,7 @@ use yii\helpers\Url;
                 <?php elseif ($bengkulu == 'TIDAK') : ?>
                     <div class="alert alert-secondary alert-dismissable">
                         <p>
-                            Mohon maaf, pegawai yang dapat ditambahkan ke sistem Portal Pintar hanya pegawai yang pada Community BPS tercatat di Kabupaten Bengkulu Selatan.
+                            Mohon maaf, pegawai yang dapat ditambahkan ke sistem Portal Pintar hanya pegawai yang pada Community BPS tercatat di Provinsi Bengkulu.
                         </p>
                     </div>
                 <?php elseif ($ada == 'COMMUNITY') : ?>
@@ -106,8 +101,6 @@ use yii\helpers\Url;
                                 <h3 class="card-title">Identitas Pengguna</h3>
                             </div>
                             <div class="card-body">
-                                <?php //echo $this->context->action->id
-                                ?>
                                 <?= $form->field($model, 'username')->textInput(['maxlength' => true, 'style' => 'text-transform: lowercase', 'readonly' => true, 'value' => $model->isNewRecord ? $profil[$key]['username'] : $model->username]) ?>
                                 <?php if ($model->isNewRecord) { ?>
                                     <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>

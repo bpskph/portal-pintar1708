@@ -1,14 +1,8 @@
 <?php
-
-/** @var yii\web\View $this */
-/** @var yii\bootstrap5\ActiveForm $form */
-/** @var app\models\ContactForm $model */
-
 use app\models\Pengguna;
 use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
 use yii\redactor\widgets\Redactor;
-use yii\web\View;
 
 $this->title = 'Undangan Digital Portal Pintar';
 $this->params['breadcrumbs'][] = $this->title;

@@ -7,15 +7,6 @@ use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 use kartik\date\DatePicker;
 
-/** @var yii\web\View $this */
-/** @var app\models\Linkapp $model */
-/** @var yii\widgets\ActiveForm $form */
-// $actionId = Yii::$app->controller->action->id;
-// $script = <<< JS
-//     var actionId = '$actionId';
-// JS;
-// $this->registerJs($script, \yii\web\View::POS_HEAD);
-
 if ($model->isNewRecord) {
     $model->tanggal_apel = date("Y-m-d");
 }
@@ -47,8 +38,6 @@ if ($model->isNewRecord) {
                 'allowClear' => true
             ],
         ]);
-        ?>
-        <?php // $form->field($model, 'tanggal_apel')->textInput(['readonly' => false, 'placeholder' => 'Pilih Tanggal', 'value' => $model->tanggal_apel]) 
         ?>
         <?= $form->field($model, 'tanggal_apel')->widget(DatePicker::classname(), [
             'options' => ['placeholder' => 'Pilih Tanggal ...'],

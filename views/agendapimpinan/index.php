@@ -24,7 +24,7 @@ $this->registerCssFile(Yii::$app->request->baseUrl . '/library/css/fi-agenda-ind
         <div class="p-2">
             <?php
             $homeUrl = ['agenda/index?owner=&year=' . date("Y") . '&nopage=0'];
-            echo Html::a('<i class="fas fa-home"></i> Beranda Agenda', $homeUrl, ['class' => 'btn btn btn-outline-warning btn-sm']);
+            echo Html::a('<i class="fas fa-home"></i> Agenda Utama', $homeUrl, ['class' => 'btn btn btn-outline-warning btn-sm']);
             ?>
             <?php if (!Yii::$app->user->isGuest && (Yii::$app->user->identity->level == 0 || Yii::$app->user->identity->issekretaris)) : ?>
                 |
@@ -153,9 +153,7 @@ $this->registerCssFile(Yii::$app->request->baseUrl . '/library/css/fi-agenda-ind
                     [
                         'class' => ActionColumn::class,
                         'header' => 'Aksi',
-                        'template' => (Yii::$app->user->isGuest || Yii::$app->user->identity->theme == 0)
-                            ? '{update}{view}{delete}'
-                            : '{update}{view}{delete}',
+                        'template' => '{update}{view}{delete}',
                         'visibleButtons' => [
                             'delete' => function ($model, $key, $index) {
                                 return (!Yii::$app->user->isGuest && Yii::$app->user->identity->username === $model['reporter'] //datanya sendiri

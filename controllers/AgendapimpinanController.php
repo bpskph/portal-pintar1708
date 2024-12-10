@@ -4,12 +4,9 @@ use app\models\Agendapimpinan;
 use app\models\AgendapimpinanSearch;
 use DateTime;
 use Yii;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-/**
- * AgendapimpinanController implements the CRUD actions for Agendapimpinan model.
- */
+
 class AgendapimpinanController extends BaseController
 {
     /**
@@ -50,11 +47,6 @@ class AgendapimpinanController extends BaseController
             ]
         );
     }
-    /**
-     * Lists all Agendapimpinan models.
-     *
-     * @return string
-     */
     public function actionIndex()
     {
         $searchModel = new AgendapimpinanSearch();
@@ -64,14 +56,15 @@ class AgendapimpinanController extends BaseController
             'dataProvider' => $dataProvider,
         ]);
     }
-    /**
-     * Displays a single Agendapimpinan model.
-     * @param int $id_agendapimpinan Id Agendapimpinan
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionView($id)
     {
+        $model =  $this->findModel($id);
+
+        if ($model->deleted == 1) {
+            Yii::$app->session->setFlash('warning', "Data agenda pimpinan ini sudah dihapus.");
+            return $this->redirect(['index']);
+        }
+
         if (Yii::$app->request->isAjax) {
             return $this->renderAjax('view', [
                 'model' => $this->findModel($id),
@@ -82,11 +75,6 @@ class AgendapimpinanController extends BaseController
             ]);
         }
     }
-    /**
-     * Creates a new Agendapimpinan model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
-     */
     public function actionCreate()
     {
         $model = new Agendapimpinan();
@@ -139,13 +127,6 @@ class AgendapimpinanController extends BaseController
             'dataProvider' => $dataProvider,
         ]);
     }
-    /**
-     * Updates an existing Agendapimpinan model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id_agendapimpinan Id Agendapimpinan
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -161,6 +142,7 @@ class AgendapimpinanController extends BaseController
         // }
         if ($this->request->isPost) {
             $model->load($this->request->post());
+            date_default_timezone_set('Asia/Jakarta');
             $model->timestamp_agendapimpinan_lastupdate = date('Y-m-d H:i:s');
             if ($model->pendamping != null) {
                 $peserta = $model->pendamping;
@@ -193,6 +175,7 @@ class AgendapimpinanController extends BaseController
                 $model->waktuselesai = date("Y-m-d H:i:s", strtotime($_POST['Agendapimpinan']['waktuselesai']));
             }
             if ($model->validate()) {
+                date_default_timezone_set('Asia/Jakarta');
                 $model->timestamp_agendapimpinan_lastupdate = date('Y-m-d H:i:s');
                 if ($model->save()) {
                     Yii::$app->session->setFlash('success', "Agenda pimpinan berhasil dimutakhirkan. Terima kasih.");
@@ -206,16 +189,9 @@ class AgendapimpinanController extends BaseController
             'dataProvider' => $dataProvider,
         ]);
     }
-    /**
-     * Deletes an existing Agendapimpinan model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id_agendapimpinan Id Agendapimpinan
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionDelete($id)
     {
-        $model = $this->findModel($id);
+        date_default_timezone_set('Asia/Jakarta');
         $affected_rows = Agendapimpinan::updateAll(['deleted' => 1, 'timestamp_agendapimpinan_lastupdate' => date('Y-m-d H:i:s')], 'id_agendapimpinan = "' . $id . '"');
         if ($affected_rows == 0) {
             Yii::$app->session->setFlash('warning', "Gagal. Mohon hubungi Admin.");
@@ -225,13 +201,6 @@ class AgendapimpinanController extends BaseController
             return $this->redirect(['index']);
         }
     }
-    /**
-     * Finds the Agendapimpinan model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id_agendapimpinan Id Agendapimpinan
-     * @return Agendapimpinan the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id_agendapimpinan)
     {
         if (($model = Agendapimpinan::findOne(['id_agendapimpinan' => $id_agendapimpinan])) !== null) {

@@ -2,9 +2,6 @@
 
 use yii\helpers\Html;
 
-/** @var yii\web\View $this */
-/** @var app\models\Dl $model */
-
 $this->title = 'Tambah Data Perjalanan Dinas';
 ?>
 <div class="dl-create">

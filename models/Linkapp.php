@@ -1,31 +1,13 @@
 <?php
 namespace app\models;
-use Yii;
-/**
- * This is the model class for table "linkapp".
- *
- * @property int $id_linkapp
- * @property string $judul
- * @property string $link
- * @property string $keyword
- * @property int $views
- * @property string $owner
- * @property string $timestamp
- * @property string $timestamp_lastupdate
- */
+
 class Linkapp extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
     public $screenshot;
     public static function tableName()
     {
         return 'linkapp';
     }
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -40,9 +22,6 @@ class Linkapp extends \yii\db\ActiveRecord
             [['screenshot'], 'file', 'skipOnEmpty' => !$this->isNewRecord, 'extensions' => 'png'],
         ];
     }
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [

@@ -1,9 +1,6 @@
 <?php
 use yii\helpers\Html;
 use kartik\form\ActiveForm;
-/** @var yii\web\View $this */
-/** @var app\models\AgendaSearch $model */
-/** @var yii\widgets\ActiveForm $form */
 ?>
 <div class="card <?= ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? '' : 'bg-dark') ?>">
     <div class="card-body" style="margin: 0 auto!important">

@@ -1,7 +1,5 @@
 <?php
 use yii\helpers\Html;
-/** @var yii\web\View $this */
-/** @var app\models\Patches $model */
 $this->title = 'Create Patches';
 $this->params['breadcrumbs'][] = ['label' => 'Patches', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;

@@ -5,26 +5,12 @@ namespace app\models;
 use Yii;
 use yii\helpers\Html;
 
-/**
- * This is the model class for table "projectmember".
- *
- * @property int $id_projectmember
- * @property int $fk_project
- * @property string $pegawai
- * @property int $member_status
- */
 class Projectmember extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName()
     {
         return 'projectmember';
     }
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -35,9 +21,6 @@ class Projectmember extends \yii\db\ActiveRecord
             ['member_status', 'validateMemberStatus',],
         ];
     }
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [

@@ -2,7 +2,6 @@
 use app\models\Pengguna;
 use app\models\Project;
 use yii\helpers\Html;
-// use yii\widgets\ActiveForm;
 use yii\bootstrap5\ActiveForm;
 use yii\helpers\ArrayHelper;
 use kartik\select2\Select2;
@@ -35,8 +34,6 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-projectmembe
             ],
         ]);
         ?>
-        <?php // $form->field($model, 'pegawai')->textInput(['maxlength' => true]) 
-        ?>
         <?= $form->field($model, 'pegawai')->widget(Select2::classname(), [
             'data' => ArrayHelper::map(
                 Pengguna::find()->select('*')->asArray()->all(),
@@ -50,8 +47,6 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-projectmembe
                 'allowClear' => true
             ],
         ]);
-        ?>
-        <?php // $form->field($model, 'member_status')->textInput() 
         ?>
         <?= $form->field($model, 'member_status')->widget(Select2::classname(), [
             'data' => [1 => "Anggota", 2 => "Ketua", 3 => "Operator"],

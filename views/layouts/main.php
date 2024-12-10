@@ -84,6 +84,7 @@ $this->registerJs($script, \yii\web\View::POS_HEAD);
                                     <ul>
                                         <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/suratrepo/index?owner=&year=<?php echo date("Y") ?>" class="<?= (Yii::$app->controller->id == 'suratrepo') ? 'aktip' : '' ?>">Surat Internal</a></li>
                                         <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/suratrepoeks/index?owner=&year=<?php echo date("Y") ?>" class="<?= (Yii::$app->controller->id == 'suratrepoeks') ? 'aktip' : '' ?>">Surat Eksternal</a></li>
+                                        <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/suratmasuk/index?year=<?php echo date("Y") ?>" class="<?= (Yii::$app->controller->id == 'suratmasuk') ? 'aktip' : '' ?>">Surat Masuk/Disposisi</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -149,6 +150,9 @@ $this->registerJs($script, \yii\web\View::POS_HEAD);
             ?>
                 <a href="<?= Yii::$app->request->baseUrl . '/site/theme?choice=1' ?>" class="book-a-table-btn scrollto d-none d-lg-flex" style="background-color: #cda45e"><i class="icon fa fa-moon text-dark"></i></a>
             <?php } ?>
+            <a href="https://www.canva.com/design/DAGQgVxVcSI/NPzAMvj5-fVqwimvxD6DkQ/view?utm_content=DAGQgVxVcSI&utm_campaign=designshare&utm_medium=link&utm_source=editor" class="book-a-table-btn scrollto d-none d-lg-flex text-warning d-flex align-items-center justify-content-center" title="Panduan Portal Pintar" target="_blank">
+                <i class="fas fa-book-open"></i>
+            </a>
         </div>
     </header><!-- End Header -->
     <!-- Navigation -->
@@ -203,9 +207,9 @@ $this->registerJs($script, \yii\web\View::POS_HEAD);
                 <div class="row">
                     <div class="col-lg-7 col-md-6">
                         <div class="footer-info">
-                            <h3>BPS KABUPATEN BENGKULU SELATAN</h3>
+                            <h3>BPS PROVINSI BENGKULU</h3>
                             <p>
-                                Jl. Adam Malik Km 8, Kabupaten Bengkulu Selatan,
+                                Jl. Adam Malik Km 8, Provinsi Bengkulu,
                                 Indonesia<br><br>
                                 <strong>Phone:</strong> (+62 736) 349119<br>
                                 <strong>Email:</strong> bengkulu@bps.go.id<br>
@@ -215,9 +219,9 @@ $this->registerJs($script, \yii\web\View::POS_HEAD);
                     <div class="col-lg-5 col-md-6 footer-links">
                         <h4>Tautan Lainnya</h4>
                         <ul>
-                            <li><i class="bi bi-globe"></i> <i class="bx bx-chevron-right"></i> <a href="https://bengkulu.bps.go.id/">Website BPS Kabupaten Bengkulu Selatan</a></li>
+                            <li><i class="bi bi-globe"></i> <i class="bx bx-chevron-right"></i> <a href="https://bengkulu.bps.go.id/">Website BPS Provinsi Bengkulu</a></li>
                             <li><i class="bi bi-globe"></i> <i class="bx bx-chevron-right"></i><a href="https://webapps.bps.go.id/bengkulu/portalpintar/">Website Portal Pintar</a></li>
-                            <li><i class="bi bi-instagram"></i> <i class="bx bx-chevron-right"></i><a href="https://webapps.bps.go.id/bengkulu/">List Aplikasi Aktif BPS Kabupaten Bengkulu Selatan</a></li>
+                            <li><i class="bi bi-instagram"></i> <i class="bx bx-chevron-right"></i><a href="https://webapps.bps.go.id/bengkulu/">List Aplikasi Aktif BPS Provinsi Bengkulu</a></li>
                         </ul>
                     </div>
                 </div>

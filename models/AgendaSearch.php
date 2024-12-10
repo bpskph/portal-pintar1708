@@ -4,16 +4,9 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Agenda;
 use DateTime;
-use DateTimeZone;
-use IntlDateFormatter;
-/**
- * AgendaSearch represents the model behind the search form of `app\models\Agenda`.
- */
+
 class AgendaSearch extends Agenda
 {
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -21,21 +14,11 @@ class AgendaSearch extends Agenda
             [['kegiatan', 'waktumulai', 'waktuselesai', 'pelaksana', 'tempat', 'peserta', 'reporter', 'pemimpin', 'timestamp', 'timestamp_lastupdate', 'waktu', 'metode', 'fk_kategori'], 'safe'],
         ];
     }
-    /**
-     * {@inheritdoc}
-     */
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
-    /**
-     * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     *
-     * @return ActiveDataProvider
-     */
     public function search($params)
     {
         $query = Agenda::find();

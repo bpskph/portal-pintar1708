@@ -14,20 +14,9 @@ use yii\web\View;
 Select2Asset::register($this);
 BootstrapAsset::register($this);
 
-// $actionId = Yii::$app->controller->action->id;
-// $script = <<< JS
-//     var actionId = '$actionId';
-// JS;
-// $this->registerJs($script, \yii\web\View::POS_HEAD);
-
 if ($model->isNewRecord) {
     $model->tanggal_suratrepoeks = date("Y-m-d");
 }
-
-// Registering flatpickr CSS and JS files
-// $this->registerCssFile('https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css', ['position' => View::POS_END]);
-// $this->registerJsFile('https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.9/flatpickr.min.js', ['position' => View::POS_END]);
-// $this->registerJsFile('https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js', ['position' => View::POS_END]);
 
 // Registering your custom JS and CSS files
 $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-suratrepoeks-form.js', ['position' => View::POS_END, 'depends' => [\yii\web\JqueryAsset::class]]);
@@ -58,22 +47,6 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-suratrepoeks
                 <?= $form->field($model, 'invisibility')->checkbox()->label('&nbsp;Tandai ini jika Anda ingin merahasiakan konten surat Anda&nbsp;', ['style' => 'background-color: #ffc107; border-radius: 5px']); ?>
                 <?= $form->field($model, 'penerima_suratrepoeks')->textInput(['maxlength' => true])
                     ->hint('Jika daftar "Kepada" lebih dari satu, pisahkan dengan koma. Contoh: <b>Direktur Rakyat Bengkulu, Direktur Bengkulu Ekspress</b>', ['class' => '', 'style' => 'color: #999']) ?>
-                <?php
-                //  $form->field($model, 'tanggal_suratrepoeks')->textInput([
-                //     'readonly' => false,
-                //     'placeholder' => 'Pilih Tanggal',
-                //     'value' => $model->tanggal_suratrepoeks,
-                //     'onchange' => '
-                //         var id = $("#suratrepoeks-fk_suratsubkode").val();
-                //         var sifat = $("#suratrepoeks-sifat").val();
-                //         console.log(id);
-                //         var actionId = "' . (Yii::$app->controller->action->id == 'update' ? $model->id_suratrepoeks : '') . '"
-                //         $.post("' . Yii::$app->request->hostInfo . '/' . Yii::$app->params['versiAplikasi'] . '/' . Yii::$app->controller->id . '/getnomorsurat?id=" + id + "&tanggal=" + $(this).val() + "&sifat=" + sifat + "&action=" + actionId, function(data) {
-                //             $("input#suratrepoeks-nomor_suratrepoeks").val(data);
-                //         });
-                //     ',
-                // ])->hint('Untuk menjaga ketertiban nomor, surat yang dapat diinput adalah sebatas tanggal hari ini.', ['class' => '', 'style' => 'color: #999']) 
-                ?>
                 <?= $form->field($model, 'tanggal_suratrepoeks')->widget(DatePicker::classname(), [
                     'options' => ['placeholder' => 'Pilih Tanggal ...'],
                     'pluginOptions' => [
@@ -83,7 +56,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-suratrepoeks
                     ]
                 ])->hint('Untuk menjaga ketertiban nomor, surat yang dapat diinput adalah sebatas tanggal hari ini.', ['class' => '', 'style' => 'color: #999']) ?>
                 <?= $form->field($model, 'perihal_suratrepoeks')->textarea(['rows' => 3])
-                    ->hint('Jika ingin memisahkan perihal menjadi beberapa baris, pisahkan dengan "&ltbr/&gt". Contoh: <b>Usulan Penetapan Penggunaan (PSP) &ltbr/&gt BMN Wilayah BPS Kabupaten Bengkulu Selatan</b>', ['class' => '', 'style' => 'color: #999']) ?>
+                    ->hint('Jika ingin memisahkan perihal menjadi beberapa baris, pisahkan dengan "&ltbr/&gt". Contoh: <b>Usulan Penetapan Penggunaan (PSP) &ltbr/&gt BMN Wilayah BPS Provinsi Bengkulu</b>', ['class' => '', 'style' => 'color: #999']) ?>
                 <?= $form->field($model, 'lampiran')->textInput(['maxlength' => true])
                     ->hint('Contoh Pengisian: <b>1 (Satu) Berkas</b><br/>Kosongkan bila tidak ada lampiran. ', ['class' => '', 'style' => 'color: #999']) ?>
                 <?= $form->field($model, 'fk_suratsubkode')->widget(Select2::classname(), [
@@ -156,28 +129,10 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-suratrepoeks
                 <?php if (Yii::$app->user->identity->issekretaris) : ?>
                     <?= $form->field($model, 'jenis')->dropDownList([0 => 'Surat Biasa', 1 => 'Surat Perintah Lembur', 2 => 'Surat Keterangan', 3 => 'Berita Acara'], [
                         'prompt' => 'Pilih Jenis ...',
-                        // 'onchange' => '
-                        //     var id = $("#suratrepoeks-fk_suratsubkode").val();
-                        //     var surat = $("#suratrepoeks-id_suratrepoeks").val();
-                        //     console.log(surat);
-                        //     var actionId = "' . Yii::$app->controller->action->id . '";
-                        //     $.post("' . Yii::$app->request->hostInfo . '/' . Yii::$app->params['versiAplikasi'] . '/' . Yii::$app->controller->id . '/gettemplate?id=" + $(this).val() + "&action=" + actionId + "&surat=" + surat, function(data) {
-                        //         $("#isi_suratrepoeks").redactor("code.set", data); // Update the Redactor value
-                        //     });
-                        // ',
                     ]); ?>
                 <?php else : ?>
                     <?= $form->field($model, 'jenis')->dropDownList([0 => 'Surat Biasa', 2 => 'Surat Keterangan', 3 => 'Berita Acara'], [
                         'prompt' => 'Pilih Jenis ...',
-                        // 'onchange' => '
-                        //     var id = $("#suratrepoeks-fk_suratsubkode").val();
-                        //     var surat = $("#suratrepoeks-id_suratrepoeks").val();
-                        //     console.log(surat);
-                        //     var actionId = "' . Yii::$app->controller->action->id . '";
-                        //     $.post("' . Yii::$app->request->hostInfo . '/' . Yii::$app->params['versiAplikasi'] . '/' . Yii::$app->controller->id . '/gettemplate?id=" + $(this).val() + "&action=" + actionId + "&surat=" + surat, function(data) {
-                        //         $("#isi_suratrepoeks").redactor("code.set", data); // Update the Redactor value
-                        //     });
-                        // ',
                     ]); ?>
                 <?php endif; ?>
                 <div class="row mb-2">
@@ -226,8 +181,8 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-suratrepoeks
                             ->where(['project.tahun' => date("Y")])
                             ->andWhere(['member_status' => 2])
                             ->orWhere(['leader_status' => 1])
-                            ->orWhere(['username' => 'engkyhendarmandi'])
-                            ->orWhere(['username' => 'fathan'])
+                            ->orWhere(['username' => 'sahranudin'])
+                            ->orWhere(['username' => 'winrizal'])
                             ->orderBy(['nipbaru' => SORT_ASC])
                             ->asArray()->all(),
                         'username',
@@ -242,7 +197,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-suratrepoeks
                 ])->hint('Penyetuju Surat adalah Ketua Proyek Menurut SK <b>Tahun Berjalan (' . date("Y") . ')</b>', ['class' => '', 'style' => 'color: #999']) ?>
 
                 <?= $form->field($model, 'tembusan')->textarea(['rows' => 3])
-                    ->hint('Jika daftar tembusan lebih dari satu, pisahkan dengan koma. Contoh: <b>Kepala BPS Kabupaten Bengkulu Selatan, Kepala Bagian Umum BPS Kabupaten Bengkulu Selatan</b>', ['class' => '', 'style' => 'color: #999']) ?>
+                    ->hint('Jika daftar tembusan lebih dari satu, pisahkan dengan koma. Contoh: <b>Kepala BPS Provinsi Bengkulu, Kepala Bagian Umum BPS Provinsi Bengkulu</b>', ['class' => '', 'style' => 'color: #999']) ?>
 
                 <?= $form->field($model, 'shared_to')->widget(Select2::classname(), [
                     'name' => 'shared_to',

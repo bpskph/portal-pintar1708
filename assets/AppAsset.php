@@ -20,7 +20,6 @@ class AppAsset extends AssetBundle
 {
     public $basePath = '@webroot';
     public $baseUrl = '@web';
-    // public $sourcePath = '@app';
     public $css = [
         'https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i',
         'library/restaurantly/assets/vendor/animate.css/animate.min.css',
@@ -37,35 +36,27 @@ class AppAsset extends AssetBundle
         'library/css/fi-theme.css',
         'https://fonts.googleapis.com/css?family=Poppins',
         'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css',
-        'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css',        
+        'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css',
     ];
     public $js = [
-        // 'https://code.jquery.com/jquery-3.7.1.min.js',  
-        // 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.js', 
-        // 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js',
-        // 'https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js'  ,  
         'https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js',
         'library/restaurantly/assets/vendor/aos/aos.js',
         'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js',
         'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js',
-        // 'https://cdn.jsdelivr.net/npm/bootstrap-select-dropdown@0.14.6/dist/bootstrap-select-dropdown.min.js',
         'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js',
-        // 'https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js',
         'library/niceadmin/assets/vendor/apexcharts/apexcharts.min.js',
         'library/restaurantly/assets/vendor/glightbox/js/glightbox.min.js',
         'library/restaurantly/assets/vendor/swiper/swiper-bundle.min.js',
         'library/restaurantly/assets/js/main.js',
         'https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js',
         'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js',
-        // 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.full.min.js',
         'https://cdn.jsdelivr.net/npm/bootstrap-switch@3.4.0/dist/js/bootstrap-switch.min.js',
         'library/js/fi-toast.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',
-        // 'yii\web\JqueryAsset',
         'yii\bootstrap5\BootstrapAsset',
-        'kartik\form\ActiveFormAsset', // Add this line
+        'kartik\form\ActiveFormAsset',
         'yii\bootstrap5\BootstrapPluginAsset',
     ];
 }

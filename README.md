@@ -1,5 +1,5 @@
-# portalpintar_shared
-Portal Pusat Informasi Terkini Dalam Layar - Shared for BPS Kabupaten Bengkulu Selatan
+# portalpintar2.0
+Portal Pusat Informasi Terkini Dalam Layar 2.0
 
 <p align="center">
     <a href="https://github.com/yiisoft" target="_blank">

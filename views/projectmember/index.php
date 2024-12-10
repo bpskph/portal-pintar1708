@@ -2,11 +2,7 @@
 
 use app\models\Projectmember;
 use yii\helpers\Html;
-use yii\helpers\Url;
-// use yii\grid\ActionColumn;
-// use yii\grid\GridView;
 use kartik\grid\GridView;
-use yii\bootstrap5\Modal;
 use kartik\grid\SerialColumn;
 use kartik\grid\ActionColumn;
 
@@ -65,7 +61,6 @@ $this->title = 'Rekap Tim Kerja dalam Aplikasi Ini';
                 'tableOptions' => ['class' => 'table table-condensed ' . ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? '' : 'table-dark')],
                 'columns' => [
                     [
-                        // 'class' => 'yii\grid\SerialColumn',
                         'class' => SerialColumn::class,
                     ],
                     [
@@ -99,15 +94,6 @@ $this->title = 'Rekap Tim Kerja dalam Aplikasi Ini';
                         'vAlign' => 'middle',
                         'hAlign' => 'center'
                     ],
-                    // [
-                    //     'value' => 'projecte.id_project',
-                    //     'group' => true,
-                    //     'enableSorting' => false,
-                    //     'mergeHeader' => true,
-                    //     'label' => '',
-                    //     'vAlign' => 'middle',
-                    //     'hAlign' => 'center'
-                    // ],
                     [
                         'attribute' => 'fk_project',
                         'value' => 'projecte.nama_project',
@@ -120,8 +106,6 @@ $this->title = 'Rekap Tim Kerja dalam Aplikasi Ini';
                             'placeholder' => 'Cari Project Tim Kerja ...'
                         ]
                     ],
-                    // 'fk_project',
-                    // 'pegawai',
                     [
                         'attribute' => 'pegawai',
                         'value' => function ($data) {
@@ -133,7 +117,6 @@ $this->title = 'Rekap Tim Kerja dalam Aplikasi Ini';
                             'placeholder' => 'Cari Nama/Username Pegawai ...'
                         ]
                     ],
-                    // 'member_status',
                     [
                         'attribute' => 'member_status',
                         'value' => function ($data) {
@@ -160,14 +143,12 @@ $this->title = 'Rekap Tim Kerja dalam Aplikasi Ini';
                         ], ['class' => 'form-control']),
                     ],
                     [
-                        // 'class' => 'yii\grid\ActionColumn',
                         'class' => ActionColumn::class,
                         'header' => 'Aksi',
                         'template' => (!Yii::$app->user->isGuest && Yii::$app->user->identity->theme) == 0
                             ? '{update}{toggleketua}{toggleoperator}{delete}{aktifkanlagi}'
                             : '{update}{toggleketua}{toggleoperator}{delete}{aktifkanlagi}',
                         'visible' => !Yii::$app->user->isGuest ? true : false,
-                        // 'contentOptions' => ['class' => 'text-center'],
                         'visibleButtons' => [
                             'delete' => function ($model, $key, $index) {
                                 $cek = Projectmember::find()->where(['fk_project' => $model->fk_project, 'member_status' => 2, 'pegawai' => $model->pegawai])->count();
@@ -254,11 +235,6 @@ $this->title = 'Rekap Tim Kerja dalam Aplikasi Ini';
                             'update' => function ($key, $client) {
                                 return Html::a('<i class="fa">&#xf044;</i> ', $key, ['title' => 'Update rincian anggota pada project ini']);
                             },
-                            // 'update' => function ($key, $client, $index) {
-                            //     $url = '/portalpintar/projectmember/view?id=' . $index;
-                            //     return Html::a('<i class="fa">&#xf044;</i> ', $url, ['title' => 'Update rincian anggota pada project ini', 'class' => 'modalButton', 'data-pjax' => '0']);
-                            //     //return Html::a('<button class="btn btn-sm tombol-biru"><i class="fa text-info">&#xf06e;</i></button>', $key, ['title' => 'Lihat rincian logbook ini', ]);
-                            // },
                         ],
                     ],
                 ],
@@ -270,10 +246,6 @@ $this->title = 'Rekap Tim Kerja dalam Aplikasi Ini';
                 'headerRowOptions' => ['class' => 'kartik-sheet-style'],
                 'filterRowOptions' => ['class' => 'kartik-sheet-style'],
                 'export' => false,
-                // 'export' => [
-                //     'fontAwesome' => true,
-                //     'label' => '<i class="fa">&#xf56d;</i>',
-                // ],
                 'exportConfig' => [
                     GridView::CSV => ['label' => 'CSV', 'filename' => 'Pengguna Portal Pintar - ' . date('d-M-Y')],
                     GridView::HTML => ['label' => 'HTML', 'filename' => 'Pengguna Portal Pintar - ' . date('d-M-Y')],

@@ -6,14 +6,8 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Dl;
 
-/**
- * DlSearch represents the model behind the search form of `app\models\Dl`.
- */
 class DlSearch extends Dl
 {
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -21,23 +15,11 @@ class DlSearch extends Dl
             [['pegawai', 'tanggal_mulai', 'tanggal_selesai', 'fk_tujuan', 'tugas', 'tim', 'reporter', 'timestamp', 'timestamp_lastupdate'], 'safe'],
         ];
     }
-
-    /**
-     * {@inheritdoc}
-     */
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
-
-    /**
-     * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     *
-     * @return ActiveDataProvider
-     */
     public function search($params)
     {
         $query = Dl::find();

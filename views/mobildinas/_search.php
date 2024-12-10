@@ -2,10 +2,6 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
-/** @var yii\web\View $this */
-/** @var app\models\MobildinasSearch $model */
-/** @var yii\widgets\ActiveForm $form */
 ?>
 
 <div class="mobildinas-search">
@@ -24,14 +20,6 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'keperluan') ?>
 
     <?= $form->field($model, 'borrower') ?>
-
-    <?php // echo $form->field($model, 'approval') ?>
-
-    <?php // echo $form->field($model, 'timestamp') ?>
-
-    <?php // echo $form->field($model, 'timestamp_lastupdate') ?>
-
-    <?php // echo $form->field($model, 'deleted') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

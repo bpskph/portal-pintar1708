@@ -1,8 +1,6 @@
 <?php
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-/** @var yii\web\View $this */
-/** @var app\models\Linkapp $model */
 $this->title = $model->id_linkapp;
 $this->params['breadcrumbs'][] = ['label' => 'Linkapps', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;

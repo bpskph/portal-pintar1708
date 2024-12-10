@@ -1,32 +1,12 @@
 <?php
 namespace app\models;
-use Yii;
-/**
- * This is the model class for table "linkmat".
- *
- * @property int $id_linkmat
- * @property string $judul
- * @property string $link
- * @property string $keyword
- * @property int $views
- * @property int $active
- * @property string $owner
- * @property string|null $keterangan
- * @property string $timestamp
- * @property string $timestamp_lastupdate
- */
+
 class Linkmat extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName()
     {
         return 'linkmat';
     }
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -40,9 +20,6 @@ class Linkmat extends \yii\db\ActiveRecord
             ['keyword', 'validateComma'],
         ];
     }
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [

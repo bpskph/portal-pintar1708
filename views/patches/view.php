@@ -2,10 +2,6 @@
 
 use yii\helpers\Html;
 use kartik\detail\DetailView;
-use yii\web\View;
-
-/** @var yii\web\View $this */
-/** @var app\models\Linkmat $model */
 $this->title = 'Detail Patch/Update/Perbaikan Portal Pintar # ' . $model->id_patches;
 ?>
 <div class="container-fluid" data-aos="fade-up">

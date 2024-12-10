@@ -1,11 +1,5 @@
 <?php
 
-/**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
- */
-
 namespace app\assets;
 
 use yii\web\AssetBundle;
@@ -28,8 +22,8 @@ class DashboardAsset extends AssetBundle
         'library/myresume/assets/vendor/boxicons/css/boxicons.min.css',
         'library/myresume/assets/vendor/glightbox/css/glightbox.min.css',
         'library/myresume/assets/vendor/swiper/swiper-bundle.min.css',
-        'library/css/fi-dashboard-main.css', // 'library/myresume/assets/css/style.css',
-        'library/css/fi-dashboard.css', // 'library/dashboard-circle/dist/style.css'
+        'library/css/fi-dashboard-main.css',
+        'library/css/fi-dashboard.css',
         'https://use.fontawesome.com/releases/v5.3.1/css/all.css',
 
     ];

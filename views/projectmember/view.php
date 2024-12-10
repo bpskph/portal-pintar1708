@@ -1,8 +1,6 @@
 <?php
 use yii\helpers\Html;
 use kartik\detail\DetailView;
-/** @var yii\web\View $this */
-/** @var app\models\Projectmember $model */
 $this->title = 'Detail Anggota Project Tim Kerja # ' . $model->id_projectmember;
 \yii\web\YiiAsset::register($this);
 ?>

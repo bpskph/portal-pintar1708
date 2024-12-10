@@ -1,7 +1,5 @@
 <?php
 use yii\helpers\Html;
-/** @var yii\web\View $this */
-/** @var app\models\Suratrepo $model */
 $this->title = 'Tambah Surat Internal';
 ?>
 <div class="suratrepo-create">

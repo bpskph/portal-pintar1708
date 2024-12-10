@@ -1,7 +1,5 @@
 <?php
-
 use yii\helpers\Html;
-use yii\web\View;
 use kartik\grid\SerialColumn;
 use kartik\grid\ActionColumn;
 use kartik\grid\GridView;
@@ -21,7 +19,7 @@ $this->title = 'Portal SK';
         <div class="p-2">
             <?php
             $homeUrl = ['agenda/index?owner=&year=' . date("Y") . '&nopage=0'];
-            echo Html::a('<i class="fas fa-home"></i> Beranda Agenda', $homeUrl, ['class' => 'btn btn btn-outline-warning btn-sm']);
+            echo Html::a('<i class="fas fa-home"></i> Agenda Utama', $homeUrl, ['class' => 'btn btn btn-outline-warning btn-sm']);
             ?>
             <?php if (!Yii::$app->user->isGuest && (Yii::$app->user->identity->sk_maker === 1 || Yii::$app->user->identity->level === 0)) : ?>
                 |
@@ -90,9 +88,7 @@ $this->title = 'Portal SK';
                     [
                         'class' => ActionColumn::class,
                         'header' => 'Aksi',
-                        'template' => (Yii::$app->user->isGuest || Yii::$app->user->identity->theme == 0)
-                            ? '{update}{view}'
-                            : '{update}{view}',
+                        'template' => '{update}{view}',
                         'visibleButtons' => [
                             'delete' => function ($model, $key, $index) {
                                 return ((!Yii::$app->user->isGuest && Yii::$app->user->identity->username === $model['reporter'] //datanya sendiri

@@ -1,14 +1,7 @@
 <?php
 use yii\helpers\Html;
-// use yii\widgets\ActiveForm;
 use kartik\form\ActiveForm;
-use yii\helpers\ArrayHelper;
 use kartik\daterange\DateRangePicker;
-use app\models\Project;
-use app\models\Rooms;
-/** @var yii\web\View $this */
-/** @var app\models\AgendaSearch $model */
-/** @var yii\widgets\ActiveForm $form */
 ?>
 <div class="card <?= ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? '' : 'bg-dark') ?>">
     <div class="card-body" style="margin: 0 auto!important">

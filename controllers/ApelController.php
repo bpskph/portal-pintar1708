@@ -6,9 +6,7 @@ use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-/**
- * ApelController implements the CRUD actions for Apel model.
- */
+
 class ApelController extends BaseController
 {
     /**
@@ -60,6 +58,13 @@ class ApelController extends BaseController
     }
     public function actionView($id)
     {
+        $model =  $this->findModel($id);
+
+        if ($model->deleted == 1) {
+            Yii::$app->session->setFlash('warning', "Data apel/upacara ini sudah dihapus.");
+            return $this->redirect(['index']);
+        }
+
         if (Yii::$app->request->isAjax) {
             return $this->renderAjax('view', [
                 'model' => $this->findModel($id),
@@ -99,6 +104,7 @@ class ApelController extends BaseController
         $model = $this->findModel($id);
         if ($this->request->isPost) {
             $model->load($this->request->post());
+            date_default_timezone_set('Asia/Jakarta');
             $model->timestamp_apel_lastupdate = date('Y-m-d H:i:s');
             $peserta = $model->bendera;
             if ($model->bendera != null) {
@@ -106,6 +112,7 @@ class ApelController extends BaseController
                 $model->bendera = $cek;
             }        
             if ($model->validate()) {
+                date_default_timezone_set('Asia/Jakarta');
                 $model->timestamp_apel_lastupdate = date('Y-m-d H:i:s');
                 if ($model->save()) {
                     Yii::$app->session->setFlash('success', "Jadwal apel/upacara berhasil dimutakhirkan. Terima kasih.");
@@ -119,7 +126,7 @@ class ApelController extends BaseController
     }
     public function actionDelete($id)
     {
-        $model = $this->findModel($id);
+        date_default_timezone_set('Asia/Jakarta');
         $affected_rows = Apel::updateAll(['deleted' => 1, 'timestamp_apel_lastupdate' => date('Y-m-d H:i:s')], 'id_apel = "' . $id . '"');
         if ($affected_rows == 0) {
             Yii::$app->session->setFlash('warning', "Gagal. Mohon hubungi Admin.");

@@ -1,19 +1,8 @@
 <?php
 use app\models\Agenda;
-use app\models\Project;
-use app\models\Projectmember;
-use app\models\Rooms;
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
 use kartik\select2\Select2;
-use yii\helpers\ArrayHelper;
-use kartik\switchinput\SwitchInput;
-use kartik\datetime\DateTimePicker;
-use kartik\grid\ActionColumn;
-use kartik\grid\GridView;
-/** @var yii\web\View $this */
-/** @var app\models\Agenda $model */
-/** @var yii\widgets\ActiveForm $form */
 ?>
 <style>
     label {
@@ -77,7 +66,7 @@ use kartik\grid\GridView;
                     ],
                 ]); ?>
                 <?= $form->field($model, 'peserta_lain')->textarea(['rows' => 3])
-                    ->hint('Input nama badan/orang di luar BPS Kabupaten Bengkulu Selatan serta alamat email valid (<b>hanya</b> jika ingin mengirimkan undangan digital via email blast). Data dapat terisi lebih dari satu, pisahkan dengan koma. Contoh: <b>Bappeda Kabupaten Bengkulu Selatan, Nofriana, S.Pd., dianputra@bps.go.id, khansa.safira19@gmail.com</b>', ['class' => '', 'style' => 'color: #999']) ?>
+                    ->hint('Input nama badan/orang di luar BPS Provinsi Bengkulu serta alamat email valid (<b>hanya</b> jika ingin mengirimkan undangan digital via email blast). Data dapat terisi lebih dari satu, pisahkan dengan koma. Contoh: <b>Bappeda Provinsi Bengkulu, Nofriana, S.Pd., dianputra@bps.go.id, khansa.safira19@gmail.com</b>', ['class' => '', 'style' => 'color: #999']) ?>
                 <div class="form-group text-end mb-3">
                     <?= Html::submitButton('<i class="fas fa-save"></i> Simpan', ['class' => 'btn btn btn-outline-warning btn-block']) ?>
                 </div>

@@ -1,18 +1,7 @@
 <?php
-use app\models\Agenda;
-use app\models\Project;
-use app\models\Projectmember;
-use app\models\Rooms;
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
-use kartik\select2\Select2;
-use yii\helpers\ArrayHelper;
-use kartik\switchinput\SwitchInput;
-use kartik\datetime\DateTimePicker;
-use kartik\grid\ActionColumn;
 use kartik\grid\GridView;
-/** @var yii\web\View $this */
-/** @var app\models\Agenda $model */
 $this->title = 'Tunda Agenda';
 ?>
 <style>
@@ -38,11 +27,6 @@ $this->title = 'Tunda Agenda';
 <h1><?= Html::encode($this->title) ?></h1>
 <div class="container-fluid" data-aos="fade-up">
     <div class="card alert <?= ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? 'bg-light' : 'bg-dark') ?>">
-        <!-- <div class="group">
-            <input type="text" id="calendar-tomorrow">
-            <span class="bar"></span>
-            <label class="input-label">From tomorrow</label>
-        </div> -->
         <?php $form = ActiveForm::begin([
             'layout' => 'default',
             'fieldConfig' => [

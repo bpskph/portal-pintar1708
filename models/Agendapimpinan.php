@@ -1,20 +1,6 @@
 <?php
 namespace app\models;
-use Yii;
-/**
- * This is the model class for table "agendapimpinan".
- *
- * @property int $id_agendapimpinan
- * @property string|null $waktumulai
- * @property string $waktuselesai
- * @property string $tempat
- * @property string $kegiatan
- * @property string|null $pendamping
- * @property string|null $pendamping_lain
- * @property string $reporter
- * @property string $timestamp
- * @property string $timestamp_agendapimpinan_lastupdate
- */
+
 class Agendapimpinan extends \yii\db\ActiveRecord
 {
     /**

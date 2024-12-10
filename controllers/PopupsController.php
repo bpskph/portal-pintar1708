@@ -5,18 +5,11 @@ namespace app\controllers;
 use app\models\Popups;
 use app\models\PopupsSearch;
 use Yii;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
-/**
- * PopupsController implements the CRUD actions for Popups model.
- */
 class PopupsController extends BaseController
 {
-    /**
-     * @inheritDoc
-     */
     public function behaviors()
     {
         return array_merge(
@@ -52,12 +45,6 @@ class PopupsController extends BaseController
             ]
         );
     }
-
-    /**
-     * Lists all Popups models.
-     *
-     * @return string
-     */
     public function actionIndex()
     {
         $searchModel = new PopupsSearch();
@@ -75,7 +62,6 @@ class PopupsController extends BaseController
             ]);
         }
     }
-
     public function actionCreate()
     {
         $model = new Popups();
@@ -93,11 +79,11 @@ class PopupsController extends BaseController
             'model' => $model,
         ]);
     }
-
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
         if ($this->request->isPost && $model->load($this->request->post())) {
+            date_default_timezone_set('Asia/Jakarta');
             $model->timestamp_lastupdate = date('Y-m-d H:i:s');
             if ($model->save()) {
                 Yii::$app->session->setFlash('success', "Data popup berhasil dimutakhirkan. Terima kasih.");
@@ -108,17 +94,9 @@ class PopupsController extends BaseController
             'model' => $model,
         ]);
     }
-
-    /**
-     * Deletes an existing Popups model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id_popups Id Popups
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    
     public function actionDelete($id)
     {
+        date_default_timezone_set('Asia/Jakarta');
         $affected_rows = Popups::updateAll(['deleted' => 1, 'timestamp_lastupdate' => date('Y-m-d H:i:s')], 'id_popups = "' . $id . '"');
         if ($affected_rows == 0) {
             Yii::$app->session->setFlash('warning', "Gagal. Mohon hubungi Admin.");
@@ -128,14 +106,6 @@ class PopupsController extends BaseController
             return $this->redirect(['index']);
         }
     }
-
-    /**
-     * Finds the Popups model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id_popups Id Popups
-     * @return Popups the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id_popups)
     {
         if (($model = Popups::findOne(['id_popups' => $id_popups])) !== null) {

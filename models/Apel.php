@@ -1,38 +1,12 @@
 <?php
 namespace app\models;
-use Yii;
-/**
- * This is the model class for table "apel".
- *
- * @property int $id_apel
- * @property int $jenis_apel
- * @property string $tanggal_apel
- * @property string $pembina_inspektur
- * @property string $pemimpin_komandan
- * @property string|null $perwira
- * @property string $mc
- * @property string $uud
- * @property string $korpri
- * @property string $doa
- * @property string $ajudan
- * @property string $operator
- * @property string|null $bendera
- * @property string $reporter
- * @property string $timestamp
- * @property string $timestamp_apel_lastupdate
- */
+
 class Apel extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName()
     {
         return 'apel';
     }
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -43,9 +17,6 @@ class Apel extends \yii\db\ActiveRecord
             [['pembina_inspektur', 'pemimpin_komandan', 'perwira', 'mc', 'uud', 'korpri', 'doa', 'ajudan', 'operator', 'reporter'], 'string', 'max' => 50],
         ];
     }
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [

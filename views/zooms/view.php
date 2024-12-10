@@ -79,12 +79,10 @@ $this->title = 'Detail Usulan Zoom # ' . $model->id_zooms;
                 'attribute' => 'jenis_zoom',
                 'value' => $model->zoomstypee->nama_zoomstype .  ' | ' . $model->zoomstypee->kuota,
             ],
-            // 'jenis_surat',
             [
                 'attribute' => 'fk_surat',
                 'value' => $model->surate,
             ],
-            // 'fk_surat',
             [
                 'attribute' => 'proposer',
                 'value' => $model->proposere->nama,
@@ -95,10 +93,6 @@ $this->title = 'Detail Usulan Zoom # ' . $model->id_zooms;
                 'format' => 'html',
                 'label' => 'Status Usulan',
             ],
-            // [
-            //     'attribute' => 'proposer',
-            //     'value' => $model->proposere->nama,
-            // ],
             [
                 'attribute' => 'timestamp',
                 'value' => \Yii::$app->formatter->asDatetime(strtotime($model->timestamp), "d MMMM y 'pada' H:mm a"),

@@ -115,9 +115,7 @@ $this->registerCssFile(Yii::$app->request->baseUrl . '/library/css/fi-linkapp.cs
                     [
                         'class' => ActionColumn::class,
                         'header' => 'Aksi',
-                        'template' => (Yii::$app->user->isGuest || Yii::$app->user->identity->theme == 0)
-                            ? '{update}{delete}{share}{aktifkanlagi}'
-                            : '{update}{delete}{share}{aktifkanlagi}',
+                        'template' => '{update}{delete}{share}{aktifkanlagi}',
                         'visible' => !Yii::$app->user->isGuest && Yii::$app->user->identity->level === 0 ? true : false,
                         'visibleButtons' => [
                             'delete' => function ($model, $key, $index) {

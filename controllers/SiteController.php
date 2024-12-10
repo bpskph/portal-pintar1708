@@ -8,7 +8,6 @@ use app\models\DlSearch;
 use Yii;
 use yii\bootstrap5\Html;
 use yii\web\Controller;
-use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\Linkapp;
@@ -25,9 +24,6 @@ use Exception;
 
 class SiteController extends Controller
 {
-    /**
-     * {@inheritdoc}
-     */
     public function behaviors()
     {
         return array_merge(parent::behaviors(), [
@@ -39,7 +35,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['contact', 'about', 'logout', 'theme', 'evaluasi', 'dashboard'], // add all actions to take guest to login page
+                        'actions' => ['about', 'logout', 'theme', 'evaluasi', 'dashboard'], // add all actions to take guest to login page
                         'allow' => true,
                         'roles' => ['@'],
                     ],

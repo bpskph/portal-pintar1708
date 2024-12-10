@@ -2,8 +2,7 @@
 use app\models\Pengguna;
 use yii\helpers\Html;
 use kartik\detail\DetailView;
-/** @var yii\web\View $this */
-/** @var app\models\Linkmat $model */
+
 $this->title = 'Detail Apel # ' . $model->id_apel;
 \yii\web\YiiAsset::register($this);
 ?>

@@ -5,14 +5,8 @@ use yii\data\ActiveDataProvider;
 use app\models\Suratrepo;
 use DateTime;
 use yii\db\Expression;
-/**
- * SuratrepoSearch represents the model behind the search form of `app\models\Suratrepo`.
- */
 class SuratrepoSearch extends Suratrepo
 {
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -20,21 +14,11 @@ class SuratrepoSearch extends Suratrepo
             [['penerima_suratrepo', 'tanggal_suratrepo', 'perihal_suratrepo', 'nomor_suratrepo', 'owner', 'timestamp', 'timestamp_suratrepo_lastupdate', 'jenis'], 'safe'],
         ];
     }
-    /**
-     * {@inheritdoc}
-     */
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
-    /**
-     * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     *
-     * @return ActiveDataProvider
-     */
     public function search($params)
     {
         // Retrieve the data query from your model or wherever you have defined it

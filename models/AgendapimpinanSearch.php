@@ -4,14 +4,9 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Agendapimpinan;
 use DateTime;
-/**
- * AgendapimpinanSearch represents the model behind the search form of `app\models\Agendapimpinan`.
- */
+
 class AgendapimpinanSearch extends Agendapimpinan
 {
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -19,21 +14,11 @@ class AgendapimpinanSearch extends Agendapimpinan
             [['waktumulai', 'waktuselesai', 'tempat', 'kegiatan', 'pendamping', 'pendamping_lain', 'reporter', 'timestamp', 'timestamp_agendapimpinan_lastupdate', 'waktu'], 'safe'],
         ];
     }
-    /**
-     * {@inheritdoc}
-     */
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
-    /**
-     * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     *
-     * @return ActiveDataProvider
-     */
     public function search($params)
     {
         $query = Agendapimpinan::find();

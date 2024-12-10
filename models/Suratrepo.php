@@ -1,42 +1,21 @@
 <?php
 namespace app\models;
 use Yii;
-/**
- * This is the model class for table "suratrepo".
- *
- * @property int $id_suratrepo
- * @property int $fk_agenda
- * @property string $penerima_suratrepo
- * @property string $tanggal_suratrepo
- * @property string $perihal_suratrepo
- * @property int $is_undangan
- * @property int $fk_suratsubkode
- * @property string $nomor_suratrepo
- * @property string $owner
- * @property string $timestamp
- * @property string $timestamp_suratrepo_lastupdate
- */
+
 class Suratrepo extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
     public $filepdf, $fileword;
     public static function tableName()
     {
         return 'suratrepo';
     }
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
             [['penerima_suratrepo', 'tanggal_suratrepo', 'perihal_suratrepo', 'fk_suratsubkode', 'nomor_suratrepo', 'owner', 'jenis'], 'required'],
             [['fk_agenda', 'fk_suratsubkode'], 'integer'],
-            [['tanggal_suratrepo', 'timestamp', 'timestamp_suratrepo_lastupdate', 'lampiran', 'tembusan', 'pihak_pertama', 'pihak_kedua', 'ttd_by', 'ttd_by_jabatan', 'is_undangan'], 'safe'],
+            [['tanggal_suratrepo', 'timestamp', 'timestamp_suratrepo_lastupdate', 'isi_suratrepo', 'lampiran', 'tembusan', 'pihak_pertama', 'pihak_kedua', 'ttd_by', 'ttd_by_jabatan', 'isi_lampiran', 'isi_lampiran_orientation', 'is_undangan'], 'safe'],
             [['perihal_suratrepo'], 'string'],
-            // [['nomor_suratrepo'], 'unique'],
             [['penerima_suratrepo', 'nomor_suratrepo'], 'string', 'max' => 255],
             [['owner'], 'string', 'max' => 50],
             ['tanggal_suratrepo', 'validateSembilanBelasMei'],
@@ -51,9 +30,6 @@ class Suratrepo extends \yii\db\ActiveRecord
             [['fileword'], 'file', 'extensions' => 'doc, docx'],
         ];
     }
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [
@@ -68,6 +44,7 @@ class Suratrepo extends \yii\db\ActiveRecord
             'owner' => 'Owner',
             'timestamp' => 'Diinput',
             'timestamp_suratrepo_lastupdate' => 'Dimutakhirkan',
+            'isi_suratrepo' => 'Isi Surat (Opsional)',
             'ttd_by_jabatan' => 'TTD Oleh (Jabatannya)',
             'ttd_by' => 'TTD Oleh (Namanya)',            
         ];

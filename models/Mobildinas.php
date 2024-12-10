@@ -4,33 +4,13 @@ namespace app\models;
 
 use Yii;
 
-/**
- * This is the model class for table "mobildinas".
- *
- * @property int $id_mobildinas
- * @property string $mulai
- * @property string $selesai
- * @property string $keperluan
- * @property string $borrower
- * @property int $approval
- * @property string $timestamp
- * @property string $timestamp_lastupdate
- * @property int $deleted
- */
 class Mobildinas extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
     public $waktu;
     public static function tableName()
     {
         return 'mobildinas';
     }
-
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -42,10 +22,6 @@ class Mobildinas extends \yii\db\ActiveRecord
             ['mulai', 'validateTanggal'],
         ];
     }
-
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [

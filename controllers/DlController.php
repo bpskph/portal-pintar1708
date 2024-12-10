@@ -5,18 +5,11 @@ namespace app\controllers;
 use app\models\Dl;
 use app\models\DlSearch;
 use Yii;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
-/**
- * DlController implements the CRUD actions for Dl model.
- */
 class DlController extends BaseController
 {
-    /**
-     * @inheritDoc
-     */
     public function behaviors()
     {
         return array_merge(
@@ -52,12 +45,6 @@ class DlController extends BaseController
             ]
         );
     }
-
-    /**
-     * Lists all Dl models.
-     *
-     * @return string
-     */
     public function actionIndex()
     {
         $searchModel = new DlSearch();
@@ -68,15 +55,15 @@ class DlController extends BaseController
             'dataProvider' => $dataProvider,
         ]);
     }
-
-    /**
-     * Displays a single Dl model.
-     * @param int $id_dl Id Dl
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionView($id_dl)
     {
+        $model =  $this->findModel($id_dl);
+
+        if ($model->deleted == 1) {
+            Yii::$app->session->setFlash('warning', "Data perjalanan dinas ini sudah dihapus.");
+            return $this->redirect(['index']);
+        }
+
         if (Yii::$app->request->isAjax) {
             return $this->renderAjax('view', [
                 'model' => $this->findModel($id_dl),
@@ -87,7 +74,6 @@ class DlController extends BaseController
             ]);
         }
     }
-
     public function actionCreate()
     {
         $model = new Dl();
@@ -114,7 +100,6 @@ class DlController extends BaseController
             'model' => $model,
         ]);
     }
-
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -130,6 +115,7 @@ class DlController extends BaseController
 
         if ($this->request->isPost) {
             $model->load($this->request->post());
+            date_default_timezone_set('Asia/Jakarta');
             $model->timestamp_lastupdate = date('Y-m-d H:i:s');
             $model->tanggal_mulai = date("Y-m-d", strtotime($_POST['Dl']['tanggal_mulai']));
             $model->tanggal_selesai = date("Y-m-d", strtotime($_POST['Dl']['tanggal_selesai']));
@@ -139,6 +125,7 @@ class DlController extends BaseController
                 $model->pegawai = $cek;
             }   
             if ($model->validate()) {
+                date_default_timezone_set('Asia/Jakarta');
                 $model->timestamp_lastupdate = date('Y-m-d H:i:s');                
                 if ($model->save()) {
                     Yii::$app->session->setFlash('success', "Data perjalanan dinas berhasil diperbaiki. Terima kasih.");
@@ -150,9 +137,9 @@ class DlController extends BaseController
             'model' => $model,
         ]);
     }
-
     public function actionDelete($id_dl)
     {
+        date_default_timezone_set('Asia/Jakarta');
         $affected_rows = Dl::updateAll(['deleted' => 1, 'timestamp_lastupdate' => date('Y-m-d H:i:s')], 'id_dl = "' . $id_dl . '"');
         if ($affected_rows == 0) {
             Yii::$app->session->setFlash('warning', "Gagal. Mohon hubungi Admin.");
@@ -162,7 +149,6 @@ class DlController extends BaseController
             return $this->redirect(['index']);
         }
     }
-
     protected function findModel($id_dl)
     {
         if (($model = Dl::findOne(['id_dl' => $id_dl])) !== null) {

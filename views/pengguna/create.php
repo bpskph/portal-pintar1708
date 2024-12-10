@@ -1,7 +1,4 @@
 <?php
-use yii\helpers\Html;
-/* @var $this yii\web\View */
-/* @var $model app\models\Pengguna */
 $this->title = 'Pendaftaran Pengguna PORTAL PINTAR';
 ?>
 <div class="container-fluid" data-aos="fade-up">

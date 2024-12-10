@@ -9,14 +9,6 @@ use kartik\date\DatePicker;
 if ($model->isNewRecord) {
     $model->tanggal_sk = date("Y-m-d");
 }
-
-// Registering flatpickr CSS and JS files
-// $this->registerCssFile('https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css', ['position' => View::POS_END]);
-// $this->registerJsFile('https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.9/flatpickr.min.js', ['position' => View::POS_END]);
-// $this->registerJsFile('https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js', ['position' => View::POS_END]);
-
-// Registering your custom JS and CSS files
-// $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-sk-form.js', ['position' => View::POS_END, 'depends' => [\yii\web\JqueryAsset::class]]);
 ?>
 <div class="container" data-aos="fade-up">
     <div class="card alert <?= ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? 'bg-light' : 'bg-dark') ?>">
@@ -77,8 +69,7 @@ if ($model->isNewRecord) {
             <div class="mb-3 transparan" style="border-width:0px">
                 <div class="row g-0">
                     <div class="col-md-2">
-                        <h5 class="card-title">File Saat Ini</h5>
-                        <!-- <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p> -->
+                        <h5 class="card-title">File Saat Ini</h5>                        
                     </div>
                     <div class="col-md-10">
                         <div id="pdf-container">

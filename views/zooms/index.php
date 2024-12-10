@@ -4,11 +4,22 @@ use yii\helpers\Html;
 use kartik\grid\SerialColumn;
 use kartik\grid\ActionColumn;
 use kartik\grid\GridView;
-use yii\web\View;
 
-
-$this->title = 'Jadwal Request/Pemakaian Zoom BPS Kabupaten Bengkulu Selatan';
+$this->title = 'Jadwal Request/Pemakaian Zoom BPS Provinsi Bengkulu';
 ?>
+<style>
+    .modal-link .icon-wrapper {
+        margin-right: 8px;
+        display: flex;
+        align-items: center;
+    }
+
+    .modal-link .text-wrapper {
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+    }
+</style>
 <div class="container-fluid" data-aos="fade-up">
     <h1 class="text-center"><?= Html::encode($this->title) ?></h1>
     <hr class="bps" />
@@ -21,7 +32,7 @@ $this->title = 'Jadwal Request/Pemakaian Zoom BPS Kabupaten Bengkulu Selatan';
         <div class="p-2">
             <?php
             $homeUrl = ['agenda/index?owner=&year=' . date("Y") . '&nopage=0'];
-            echo Html::a('<i class="fas fa-home"></i> Beranda Agenda', $homeUrl, ['class' => 'btn btn btn-outline-warning btn-sm']);
+            echo Html::a('<i class="fas fa-home"></i> Agenda Utama', $homeUrl, ['class' => 'btn btn btn-outline-warning btn-sm']);
             ?>
             <?php if (!Yii::$app->user->isGuest) : ?>
                 |
@@ -60,9 +71,7 @@ $this->title = 'Jadwal Request/Pemakaian Zoom BPS Kabupaten Bengkulu Selatan';
                     [
                         'class' => ActionColumn::class,
                         'header' => 'Agenda',
-                        'template' => (Yii::$app->user->isGuest || Yii::$app->user->identity->theme == 0)
-                            ? '{agenda}'
-                            : '{agenda}',
+                        'template' => '{agenda}',
                         'buttons'  => [
                             'agenda' => function ($url, $model, $key) {
                                 $formatter = Yii::$app->formatter;
@@ -78,25 +87,39 @@ $this->title = 'Jadwal Request/Pemakaian Zoom BPS Kabupaten Bengkulu Selatan';
                                     // if waktumulai and waktuselesai are on the same day, format the time range differently
                                     $waktumulaiFormatted = $formatter->asDatetime($waktumulai, 'd MMMM Y, H:mm'); // format the waktumulai datetime value with the year and time
                                     // return $waktumulaiFormatted . ' - ' . $waktuselesaiFormatted . ' WIB'; // concatenate the formatted dates
-                                    return Html::a('<i class="fas text-success fa-calendar-check"></i> ' . $waktumulaiFormatted . ' - ' . $waktuselesaiFormatted . ' WIB', ['agenda/' . $model->fk_agenda], [
-                                        'title' => 'Lihat rincian Agenda ini',
-                                        'data-bs-toggle' => 'modal',
-                                        'data-bs-target' => '#exampleModal',
-                                        'class' => 'modal-link btn-lebar',
-                                    ]);
+                                    return Html::a(
+                                        '<div class="icon-wrapper"><i class="fas text-success fa-calendar-check"></i></div>' .
+                                            '<div class="text-wrapper">' . $waktumulaiFormatted . ' - ' . $waktuselesaiFormatted . ' WIB</div>',
+                                        ['agenda/' . $model->fk_agenda],
+                                        [
+                                            'title' => 'Lihat rincian Agenda ini',
+                                            'data-bs-toggle' => 'modal',
+                                            'data-bs-target' => '#exampleModal',
+                                            'class' => 'modal-link btn-lebar d-flex align-items-center', // Ensure it's flexbox for alignment
+                                        ]
+                                    );
                                 } else {
                                     // if waktumulai and waktuselesai are on different days, format the date range normally
                                     $waktuselesaiFormatted = $formatter->asDatetime($waktuselesai, 'd MMMM Y, H:mm'); // format the waktuselesai datetime value
                                     // return $waktumulaiFormatted . ' WIB <br/>s.d ' . $waktuselesaiFormatted . ' WIB'; // concatenate the formatted dates
-                                    return Html::a('<i class="fas text-success fa-calendar-check"></i> ' . $waktumulaiFormatted . ' WIB <br/>s.d ' . $waktuselesaiFormatted . ' WIB', ['agenda/' . $model->fk_agenda], [
-                                        'title' => 'Lihat rincian Agenda ini',
-                                        'data-bs-toggle' => 'modal',
-                                        'data-bs-target' => '#exampleModal',
-                                        'class' => 'modal-link btn-lebar',
-                                    ]);
+                                    return Html::a(
+                                        '<div class="icon-wrapper"><i class="fas text-success fa-calendar-check"></i></div>' .
+                                            '<div class="text-wrapper">' .
+                                            $waktumulaiFormatted . ' WIB<br>s.d ' . $waktuselesaiFormatted . ' WIB' .
+                                            '</div>',
+                                        ['agenda/' . $model->fk_agenda],
+                                        [
+                                            'title' => 'Lihat rincian Agenda ini',
+                                            'data-bs-toggle' => 'modal',
+                                            'data-bs-target' => '#exampleModal',
+                                            'class' => 'modal-link btn-lebar d-flex align-items-start',
+                                        ]
+                                    );
                                 }
                             },
                         ],
+                        'vAlign' => 'middle',
+                        'hAlign' => 'left'
                     ],
                     [
                         'attribute' => 'fk_agenda',
@@ -105,6 +128,8 @@ $this->title = 'Jadwal Request/Pemakaian Zoom BPS Kabupaten Bengkulu Selatan';
                         },
                         'format' => 'html',
                         'label' => 'Progress Agenda',
+                        'vAlign' => 'middle',
+                        'hAlign' => 'center'
                     ],
                     [
                         'attribute' => 'jenis_zoom',
@@ -112,6 +137,7 @@ $this->title = 'Jadwal Request/Pemakaian Zoom BPS Kabupaten Bengkulu Selatan';
                             return $data->zoomstypee->nama_zoomstype . ' | ' . $data->zoomstypee->kuota;
                         },
                         'header' => 'Jenis',
+                        'vAlign' => 'middle'
                     ],
                     [
                         'attribute' => 'fk_surat',
@@ -119,6 +145,7 @@ $this->title = 'Jadwal Request/Pemakaian Zoom BPS Kabupaten Bengkulu Selatan';
                             return $data->surate;
                         },
                         'header' => 'Nomor Surat',
+                        'vAlign' => 'middle'
                     ],
                     [
                         'attribute' => 'proposer',
@@ -128,9 +155,7 @@ $this->title = 'Jadwal Request/Pemakaian Zoom BPS Kabupaten Bengkulu Selatan';
                     [
                         'class' => ActionColumn::class,
                         'header' => 'Aksi',
-                        'template' => (Yii::$app->user->isGuest || Yii::$app->user->identity->theme == 0)
-                            ? '{update}{view}{delete}'
-                            : '{update}{view}{delete}',
+                        'template' => '{update}{view}{delete}',
                         'visibleButtons' => [
                             'delete' => function ($model, $key, $index) {
                                 return (!Yii::$app->user->isGuest
@@ -166,6 +191,7 @@ $this->title = 'Jadwal Request/Pemakaian Zoom BPS Kabupaten Bengkulu Selatan';
                                 ]);
                             },
                         ],
+                        'hAlign' => 'center'
                     ],
                 ],
                 'layout' => $layout,

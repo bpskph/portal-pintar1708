@@ -1,25 +1,12 @@
 <?php
 namespace app\models;
-use Yii;
-/**
- * This is the model class for table "patches".
- *
- * @property int $id_patches
- * @property string $timestamp
- * @property string $description
- */
+
 class Patches extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName()
     {
         return 'patches';
     }
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -28,9 +15,6 @@ class Patches extends \yii\db\ActiveRecord
             [['description'], 'string'],
         ];
     }
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [

@@ -1,10 +1,7 @@
 <?php
 use yii\helpers\Html;
 use kartik\detail\DetailView;
-use app\controllers\LinkColumnAgendaView;
 use app\models\Pengguna;
-/** @var yii\web\View $this */
-/** @var app\models\Agenda $model */
 $this->title = 'Detail Agenda # ' . $model->id_agendapimpinan;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -24,7 +21,7 @@ $this->title = 'Detail Agenda # ' . $model->id_agendapimpinan;
         <div class="p-2">
             <?php
             $homeUrl = ['index'];
-            echo Html::a('<i class="fas fa-home"></i> Beranda Agenda Pimpinan', $homeUrl, ['class' => 'btn btn btn-outline-warning btn-sm']);
+            echo Html::a('<i class="fas fa-home"></i> Agenda Utama Pimpinan', $homeUrl, ['class' => 'btn btn btn-outline-warning btn-sm']);
             ?>
             <?php if (!Yii::$app->user->isGuest && $model->reporter === Yii::$app->user->identity->username) : ?>
                 |
@@ -39,14 +36,6 @@ $this->title = 'Detail Agenda # ' . $model->id_agendapimpinan;
             <?php endif; ?>
         </div>
         <div class="p-2">
-            <?php
-            // echo Html::a('Lihat Laporan <i class="fas fa-file-pdf"></i>', ['/portalpintar/laporan/' . $model->id_agenda], [
-            //     'class' => 'modalButtonAgenda btn btn-sm btn btn-outline-warning', 'data-pjax' => '0',
-            //     'data-url' => '/portalpintar/laporan/' . $model->id_agenda, // added data-url attribute
-            //     'data-toggle' => 'modal',
-            //     'data-target' => '#myModal',
-            // ]);
-            ?>
         </div>
     </div>
     <?php

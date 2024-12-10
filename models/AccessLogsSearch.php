@@ -6,14 +6,8 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\AccessLogs;
 
-/**
- * AccessLogsSearch represents the model behind the search form of `app\models\AccessLogs`.
- */
 class AccessLogsSearch extends AccessLogs
 {
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -21,29 +15,14 @@ class AccessLogsSearch extends AccessLogs
             [['controller', 'action', 'user_id', 'user_ip', 'user_agent', 'timestamp'], 'safe'],
         ];
     }
-
-    /**
-     * {@inheritdoc}
-     */
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
-
-    /**
-     * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     *
-     * @return ActiveDataProvider
-     */
     public function search($params)
     {
         $query = AccessLogs::find();
-
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
@@ -60,7 +39,6 @@ class AccessLogsSearch extends AccessLogs
             return $dataProvider;
         }
 
-        // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
             'timestamp' => $this->timestamp,

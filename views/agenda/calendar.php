@@ -1,9 +1,4 @@
 <?php
-
-use yii\web\View;
-use yii\widgets\ListView;
-use yii\widgets\Pjax;
-
 $eventsKalender = json_encode($eventsKalender, JSON_UNESCAPED_UNICODE);
 $script = <<< JS
     var eventsKalender = $eventsKalender;

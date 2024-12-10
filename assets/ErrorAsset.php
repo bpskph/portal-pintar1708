@@ -9,9 +9,6 @@ class ErrorAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        // 'https://fonts.googleapis.com/css?family=Poppins',
-        // 'library/not-found-page/dist/style.css',
-        // 'library/css/fi-error.css',
         'https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i',
         'library/niceadmin/assets/vendor/bootstrap/css/bootstrap.min.css',
         'library/niceadmin/assets/vendor/bootstrap-icons/bootstrap-icons.css',

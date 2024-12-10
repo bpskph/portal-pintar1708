@@ -29,7 +29,7 @@ class NotificationController extends BaseController
                             'allow' => true,
                         ],
                         [
-                            'actions' => ['index', 'mark-as-read', 'markallread'], // add all actions to take guest to login page
+                            'actions' => ['index', 'mark-as-read', 'markallread', 'mark-as-read-and-view'], // add all actions to take guest to login page
                             'allow' => true,
                             'roles' => ['@'],
                         ],
@@ -40,7 +40,6 @@ class NotificationController extends BaseController
     }
     public function actionIndex()
     {
-        // $notifications = Notification::find()->where(['user_id' => Yii::$app->user->id, 'is_read' => 0])->all();
         $dataProvider = new ActiveDataProvider([
             'query' => Notification::find()->where(['user_id' => Yii::$app->user->id])->orderBy(['is_read' => SORT_ASC, 'created_at' => SORT_DESC]),
             'pagination' => [
@@ -59,7 +58,6 @@ class NotificationController extends BaseController
         }
         // return $this->render('index', ['notifications' => $notifications]);
     }
-
     public function actionMarkAsRead($id)
     {
         $notification = Notification::findOne($id);
@@ -67,14 +65,21 @@ class NotificationController extends BaseController
             $notification->is_read = 1;
             $notification->read_at = date('Y-m-d H:i:s');
             $notification->save();
-            // Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-            // return ['success' => true];
             return $this->redirect(['notification/index']);
         }
         throw new \yii\web\ForbiddenHttpException('You are not allowed to perform this action.');
     }
-
-
+    public function actionMarkAsReadAndView($id)
+    {
+        $notification = Notification::findOne($id);
+        if ($notification && $notification->user_id == Yii::$app->user->id) {
+            $notification->is_read = 1;
+            $notification->read_at = date('Y-m-d H:i:s');
+            $notification->save();
+            return $this->redirect([$notification->link . '/' . $notification->link_id]);
+        }
+        throw new \yii\web\ForbiddenHttpException('You are not allowed to perform this action.');
+    }
     public function actionMarkallread()
     {
         $userId = Yii::$app->user->id;
@@ -88,11 +93,4 @@ class NotificationController extends BaseController
 
         return $this->redirect(['notification/index']);
     }
-
-
-    // public function actionTest()
-    // {
-    //     \app\models\Notification::createNotification(Yii::$app->user->id, 'Test notification message');
-    //     return 'Notification sent';
-    // }
 }

@@ -1,7 +1,5 @@
 <?php
 use yii\helpers\Html;
-/** @var yii\web\View $this */
-/** @var app\models\Beritarilis $model */
 $this->title = 'Tambah Jadwal Rilis';
 ?>
 <div class="beritarilis-create">

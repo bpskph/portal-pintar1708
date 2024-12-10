@@ -3,17 +3,11 @@ namespace app\controllers;
 use app\models\Projectmember;
 use app\models\ProjectmemberSearch;
 use Yii;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-/**
- * ProjectmemberController implements the CRUD actions for Projectmember model.
- */
+
 class ProjectmemberController extends BaseController
 {
-    /**
-     * @inheritDoc
-     */
     public function behaviors()
     {
         return array_merge(
@@ -96,7 +90,7 @@ class ProjectmemberController extends BaseController
     }
     public function actionDelete($id)
     {
-        $model = $this->findModel($id);
+        date_default_timezone_set('Asia/Jakarta');
         $affected_rows = Projectmember::updateAll(['member_status' => 0, 'timetstamp_projectmember_lastupdate' => date('Y-m-d H:i:s')], 'id_projectmember = "' . $id . '"');
         if ($affected_rows == 0) {
             Yii::$app->session->setFlash('warning', "Gagal. Mohon hubungi Admin.");
@@ -108,7 +102,7 @@ class ProjectmemberController extends BaseController
     }
     public function actionAktifkanlagi($id)
     {
-        $model = $this->findModel($id);
+        date_default_timezone_set('Asia/Jakarta');
         $affected_rows = Projectmember::updateAll(['member_status' => 1, 'timetstamp_projectmember_lastupdate' => date('Y-m-d H:i:s')], 'id_projectmember = "' . $id . '"');
         if ($affected_rows == 0) {
             Yii::$app->session->setFlash('warning', "Gagal. Mohon hubungi Admin.");

@@ -1,7 +1,5 @@
 <?php
 use yii\helpers\Html;
-/** @var yii\web\View $this */
-/** @var app\models\Agendapimpinan $model */
 $this->title = 'Update Agenda Pimpinan # ' . $model->id_agendapimpinan;
 ?>
 <div class="agendapimpinan-update">

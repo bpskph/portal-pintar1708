@@ -2,31 +2,12 @@
 
 namespace app\models;
 
-use Yii;
-
-/**
- * This is the model class for table "popups".
- *
- * @property int $id_popups
- * @property string $judul_popups
- * @property string $rincian_popups
- * @property int $deleted
- * @property string $timestamp
- * @property string $timestamp_lastupdate
- */
 class Popups extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName()
     {
         return 'popups';
     }
-
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -37,10 +18,6 @@ class Popups extends \yii\db\ActiveRecord
             [['judul_popups'], 'string', 'max' => 255],
         ];
     }
-
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [

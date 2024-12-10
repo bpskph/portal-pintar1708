@@ -4,12 +4,9 @@ use yii\helpers\Html;
 use kartik\detail\DetailView;
 use yii\web\View;
 
-/** @var yii\web\View $this */
-/** @var app\models\Linkmat $model */
 $this->title = 'Detail Link Materi # ' . $model->id_linkmat;
 \yii\web\YiiAsset::register($this);
 $baseUrl = Yii::$app->request->baseUrl;
-// $baseUrl = '/bengkulu'. Yii::$app->request->baseUrl; untuk di webapps
 $script = <<< JS
     var baseUrl = '$baseUrl';
 JS;
@@ -33,7 +30,6 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-linkmat-view
                 'label' => 'ID Materi',
             ],
             'judul',
-            // 'link:ntext',
             [
                 'attribute' => 'link',
                 'format' => 'html', // set format to html

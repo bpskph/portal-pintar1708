@@ -2,28 +2,12 @@
 
 namespace app\models;
 
-use Yii;
-
-/**
- * This is the model class for table "dltujuan".
- *
- * @property string $id_dltujuan
- * @property string $nama_tujuan
- * @property string $fk_prov
- */
 class Dltujuan extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName()
     {
         return 'dltujuan';
     }
-
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -34,10 +18,6 @@ class Dltujuan extends \yii\db\ActiveRecord
             [['id_dltujuan'], 'unique'],
         ];
     }
-
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [

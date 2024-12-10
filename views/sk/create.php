@@ -2,9 +2,6 @@
 
 use yii\helpers\Html;
 
-/** @var yii\web\View $this */
-/** @var app\models\Sk $model */
-
 $this->title = 'Tambah Data SK Baru';
 ?>
 <div class="sk-create">

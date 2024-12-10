@@ -9,12 +9,6 @@ use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
 
 $searchModel = new AccessLogsSearch();
-// $dataProvider = new ActiveDataProvider([
-//     'query' => AccessLogs::find(),
-//     'pagination' => [
-//         'pageSize' => 20,
-//     ],
-// ]);
 $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
 $this->title = 'Riwayat Akses Aplikasi per 19 Juni 2024';
@@ -73,8 +67,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     'controller',
                     'action',
-                    // 'user_id',
-                    // 'created_at',
                     [
                         'attribute' => 'user_id',
                         'value' => function ($model) {
@@ -114,7 +106,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'pjax' => false,
                 'pjaxSettings' => [
                     'neverTimeout' => true,
-                    // 'enablePushState' => false,
                     'options' => ['id' => 'some_pjax_id'],
                 ],
                 'pager' => [

@@ -3,17 +3,11 @@ namespace app\controllers;
 use app\models\Linkmat;
 use app\models\LinkmatSearch;
 use Yii;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-/**
- * LinkmatController implements the CRUD actions for Linkmat model.
- */
+
 class LinkmatController extends BaseController
 {
-    /**
-     * @inheritDoc
-     */
     public function behaviors()
     {
         return array_merge(
@@ -60,6 +54,13 @@ class LinkmatController extends BaseController
     }
     public function actionView($id)
     {
+        $model =  $this->findModel($id);
+
+        if ($model->active == 2) {
+            Yii::$app->session->setFlash('warning', "Data sharing ini sudah dihapus.");
+            return $this->redirect(['index']);
+        }
+
         if (Yii::$app->request->isAjax) {
             $model = Linkmat::findOne($id);
             $model->views++;
@@ -96,6 +97,7 @@ class LinkmatController extends BaseController
     {
         $model = $this->findModel($id);
         if ($this->request->isPost && $model->load($this->request->post())) {
+            date_default_timezone_set('Asia/Jakarta');
             $model->timestamp_lastupdate = date('Y-m-d H:i:s');
             $model->active = 0;
             if ($model->save()) {
@@ -109,7 +111,7 @@ class LinkmatController extends BaseController
     }
     public function actionDelete($id)
     {
-        $model = $this->findModel($id);
+        date_default_timezone_set('Asia/Jakarta');
         $affected_rows = Linkmat::updateAll(['active' => 2, 'timestamp_lastupdate' => date('Y-m-d H:i:s')], 'id_linkmat = "' . $id . '"');
         if ($affected_rows == 0) {
             Yii::$app->session->setFlash('warning', "Gagal. Mohon hubungi Admin.");

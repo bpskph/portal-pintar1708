@@ -1,10 +1,8 @@
 <?php
 use yii\helpers\Html;
-use yii\helpers\Url;
 use kartik\grid\SerialColumn;
 use kartik\grid\GridView;
 use yii\bootstrap5\Modal;
-use yii\web\View;
 use kartik\grid\ActionColumn;
 
 $this->title = 'Daftar Patches Portal Pintar';
@@ -24,8 +22,6 @@ $this->title = 'Daftar Patches Portal Pintar';
             <?= Html::a('<i class="fas fa-folder-plus"></i> Tambah Data Baru', ['create'], ['class' => 'btn btn btn-outline-warning btn-sm']) ?>
         </p>
     <?php endif; ?>
-    <?php //echo $this->render('_search', ['model' => $searchModel]);
-    ?>
     <div class="card <?= ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? '' : 'bg-dark') ?>">
         <div class="card-body table-responsive p-0">
             <?php
@@ -53,14 +49,12 @@ $this->title = 'Daftar Patches Portal Pintar';
                     [
                         'class' => SerialColumn::class,
                     ],
-                    // 'id_patches',
                     [
                         'attribute' => 'timestamp',
                         'value' => function ($model) {
                             return \Yii::$app->formatter->asDatetime(strtotime($model->timestamp), "d MMMM y 'pada' H:mm a");
                         },
                     ],
-                    // 'timestamp',
                     'title',
                     [
                         'attribute' => 'description',
@@ -69,9 +63,7 @@ $this->title = 'Daftar Patches Portal Pintar';
                     [
                         'class' => ActionColumn::class,
                         'header' => 'Aksi',
-                        'template' => (Yii::$app->user->isGuest || Yii::$app->user->identity->theme == 0)
-                            ? '{wa_blast}'
-                            : '{wa_blast}',
+                        'template' => '{wa_blast}',
                         'visibleButtons' => [
                             'wa_blast' => function ($model, $key, $index) {
                                 return (!Yii::$app->user->isGuest

@@ -1,13 +1,11 @@
 <?php
 
-/** @var yii\web\View $this */
 $this->title = 'Dashboard Agenda';
 
 use app\models\Agenda;
 use app\models\Apel;
 use app\models\Beritarilis;
 use app\models\Pengguna;
-use kartik\grid\GridView;
 use yii\widgets\ListView;
 
 $colClass = 'col-md-3';
@@ -92,6 +90,10 @@ function findPesertaTambahan($dataagenda)
         $autofillString = '';
     return $autofillString;
 }
+?>
+<?php
+$fmt = new \IntlDateFormatter('id_ID', NULL, NULL);
+$fmt->setPattern('eeee, d MMMM yyyy');
 ?>
 <div class="row">
     <div class="col-lg-6">

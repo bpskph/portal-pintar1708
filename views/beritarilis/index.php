@@ -4,9 +4,8 @@ use yii\helpers\Html;
 use kartik\grid\SerialColumn;
 use kartik\grid\ActionColumn;
 use kartik\grid\GridView;
-use yii\web\View;
 
-$this->title = 'Jadwal Berita Rilis BPS Kabupaten Bengkulu Selatan';
+$this->title = 'Jadwal Berita Rilis BPS Provinsi Bengkulu';
 ?>
 <div class="container-fluid" data-aos="fade-up">
     <h1 class="text-center"><?= Html::encode($this->title) ?></h1>
@@ -20,7 +19,7 @@ $this->title = 'Jadwal Berita Rilis BPS Kabupaten Bengkulu Selatan';
         <div class="p-2">
             <?php
             $homeUrl = ['agenda/index?owner=&year=' . date("Y") . '&nopage=0'];
-            echo Html::a('<i class="fas fa-home"></i> Beranda Agenda', $homeUrl, ['class' => 'btn btn btn-outline-warning btn-sm']);
+            echo Html::a('<i class="fas fa-home"></i> Agenda Utama', $homeUrl, ['class' => 'btn btn btn-outline-warning btn-sm']);
             ?>
             <?php if (!Yii::$app->user->isGuest) : ?>
                 |
@@ -84,7 +83,6 @@ $this->title = 'Jadwal Berita Rilis BPS Kabupaten Bengkulu Selatan';
                     ],
                     [
                         'attribute' => 'materi_rilis',
-                        // 'hAlign' => 'center',
                         'vAlign' => 'middle'
                     ],
                     [
@@ -133,9 +131,7 @@ $this->title = 'Jadwal Berita Rilis BPS Kabupaten Bengkulu Selatan';
                     [
                         'class' => ActionColumn::class,
                         'header' => 'Aksi',
-                        'template' => (Yii::$app->user->isGuest || Yii::$app->user->identity->theme == 0)
-                            ? '{update}{view}{delete}'
-                            : '{update}{view}{delete}',
+                        'template' => '{update}{view}{delete}',
                         'visibleButtons' => [
                             'delete' => function ($model, $key, $index) {
                                 return (!Yii::$app->user->isGuest && Yii::$app->user->identity->username === $model['reporter'] //datanya sendiri

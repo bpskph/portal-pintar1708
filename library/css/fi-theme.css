@@ -279,3 +279,24 @@ label.form-check-label,
     --bs-table-color: #6C757D!important;
     --bs-table-bg: #0a0c0d!important;
 }
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown:hover .dropdown-toggle {
+    background-color: #d48912;
+    color: #fff;
+}
+
+.d-flex {
+    gap: 8px;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}

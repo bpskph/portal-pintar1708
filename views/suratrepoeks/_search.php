@@ -1,14 +1,9 @@
 <?php
-use app\models\Suratsubkode;
 use yii\helpers\Html;
-// use yii\widgets\ActiveForm;
 use kartik\form\ActiveForm;
 use yii\helpers\ArrayHelper;
 use kartik\select2\Select2;
 use kartik\daterange\DateRangePicker;
-/** @var yii\web\View $this */
-/** @var app\models\AgendaSearch $model */
-/** @var yii\widgets\ActiveForm $form */
 ?>
 <div class="card <?= ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? '' : 'bg-dark') ?>">
     <div class="card-body" style="margin: 0 auto!important">
@@ -75,21 +70,6 @@ use kartik\daterange\DateRangePicker;
             'placeholder' => 'Perihal ...',
             'style' => 'max-width: 150px;', // Set the desired max-width value
         ]) ?>
-        <?php
-        // $form->field($model, 'fk_suratsubkode')->widget(Select2::classname(), [
-        //     'data' => ArrayHelper::map(
-        //         \app\models\Suratsubkode::find()->select('*')->asArray()->all(),
-        //         'id_suratsubkode',
-        //         function ($model) {
-        //             return $model['fk_suratkode'] . '-' . $model['rincian_suratsubkode'];
-        //         }
-        //     ),
-        //     'options' => ['placeholder' => 'Cakupan ...'],
-        //     'pluginOptions' => [
-        //         'allowClear' => true
-        //     ],
-        // ]);
-        ?>
         <?=
         $form->field($model, 'sifat')->dropDownList([
             0 => "Biasa", 1 => "Penting", 2 => "Rahasia"

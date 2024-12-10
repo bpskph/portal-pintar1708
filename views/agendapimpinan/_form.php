@@ -6,28 +6,12 @@ use yii\bootstrap5\ActiveForm;
 use kartik\select2\Select2;
 use kartik\grid\GridView;
 use kartik\datetime\DateTimePicker;
-use yii\web\View;
-
-// $actionId = Yii::$app->controller->action->id;
-// $script = <<< JS
-//     var actionId = '$actionId';
-// JS;
-// $this->registerJs($script, \yii\web\View::POS_HEAD);
 
 // Assuming $model is an instance of your model class
 if ($model->isNewRecord) {
     $model->waktumulai = date("Y-m-d 10:00:00");
     $model->waktuselesai = date("Y-m-d 12:00:00");
 }
-
-// Registering flatpickr CSS and JS files
-// $this->registerCssFile('https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css', ['position' => View::POS_END]);
-// $this->registerJsFile('https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.9/flatpickr.min.js', ['position' => View::POS_END]);
-// $this->registerJsFile('https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js', ['position' => View::POS_END]);
-
-// Registering your custom JS and CSS files
-// $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-agendapimpinan-form.js', ['position' => View::POS_END, 'depends' => [\yii\web\JqueryAsset::class]]);
-
 ?>
 <div class="container-fluid" data-aos="fade-up">
     <div class="card alert <?= ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? 'bg-light' : 'bg-dark') ?>">
@@ -94,7 +78,7 @@ if ($model->isNewRecord) {
                     ],
                 ]); ?>
                 <?= $form->field($model, 'pendamping_lain')->textarea(['rows' => 3])
-                    ->hint('Input nama badan/orang di luar BPS Kabupaten Bengkulu Selatan. Contoh: <b>Kepala BPS Kota Bengkulu, Dian Putra Nugraha</b>', ['class' => '', 'style' => 'color: #999']) ?>
+                    ->hint('Input nama badan/orang di luar BPS Provinsi Bengkulu. Contoh: <b>Kepala BPS Kota Bengkulu, Dian Putra Nugraha</b>', ['class' => '', 'style' => 'color: #999']) ?>
                 <div class="form-group text-end mb-3">
                     <?= Html::submitButton('<i class="fas fa-save"></i> Simpan', ['class' => 'btn btn btn-outline-warning btn-block']) ?>
                 </div>

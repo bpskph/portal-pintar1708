@@ -2,7 +2,6 @@
 
 namespace app\models;
 
-use Yii;
 use yii\db\ActiveRecord;
 
 class Notification extends ActiveRecord
@@ -39,10 +38,5 @@ class Notification extends ActiveRecord
         $notification->link = $link;
         $notification->link_id = $linkId;
         $notification->save();
-        // if ($notification->save()) {
-        //     Yii::info('Pusher event triggered: ' . json_encode(['message' => $message, 'user_id' => $userId, 'title' => $title]));
-        // } else {
-        //     Yii::error('Failed to save notification: ' . json_encode($notification->errors));
-        // }
     }
 }

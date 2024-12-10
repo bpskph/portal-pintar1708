@@ -9,12 +9,6 @@ use kartik\switchinput\SwitchInput;
 use yii\helpers\ArrayHelper;
 use kartik\datetime\DateTimePicker;
 
-// $this->registerCssFile('https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css', ['position' => View::POS_END]);
-// $this->registerJsFile('https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.9/flatpickr.min.js', ['position' => View::POS_END]);
-// $this->registerJsFile('https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js', ['position' => View::POS_END]);
-
-// Registering your custom JS and CSS files
-// $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-beritarilis-form.js', ['position' => View::POS_END, 'depends' => [\yii\web\JqueryAsset::class]]);
 if ($model->isNewRecord) {
     $model->waktumulai = date("Y-m-d 10:00:00");
     $model->waktuselesai = date("Y-m-d 12:00:00");
@@ -80,8 +74,6 @@ if ($model->isNewRecord) {
                 'placeholder' => 'Pilih Narasumber ...',
             ],
         ]); ?>
-        <?php // $form->field($model, 'lokasi')->textInput(['maxlength' => true]) 
-        ?>
         <?= $form->field($model, 'pilihtempat')->widget(SwitchInput::classname(), [
             'pluginOptions' => [
                 'onText' => 'LUAR',

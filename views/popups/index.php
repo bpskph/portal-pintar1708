@@ -105,9 +105,7 @@ $this->title = 'Riwayat Pengumuman (Popups) Melalui Sistem Portal Pintar';
                         'class' => ActionColumn::class,
                         'header' => 'Aksi',
                         'visible'=> Yii::$app->user->identity->level == 0 ? true: false,
-                        'template' => (Yii::$app->user->isGuest || Yii::$app->user->identity->theme == 0)
-                            ? '{update}{delete}'
-                            : '{update}{delete}',                        
+                        'template' => '{update}{delete}',                        
                         'buttons'  => [
                             'delete' => function ($url, $model, $key) {
                                 return Html::a('<i class="fas text-danger fa-trash-alt"></i> ', $url, [

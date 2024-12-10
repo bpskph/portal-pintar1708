@@ -3,14 +3,9 @@ namespace app\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Projectmember;
-/**
- * ProjectmemberSearch represents the model behind the search form of `app\models\Projectmember`.
- */
+
 class ProjectmemberSearch extends Projectmember
 {
-    /**
-     * {@inheritdoc}
-     */
     public $teame, $tahun;
     public function rules()
     {
@@ -19,21 +14,11 @@ class ProjectmemberSearch extends Projectmember
             [['pegawai', 'fk_project', 'teame', 'tahun'], 'safe'],
         ];
     }
-    /**
-     * {@inheritdoc}
-     */
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
-    /**
-     * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     *
-     * @return ActiveDataProvider
-     */
     public function search($params)
     {
         $query = Projectmember::find();

@@ -65,7 +65,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-projectmembe
                 <?php elseif ($bengkulu == 'TIDAK') : ?>
                     <div class="alert alert-secondary alert-dismissable">
                         <p>
-                            Mohon maaf, pegawai yang dapat ditambahkan ke sistem Portal Pintar hanya pegawai yang pada Community BPS tercatat di Satker Kabupaten Bengkulu Selatan.
+                            Mohon maaf, pegawai yang dapat ditambahkan ke sistem Portal Pintar hanya pegawai yang pada Community BPS tercatat di Satker Provinsi Bengkulu.
                         </p>
                     </div>
                 <?php elseif ($ada == 'COMMUNITY') : ?>
@@ -88,8 +88,6 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-projectmembe
                                 <h3 class="card-title">Identitas Pengguna</h3>
                             </div>
                             <div class="card-body">
-                                <?php //echo $this->context->action->id
-                                ?>
                                 <?= $form->field($model, 'username')->textInput(['maxlength' => true, 'style' => 'text-transform: lowercase', 'readonly' => true, 'value' => $model->isNewRecord ? $profil[$key]['username'] : $model->username]) ?>
                                 <?php if ($model->isNewRecord) { ?>
                                     <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>

@@ -1,8 +1,6 @@
 <?php
 use yii\helpers\Html;
 use kartik\form\ActiveForm;
-/* @var $this yii\web\View */
-/* @var $model app\models\Pengguna */
 $this->title = 'Ubah Password';
 $this->params['breadcrumbs'][] = ['label' => 'Pengguna', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
@@ -23,7 +21,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?= $form->field($model, 'password_ulang')->passwordInput(['maxlength' => true]) ?>
                     </div>
                     <div class="card-footer">
-                        <!--<button type="submit" class="btn btn-warning">Submit</button>-->
                         <?= Html::submitButton('Submit', ['class' => 'btn btn-success btn-sm bundar']) ?>
                     </div>
                     <?php ActiveForm::end(); ?>

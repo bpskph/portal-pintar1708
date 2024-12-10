@@ -7,7 +7,6 @@ use yii\web\View;
 $colClass = 'col-md-3'; // use the appropriate class based on your requirements
 $this->title = 'Portal Aplikasi';
 $baseUrl = Yii::$app->request->baseUrl;
-// $baseUrl = '/bengkulu'. Yii::$app->request->baseUrl; untuk di webapps
 $script = <<< JS
     var baseUrl = '$baseUrl';
 JS;

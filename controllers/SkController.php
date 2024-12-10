@@ -6,19 +6,12 @@ use app\models\Sk;
 use app\models\SkSearch;
 use Yii;
 use yii\db\Query;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 
-/**
- * SkController implements the CRUD actions for Sk model.
- */
 class SkController extends BaseController
 {
-    /**
-     * @inheritDoc
-     */
     public function behaviors()
     {
         return array_merge(
@@ -54,12 +47,6 @@ class SkController extends BaseController
             ]
         );
     }
-
-    /**
-     * Lists all Sk models.
-     *
-     * @return string
-     */
     public function actionIndex()
     {
         $searchModel = new SkSearch();
@@ -70,15 +57,15 @@ class SkController extends BaseController
             'dataProvider' => $dataProvider,
         ]);
     }
-
-    /**
-     * Displays a single Sk model.
-     * @param int $id_sk Id Sk
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionView($id_sk)
     {
+        $model =  $this->findModel($id_sk);
+
+        if ($model->deleted == 1) {
+            Yii::$app->session->setFlash('warning', "Data SK ini sudah dihapus.");
+            return $this->redirect(['index']);
+        }
+
         if (Yii::$app->request->isAjax) {
             return $this->renderAjax('view', [
                 'model' => $this->findModel($id_sk),
@@ -89,29 +76,6 @@ class SkController extends BaseController
             ]);
         }
     }
-
-    /**
-     * Creates a new Sk model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
-     */
-    // public function actionCreate()
-    // {
-    //     $model = new Sk();
-
-    //     if ($this->request->isPost) {
-    //         if ($model->load($this->request->post()) && $model->save()) {
-    //             return $this->redirect(['view', 'id_sk' => $model->id_sk]);
-    //         }
-    //     } else {
-    //         $model->loadDefaultValues();
-    //     }
-
-    //     return $this->render('create', [
-    //         'model' => $model,
-    //     ]);
-    // }
-
     public function actionCreate()
     {
         $model = new Sk();
@@ -148,7 +112,6 @@ class SkController extends BaseController
             'model' => $model,
         ]);
     }
-
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -185,6 +148,7 @@ class SkController extends BaseController
             }
 
             if ($model->filepdf !== null && $model->validate()) {
+                date_default_timezone_set('Asia/Jakarta');
                 $model->timestamp_lastupdate = date('Y-m-d H:i:s');
                 if ($model->save()) {
                     if (isset($model->screenshot))
@@ -198,17 +162,9 @@ class SkController extends BaseController
             'model' => $model,
         ]);
     }
-
-
-    /**
-     * Deletes an existing Sk model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id_sk Id Sk
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionDelete($id_sk)
     {
+        date_default_timezone_set('Asia/Jakarta');
         $affected_rows = Sk::updateAll(['deleted' => 1, 'timestamp_lastupdate' => date('Y-m-d H:i:s')], 'id_sk = "' . $id_sk . '"');
         if ($affected_rows == 0) {
             Yii::$app->session->setFlash('warning', "Gagal. Mohon hubungi Admin.");
@@ -218,13 +174,6 @@ class SkController extends BaseController
             return $this->redirect(['index']);
         }
     }
-    /**
-     * Finds the Sk model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id_sk Id Sk
-     * @return Sk the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id_sk)
     {
         if (($model = Sk::findOne(['id_sk' => $id_sk])) !== null) {

@@ -2,10 +2,6 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
-/** @var yii\web\View $this */
-/** @var app\models\PopupsSearch $model */
-/** @var yii\widgets\ActiveForm $form */
 ?>
 
 <div class="popups-search">
@@ -24,8 +20,6 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'deleted') ?>
 
     <?= $form->field($model, 'timestamp') ?>
-
-    <?php // echo $form->field($model, 'timestamp_lastupdate') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

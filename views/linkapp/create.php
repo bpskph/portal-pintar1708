@@ -1,7 +1,5 @@
 <?php
 use yii\helpers\Html;
-/** @var yii\web\View $this */
-/** @var app\models\Linkapp $model */
 $this->title = 'Tambah Link Aplikasi';
 ?>
 <div class="linkapp-create">

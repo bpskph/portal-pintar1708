@@ -4,8 +4,6 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 use kartik\grid\SerialColumn;
 use kartik\grid\ActionColumn;
-use yii\web\View;
-
 
 $this->title = 'Rekap Pegawai dalam Aplikasi Ini';
 ?>
@@ -60,7 +58,6 @@ $this->title = 'Rekap Pegawai dalam Aplikasi Ini';
                 'tableOptions' => ['class' => 'table table-condensed ' . ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? '' : 'table-dark')],
                 'columns' => [
                     [
-                        // 'class' => 'yii\grid\SerialColumn',
                         'class' => SerialColumn::class,
                     ],
                     'nama',
@@ -79,13 +76,11 @@ $this->title = 'Rekap Pegawai dalam Aplikasi Ini';
                         'label' => 'NIP BPS',
                     ],
                     [
-                        // 'class' => 'yii\grid\ActionColumn',
                         'class' => ActionColumn::class,
                         'header' => 'Aksi',
                         'template' => Yii::$app->user->identity->theme == 0
                             ? '{update}{delete}{aktifkanlagi}{approverevokelevel}'
                             : '{update}{delete}{aktifkanlagi}{approverevokelevel}',
-                        // 'contentOptions' => ['class' => 'text-center'],
                         'visibleButtons' => [
                             'delete' => function ($model, $key, $index) {
                                 if (Yii::$app->user->identity->level === 0) {
@@ -134,9 +129,7 @@ $this->title = 'Rekap Pegawai dalam Aplikasi Ini';
                                 ]);
                             },
                             'update' => function ($key, $client) {
-                                //$url = 'update/'.$key;
                                 return Html::a('<i class="fa">&#xf044;</i> ', $key, ['title' => 'Update rincian pengguna ini']);
-                                //return Html::a('<button class="btn btn-sm tombol-biru"><i class="fa text-info">&#xf06e;</i></button>', $key, ['title' => 'Lihat rincian logbook ini', 'class' => 'modalButton', 'data-pjax' => '0']);
                             },
                         ],
                     ],

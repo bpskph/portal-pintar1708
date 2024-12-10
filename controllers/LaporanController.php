@@ -4,11 +4,9 @@ namespace app\controllers;
 
 use app\models\Agenda;
 use app\models\Laporan;
-use app\models\LaporanSearch;
 use app\models\Pengguna;
 use app\models\Projectmember;
 use Yii;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Dompdf\DOMPDF; //untuk di local
@@ -16,14 +14,8 @@ use Dompdf\DOMPDF; //untuk di local
 use Dompdf\Options;
 use yii\web\UploadedFile;
 
-/**
- * LaporanController implements the CRUD actions for Laporan model.
- */
 class LaporanController extends BaseController
 {
-    /**
-     * @inheritDoc
-     */
     public function behaviors()
     {
         return array_merge(
@@ -153,6 +145,7 @@ class LaporanController extends BaseController
         }
         $header = $this->findHeader($id);
         $waktutampil = $this->findWaktutampil($id);
+        date_default_timezone_set('Asia/Jakarta');
         $model->timestamp_laporan_lastupdate = date('Y-m-d H:i:s');
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', "Laporan Agenda berhasil dimutakhirkan. Terima kasih.");
@@ -254,6 +247,7 @@ class LaporanController extends BaseController
     public function actionSetujui($id)
     {
         $model = $this->findModel($id);
+        date_default_timezone_set('Asia/Jakarta');
         $affected_rows = Laporan::updateAll(['approval' => 1, 'timestamp_laporan_lastupdate' => date('Y-m-d H:i:s')], 'id_laporan = "' . $id . '"');
         if ($affected_rows == 0) {
             Yii::$app->session->setFlash('warning', "Gagal. Mohon hubungi Admin.");
@@ -323,7 +317,7 @@ class LaporanController extends BaseController
                     <table width="500" border="0" bordercolor="33FFFF" align="center" cellpadding="3" cellspacing="00">
                         <tr>
                             <td height="55" colspan="0" align="center"><img src="data:image/png;base64,' . Yii::$app->params['imagebase64'] . '" height="50" width="60" /><br>
-                                <h4><i>BADAN PUSAT STATISTIK<br/>KABUPATEN BENGKULU SELATAN</h4></i>
+                                <h4><i>BADAN PUSAT STATISTIK<br/>PROVINSI BENGKULU</h4></i>
                             </td>
                         </tr>
                     </table>
@@ -377,8 +371,8 @@ class LaporanController extends BaseController
                 </body>
                 <foot style="font-size:10px">
                     <div class="footer">
-                        <center>Jalan Affan Bachsin No.108A RT.07 Pasar Baru Kota Manna 38512 
-                            <br>Telp./Fax.: 0739-21048, E-mail: bps1701@.bps.go.id
+                        <center>Jalan Adam Malik Km.8 Bengkulu, 38225, Telepon (0736) 349117-118, Kepala (0736) 349116
+                            <br>Fax. (0736) 349115, E-mail: bps1700@bps.go.id
                         </center>
                     </div>
                 </foot>

@@ -2,9 +2,6 @@
 
 use yii\helpers\Html;
 
-/** @var yii\web\View $this */
-/** @var app\models\Zooms $model */
-
 $this->title = 'Update Permohonan Zoom: ' . $model->id_zooms;
 ?>
 <div class="zooms-update">

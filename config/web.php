@@ -26,14 +26,14 @@ $config = [
     ],
     'components' => [
         'assetManager' => [
-            'linkAssets' => false,
+            'linkAssets' => true,
             'forceCopy' => true,
         ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'RLXOJYUIJZ3lrNN1b8OWBF5gKq5WiCgK',
             'hostInfo' => 'http://localhost',
-            //'hostInfo' => 'https://webapps.bps.go.id/bengkuluselatankab',
+            //'hostInfo' => 'https://webapps.bps.go.id/bengkulu',
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -47,16 +47,12 @@ $config = [
         ],
         'mailer' => [
             'class' => \yii\symfonymailer\Mailer::class,
-            // 'viewPath' => '@app/mail',
-            // // send all mails to a file by default.
-            // 'useFileTransport' => true,
-            // 'class' => 'yii\swiftmailer\Mailer',
             'useFileTransport' => false,
             'transport' => [
                 'scheme' => 'smtps',
                 'host' => 'smtp.bps.go.id',
-                'username' => 'username',
-                'password' => 'password',
+                'username' => 'portalpintar',
+                'password' => 'Portalpintar1700',
                 'encryption' => 'ssl',
                 'port' => '465',
                 'dsn' => 'sendmail://default',
@@ -72,14 +68,6 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
-            ],
-        ],
-        */
         'urlManager' => [
             'class' => 'yii\web\UrlManager',
             'showScriptName' => false,

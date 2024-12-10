@@ -1,32 +1,14 @@
 <?php
 namespace app\models;
 use Yii;
-/**
- * This is the model class for table "beritarilis".
- *
- * @property int $id_beritarilis
- * @property string $waktu_rilis
- * @property string $waktu_rilis_selesai
- * @property string $materi_rilis
- * @property string $narasumber
- * @property string $lokasi
- * @property string $reporter
- * @property string $timestamp
- * @property string $timestamp_lastupdate
- */
+
 class Beritarilis extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
     public $tempattext, $pilihtempat;
     public static function tableName()
     {
         return 'beritarilis';
     }
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -39,9 +21,6 @@ class Beritarilis extends \yii\db\ActiveRecord
             ['lokasi', 'validateRooms'],
         ];
     }
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [
