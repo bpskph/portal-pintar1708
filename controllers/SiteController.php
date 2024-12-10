@@ -165,7 +165,7 @@ class SiteController extends Controller
                 $model->addError('username', 'Username atau Password salah');
             }
         } catch (Exception $e) {
-            $model->addError('username', 'Terjadi kesalahan pada SSO. Mohon coba beberapa saat lagi atau hubungi nofriani@bps.go.id.');
+            $model->addError('username', 'Terjadi kesalahan pada SSO. Mohon coba beberapa saat lagi atau hubungi kintan.karina@bps.go.id.');
         }
         return $this->render('login', [
             'model' => $model,

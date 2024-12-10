@@ -30,7 +30,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-copy-clipboa
             <?php endif; ?>
         </div>
     </div>
-    <div class="row d-flex align-items-stretch">
+    <div class="row">
         <div class="<?= (($model->is_undangan != null && $model->is_undangan == 1) ? 'col-lg-6' : 'col-lg-12') ?>">
             <div class="card <?= ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? '' : 'bg-dark') ?> h-100">
                 <div class="card-body">
@@ -123,8 +123,8 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-copy-clipboa
             </div>
         </div>
         <?php if ($model->is_undangan != null && $model->is_undangan == 1): ?>
-            <div class="col-lg-6 d-flex">
-                <div class="card h-100 w-100 <?= ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? '' : 'bg-dark text-light') ?>">
+            <div class="col-lg-6">
+                <div class="card h-100 <?= ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? '' : 'bg-dark text-light') ?>">
                     <div class="card-body">
                         <p class="fst-italic bg-warning"></p>
                         <div class="alert alert-warning" role="alert">

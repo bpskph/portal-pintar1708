@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'adminEmail' => 'nofriani@bps.go.id',
+    'adminEmail' => 'kintan.karina@bps.go.id',
     'senderEmail' => 'noreply@example.com',
     'senderName' => 'Example.com mailer',
     'meta_keywords' => 'portal, pintar, terkini, sistem informasi',

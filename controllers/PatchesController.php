@@ -31,10 +31,10 @@ class PatchesController extends Controller
                             'allow' => true,
                         ],
                         [
-                            'actions' => ['create', 'wa_blast'],
+                            'actions' => ['create'],
                             'allow' => true,
                             'matchCallback' => function ($rule, $action) {
-                                return !\Yii::$app->user->isGuest && (\Yii::$app->user->identity->username === 'nofriani');
+                                return !\Yii::$app->user->isGuest && (\Yii::$app->user->identity->level === 'kintan.karina');
                             },
                         ],
                         [
