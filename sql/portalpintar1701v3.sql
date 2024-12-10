@@ -904,7 +904,7 @@ CREATE TABLE IF NOT EXISTS `mobildinaskeperluan` (
 
 INSERT INTO `mobildinaskeperluan` (`id_mobildinaskeperluan`, `nama_mobildinaskeperluan`, `timestamp`) VALUES
 (1, 'Agenda di DPRD atau OPD Lainnya', '2024-02-07 07:45:29'),
-(2, 'Narasumber di Luar Kantor BPS Provinsi Bengkulu', '2024-02-07 07:45:29'),
+(2, 'Narasumber di Luar Kantor BPS Kabupaten Bengkulu Selatan', '2024-02-07 07:45:29'),
 (3, 'Koordinasi/Enumerasi Data', '2024-02-07 07:45:29'),
 (4, 'Agenda Kehumasan', '2024-02-07 07:45:29'),
 (5, 'Agenda Keuangan (ke Bank)', '2024-02-07 07:45:29'),
@@ -950,7 +950,7 @@ CREATE TABLE IF NOT EXISTS `patches` (
 --
 
 INSERT INTO `patches` (`id_patches`, `timestamp`, `title`, `is_notification`, `description`) VALUES
-(1, '2024-12-09 00:55:42', 'Portal Pintar', 0, 'Portal Pintar dari BPS Provinsi Bengkulu, versi 2.32.70');
+(1, '2024-12-09 00:55:42', 'Portal Pintar', 0, 'Portal Pintar dari BPS Kabupaten Bengkulu Selatan, versi 2.32.70');
 
 -- --------------------------------------------------------
 

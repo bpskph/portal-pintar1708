@@ -63,8 +63,8 @@ class PenggunaController extends BaseController
         $url_base = 'https://sso.bps.go.id/auth/';
         $url_token = $url_base . 'realms/pegawai-bps/protocol/openid-connect/token';
         $url_api = $url_base . 'admin/realms/pegawai-bps/users';
-        $client_id      = '11700-portalpintar-g64';
-        $client_secret  = '1de86905-2d74-46f3-b609-3594f2855287';
+        $client_id      = '11701-portalpintar-sd3';
+        $client_secret  = '0ecaf0b0-ae36-4e1f-9ecf-2f8986b85f73';
         $ch = curl_init($url_token);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
         curl_setopt($ch, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
@@ -122,9 +122,9 @@ class PenggunaController extends BaseController
                     $ada = 'YA';
                 else
                     $ada = 'TIDAK';
-                /* ngecek bahwa pengguna ada di BPS Provinsi Bengkulu menurut Community */
+                /* ngecek bahwa pengguna ada di BPS Kabupaten Bengkulu Selatan menurut Community */
                 $lokasi = $json[$key]['attributes']['attribute-kabupaten'][0];
-                if ($lokasi == 'Prov. Bengkulu')
+                if ($lokasi == 'Kab. Bengkulu Selatan')
                     $bengkulu = 'YA';
                 else
                     $bengkulu = 'TIDAK';

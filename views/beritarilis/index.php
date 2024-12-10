@@ -5,7 +5,7 @@ use kartik\grid\SerialColumn;
 use kartik\grid\ActionColumn;
 use kartik\grid\GridView;
 
-$this->title = 'Jadwal Berita Rilis BPS Provinsi Bengkulu';
+$this->title = 'Jadwal Berita Rilis BPS Kabupaten Bengkulu Selatan';
 ?>
 <div class="container-fluid" data-aos="fade-up">
     <h1 class="text-center"><?= Html::encode($this->title) ?></h1>

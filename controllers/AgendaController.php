@@ -668,7 +668,7 @@ class AgendaController extends BaseController
                                 <td></td>
                                 <td>
                                     <center>
-                                        Bengkulu, " . $waktutampil . "
+                                        Kota Manna, " . $waktutampil . "
                                         <br />
                                         <br />
                                         <br />
@@ -787,11 +787,11 @@ class AgendaController extends BaseController
     {
         // URL tujuan
         $url = 'https://dialogwa.id/api/send-text';
-        $token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NmNjNjA4ZGM2NDQyMmVkOTE1MzdjMiIsInVzZXJuYW1lIjoibm9mcmlhbmkiLCJpYXQiOjE3MjE3OTg3NDgsImV4cCI6NDg3NzU1ODc0OH0.5dnMRRM-G0bktsNFvArEnBkH1Qr5Snn8LvEBpswVhtw';
+        $token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NTZhYzMyMjY4Yzg2MGE1MGU5MWYzZSIsInVzZXJuYW1lIjoiYnBzMTcwMSIsImlhdCI6MTczMzczMzQyNiwiZXhwIjo0ODg5NDkzNDI2fQ.WAnpGxIQhVjbeglztzxUaJY_QoaclWyj2HPTV0jKIbE';
 
         // Data yang akan dikirim dalam body request
         $data = array(
-            'session' => 'portalpintar',
+            'session' => 'portalpintar1701',
             'target' => $nomor_tujuan . '@s.whatsapp.net', //format nomor tujuan harus menggunakan kode negara contoh : 628......@s.whatsapp.net
             'message' => $isi_notif
         );
@@ -859,7 +859,7 @@ class AgendaController extends BaseController
         } else {
             // if waktumulai and waktuselesai are on different days, format the date range normally
             $waktuselesaiFormatted = $formatter->asDatetime($waktuselesai, 'd MMMM Y, H:mm'); // format the waktuselesai datetime value
-            $waktuFormatted = $waktumulaiFormatted . ' WIB <br/>s.d ' . $waktuselesaiFormatted . ' WIB'; // concatenate the formatted dates
+            $waktuFormatted = $waktumulaiFormatted . ' WIB s.d ' . $waktuselesaiFormatted . ' WIB'; // concatenate the formatted dates
         }
 
         // Get the list of phone numbers from the peserta attribute in the agenda table

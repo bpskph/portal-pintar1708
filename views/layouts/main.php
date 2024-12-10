@@ -207,9 +207,9 @@ $this->registerJs($script, \yii\web\View::POS_HEAD);
                 <div class="row">
                     <div class="col-lg-7 col-md-6">
                         <div class="footer-info">
-                            <h3>BPS PROVINSI BENGKULU</h3>
+                            <h3>BPS KABUPATEN BENGKULU SELATAN</h3>
                             <p>
-                                Jl. Adam Malik Km 8, Provinsi Bengkulu,
+                                Jalan Affan Bachsin No.108A, Kabupaten Bengkulu Selatan,
                                 Indonesia<br><br>
                                 <strong>Phone:</strong> (+62 736) 349119<br>
                                 <strong>Email:</strong> bengkulu@bps.go.id<br>
@@ -219,9 +219,9 @@ $this->registerJs($script, \yii\web\View::POS_HEAD);
                     <div class="col-lg-5 col-md-6 footer-links">
                         <h4>Tautan Lainnya</h4>
                         <ul>
-                            <li><i class="bi bi-globe"></i> <i class="bx bx-chevron-right"></i> <a href="https://bengkulu.bps.go.id/">Website BPS Provinsi Bengkulu</a></li>
+                            <li><i class="bi bi-globe"></i> <i class="bx bx-chevron-right"></i> <a href="https://bengkulu.bps.go.id/">Website BPS Kabupaten Bengkulu Selatan</a></li>
                             <li><i class="bi bi-globe"></i> <i class="bx bx-chevron-right"></i><a href="https://webapps.bps.go.id/bengkulu/portalpintar/">Website Portal Pintar</a></li>
-                            <li><i class="bi bi-instagram"></i> <i class="bx bx-chevron-right"></i><a href="https://webapps.bps.go.id/bengkulu/">List Aplikasi Aktif BPS Provinsi Bengkulu</a></li>
+                            <li><i class="bi bi-instagram"></i> <i class="bx bx-chevron-right"></i><a href="https://webapps.bps.go.id/bengkulu/">List Aplikasi Aktif BPS Kabupaten Bengkulu Selatan</a></li>
                         </ul>
                     </div>
                 </div>
@@ -229,7 +229,7 @@ $this->registerJs($script, \yii\web\View::POS_HEAD);
         </div>
         <div class="container">
             <div class="copyright">
-                &copy; Copyright <strong><span>Tim PTM BPS Provinsi Bengkulu</span></strong>. All Rights Reserved | <span class="text-secondary"> App Version:</span> <?= Yii::$app->params['appVersion']; ?>
+                &copy; Copyright <strong><span>Tim PTM BPS Kabupaten Bengkulu Selatan</span></strong>. All Rights Reserved | <span class="text-secondary"> App Version:</span> <?= Yii::$app->params['appVersion']; ?>
             </div>
             <div class="credits" style="color: #aaa">
                 Coded by <a href="https://khansasafira19.github.io/">nofriani@bps.go.id</a> | <a href="https://wa.me/6285664991937?text=Salam+Senyum,+Developer+Portal+Pintar%0ASaya+ingin+berdiskusi+terkait+Sistem+Portal+Pintar" target="_blank">Hubungi Developer</a>

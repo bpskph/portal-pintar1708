@@ -78,7 +78,7 @@ if ($model->isNewRecord) {
                     ],
                 ]); ?>
                 <?= $form->field($model, 'pendamping_lain')->textarea(['rows' => 3])
-                    ->hint('Input nama badan/orang di luar BPS Provinsi Bengkulu. Contoh: <b>Kepala BPS Kota Bengkulu, Dian Putra Nugraha</b>', ['class' => '', 'style' => 'color: #999']) ?>
+                    ->hint('Input nama badan/orang di luar BPS Kabupaten Bengkulu Selatan. Contoh: <b>Kepala BPS Kota Bengkulu, Dian Putra Nugraha</b>', ['class' => '', 'style' => 'color: #999']) ?>
                 <div class="form-group text-end mb-3">
                     <?= Html::submitButton('<i class="fas fa-save"></i> Simpan', ['class' => 'btn btn btn-outline-warning btn-block']) ?>
                 </div>

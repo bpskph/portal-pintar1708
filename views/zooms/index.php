@@ -5,7 +5,7 @@ use kartik\grid\SerialColumn;
 use kartik\grid\ActionColumn;
 use kartik\grid\GridView;
 
-$this->title = 'Jadwal Request/Pemakaian Zoom BPS Provinsi Bengkulu';
+$this->title = 'Jadwal Request/Pemakaian Zoom BPS Kabupaten Bengkulu Selatan';
 ?>
 <style>
     .modal-link .icon-wrapper {

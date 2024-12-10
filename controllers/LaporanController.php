@@ -317,7 +317,7 @@ class LaporanController extends BaseController
                     <table width="500" border="0" bordercolor="33FFFF" align="center" cellpadding="3" cellspacing="00">
                         <tr>
                             <td height="55" colspan="0" align="center"><img src="data:image/png;base64,' . Yii::$app->params['imagebase64'] . '" height="50" width="60" /><br>
-                                <h4><i>BADAN PUSAT STATISTIK<br/>PROVINSI BENGKULU</h4></i>
+                                <h4><i>BADAN PUSAT STATISTIK<br/>KABUPATEN BENGKULU SELATAN</h4></i>
                             </td>
                         </tr>
                     </table>
@@ -371,8 +371,8 @@ class LaporanController extends BaseController
                 </body>
                 <foot style="font-size:10px">
                     <div class="footer">
-                        <center>Jalan Adam Malik Km.8 Bengkulu, 38225, Telepon (0736) 349117-118, Kepala (0736) 349116
-                            <br>Fax. (0736) 349115, E-mail: bps1700@bps.go.id
+                        <center>Jalan Affan Bachsin No.108A Kota Manna, 38512, Telp./Fax: (0739) 21048
+                            <br>E-mail: bps1701@bps.go.id
                         </center>
                     </div>
                 </foot>

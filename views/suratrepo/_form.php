@@ -111,11 +111,11 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-suratrepo-fo
                     <?php
                     $autofillString =
                         "
-                    <p style='text-indent:.5in;'>Dalam rangka peningkatan pemahaman Reformasi Birokrasi dalam tim sekretariat RB BPS Provinsi Bengkulu, bersama ini  mengundang Bapak/Ibu untuk hadir pada:</p>
+                    <p style='text-indent:.5in;'>Dalam rangka peningkatan pemahaman Reformasi Birokrasi dalam tim sekretariat RB BPS Kabupaten Bengkulu Selatan, bersama ini  mengundang Bapak/Ibu untuk hadir pada:</p>
                     <p>Hari/Tanggal&nbsp; &nbsp; &nbsp; &nbsp;: Jumat/2 Februari 2023</p>
                     <p>Waktu&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;: 14.00 WIB s.d. selesai</p>
                     <p>Agenda&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;: Review Pilar dan Rencana Kegiatan Bulanan</p>
-                    <p>Tempat &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : Ruang Agro BPS Provinsi Bengkulu</p>
+                    <p>Tempat &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : Ruang Agro BPS Kabupaten Bengkulu Selatan</p>
                     <p style='text-indent:.5in;'>Demikian disampaikan, atas perhatian diucapkan terima kasih.</p>
                     <br/>                    
                     ";
@@ -185,7 +185,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-suratrepo-fo
                         ]); ?>
                     </div>
                     <?= $form->field($model, 'tembusan')->textarea(['rows' => 3])
-                        ->hint('Jika daftar tembusan lebih dari satu, pisahkan dengan koma. Contoh: <b>Kepala BPS Provinsi Bengkulu, Kepala Bagian Umum BPS Provinsi Bengkulu</b>', ['class' => '', 'style' => 'color: #999']) ?>
+                        ->hint('Jika daftar tembusan lebih dari satu, pisahkan dengan koma. Contoh: <b>Kepala BPS Kabupaten Bengkulu Selatan, Kepala Bagian Umum BPS Kabupaten Bengkulu Selatan</b>', ['class' => '', 'style' => 'color: #999']) ?>
                     <div class="form-group text-end mb-3">
                         <i>Mohon upload surat yang telah di-ttd dan di-scan pada Beranda Surat Internal.</i>
                         <?= Html::submitButton('<i class="fas fa-save"></i> Simpan', ['class' => 'btn btn btn-outline-warning']) ?>
@@ -196,7 +196,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-suratrepo-fo
                     <?= $form->errorSummary($model) ?>
                     <?= $form->field($model, 'id_suratrepo')->hiddenInput()->label(false) ?>
                     <?= $form->field($model, 'penerima_suratrepo')->textarea(['rows' => 3])
-                        ->hint('Jika daftar penerima surat ("Kepada"-nya) lebih dari satu, pisahkan dengan koma. Contoh: <b>Kepala Bagian Umum BPS Provinsi Bengkulu, Ketua Project Sekretariat RB</b>', ['class' => '', 'style' => 'color: #999']) ?>
+                        ->hint('Jika daftar penerima surat ("Kepada"-nya) lebih dari satu, pisahkan dengan koma. Contoh: <b>Kepala Bagian Umum BPS Kabupaten Bengkulu Selatan, Ketua Project Sekretariat RB</b>', ['class' => '', 'style' => 'color: #999']) ?>
 
                     <?= $form->field($model, 'tanggal_suratrepo')->widget(DatePicker::classname(), [
                         'options' => ['placeholder' => 'Pilih Tanggal ...'],
@@ -208,7 +208,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-suratrepo-fo
                     ])->hint('Untuk menjaga ketertiban nomor, surat yang dapat diinput adalah sebatas tanggal hari ini.', ['class' => '', 'style' => 'color: #999']) ?>
 
                     <?= $form->field($model, 'perihal_suratrepo')->textarea(['rows' => 3])
-                        ->hint('Jika ingin memisahkan perihal menjadi beberapa baris, pisahkan dengan "&ltbr/&gt". Contoh: <b>Usulan Penetapan Penggunaan (PSP) &ltbr/&gt BMN Wilayah BPS Provinsi Bengkulu</b>', ['class' => '', 'style' => 'color: #999']) ?>
+                        ->hint('Jika ingin memisahkan perihal menjadi beberapa baris, pisahkan dengan "&ltbr/&gt". Contoh: <b>Usulan Penetapan Penggunaan (PSP) &ltbr/&gt BMN Wilayah BPS Kabupaten Bengkulu Selatan</b>', ['class' => '', 'style' => 'color: #999']) ?>
                     <?= $form->field($model, 'lampiran')->textInput(['maxlength' => true])
                         ->hint('Contoh Pengisian: <b>1 (Satu) Berkas</b><br/>Kosongkan bila tidak ada lampiran. ', ['class' => '', 'style' => 'color: #999']) ?>
                     <?= $form->field($model, 'fk_suratsubkode')->widget(Select2::classname(), [
@@ -264,11 +264,11 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-suratrepo-fo
                     <?php
                     $autofillString =
                         "
-                    <p style='text-indent:.5in;'>Dalam rangka peningkatan pemahaman Reformasi Birokrasi dalam tim sekretariat RB BPS Provinsi Bengkulu, bersama ini  mengundang Bapak/Ibu untuk hadir pada:</p>
+                    <p style='text-indent:.5in;'>Dalam rangka peningkatan pemahaman Reformasi Birokrasi dalam tim sekretariat RB BPS Kabupaten Bengkulu Selatan, bersama ini  mengundang Bapak/Ibu untuk hadir pada:</p>
                     <p>Hari/Tanggal&nbsp; &nbsp; &nbsp; &nbsp;: Jumat/2 Februari 2023</p>
                     <p>Waktu&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;: 14.00 WIB s.d. selesai</p>
                     <p>Agenda&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;: Review Pilar dan Rencana Kegiatan Bulanan</p>
-                    <p>Tempat &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : Ruang Agro BPS Provinsi Bengkulu</p>
+                    <p>Tempat &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : Ruang Agro BPS Kabupaten Bengkulu Selatan</p>
                     <p style='text-indent:.5in;'>Demikian disampaikan, atas perhatian diucapkan terima kasih.</p>
                     <br/>                    
                     ";
@@ -326,7 +326,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-suratrepo-fo
                         <?= $form->field($model, 'ttd_by_jabatan')->textInput(); ?>
                     </div>
                     <?= $form->field($model, 'tembusan')->textarea(['rows' => 3])
-                        ->hint('Jika daftar tembusan lebih dari satu, pisahkan dengan koma. Contoh: <b>Kepala BPS Provinsi Bengkulu, Kepala Bagian Umum BPS Provinsi Bengkulu</b>', ['class' => '', 'style' => 'color: #999']) ?>
+                        ->hint('Jika daftar tembusan lebih dari satu, pisahkan dengan koma. Contoh: <b>Kepala BPS Kabupaten Bengkulu Selatan, Kepala Bagian Umum BPS Kabupaten Bengkulu Selatan</b>', ['class' => '', 'style' => 'color: #999']) ?>
                     <div class="form-group text-end mb-3">
                         <i>Mohon upload surat yang telah di-ttd dan di-scan pada Beranda Surat Internal.</i>
                         <?= Html::submitButton('<i class="fas fa-save"></i> Simpan', ['class' => 'btn btn btn-outline-warning']) ?>

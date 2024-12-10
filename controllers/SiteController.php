@@ -123,7 +123,7 @@ class SiteController extends Controller
         }
         $sso = new SSOBPS();
         /* pakai OpenID*/
-        $sso->setCredential("11700-portalpintar-g64", "1de86905-2d74-46f3-b609-3594f2855287");
+        $sso->setCredential("11701-portalpintar-sd3", "0ecaf0b0-ae36-4e1f-9ecf-2f8986b85f73");
         $sso->setRedirectUri('http://localhost/portalpintar/site/login');
         // $sso->setRedirectUri('https://webapps.bps.go.id/bengkulu/portalpintar/site/login');
         $model = new LoginForm();
