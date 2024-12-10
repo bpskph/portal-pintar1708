@@ -91,10 +91,6 @@ function findPesertaTambahan($dataagenda)
     return $autofillString;
 }
 ?>
-<?php
-$fmt = new \IntlDateFormatter('id_ID', NULL, NULL);
-$fmt->setPattern('eeee, d MMMM yyyy');
-?>
 <div class="row">
     <div class="col-lg-6">
         <h3 class="resume-title">AGENDA </h3>
