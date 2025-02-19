@@ -43,6 +43,11 @@ class LinkmatController extends BaseController
             ]
         );
     }
+    public function beforeAction($action)
+    {
+        $this->enableCsrfValidation = false;
+        return parent::beforeAction($action);
+    }
     public function actionIndex()
     {
         $searchModel = new LinkmatSearch();

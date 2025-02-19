@@ -11,7 +11,7 @@ class Laporan extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['laporan', 'dokumentasi'], 'safe'],
+            [['laporan', 'dokumentasi', 'uploader'], 'safe'],
             [['dokumentasi'], 'string'],
             ['dokumentasi', 'url', 'validSchemes' => ['http', 'https']],
             [['filepdf'], 'file', 'extensions' => 'pdf'],

@@ -27,7 +27,7 @@ class SkController extends BaseController
                     'class' => \yii\filters\AccessControl::className(),
                     'rules' => [
                         [
-                            'actions' => ['error', 'view', 'index'],
+                            'actions' => ['error'],
                             'allow' => true,
                         ],
                         [
@@ -38,7 +38,7 @@ class SkController extends BaseController
                             },
                         ],
                         [
-                            'actions' => [''], // add all actions to take guest to login page
+                            'actions' => ['view', 'index'], // add all actions to take guest to login page
                             'allow' => true,
                             'roles' => ['@'],
                         ],

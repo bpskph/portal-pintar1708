@@ -11,7 +11,7 @@ class AgendaSearch extends Agenda
     {
         return [
             [['id_agenda', 'metode', 'progress', 'id_lanjutan'], 'integer'],
-            [['kegiatan', 'waktumulai', 'waktuselesai', 'pelaksana', 'tempat', 'peserta', 'reporter', 'pemimpin', 'timestamp', 'timestamp_lastupdate', 'waktu', 'metode', 'fk_kategori'], 'safe'],
+            [['kegiatan', 'waktumulai', 'waktuselesai', 'pelaksana', 'tempat', 'peserta', 'reporter', 'pemimpin', 'timestamp', 'timestamp_lastupdate', 'waktu', 'metode', 'by_event_team', 'fk_kategori'], 'safe'],
         ];
     }
     public function scenarios()
@@ -27,7 +27,11 @@ class AgendaSearch extends Agenda
         // add conditions that should always apply here
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort' => ['defaultOrder' => ['waktumulai' => SORT_DESC, 'id_agenda' => SORT_DESC]]
+            'sort' => ['defaultOrder' => ['waktumulai' => SORT_DESC, 'id_agenda' => SORT_DESC]],
+            'pagination' => [
+                'pageSize' => 30,
+                'route' => 'agenda/index', // Ensure pagination uses the correct route
+            ],
         ]);
         $this->load($params);
         if (!$this->validate()) {
@@ -106,6 +110,7 @@ class AgendaSearch extends Agenda
             'metode' => $this->metode,
             'progress' => $this->progress,
             'fk_kategori' => $this->fk_kategori,
+            'by_event_team' => $this->by_event_team,
             'id_lanjutan' => $this->id_lanjutan,
             'timestamp' => $this->timestamp,
             'timestamp_lastupdate' => $this->timestamp_lastupdate,

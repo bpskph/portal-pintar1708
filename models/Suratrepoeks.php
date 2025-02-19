@@ -1,5 +1,7 @@
 <?php
+
 namespace app\models;
+
 use Yii;
 
 class Suratrepoeks extends \yii\db\ActiveRecord
@@ -14,7 +16,7 @@ class Suratrepoeks extends \yii\db\ActiveRecord
         return [
             [['penerima_suratrepoeks', 'tanggal_suratrepoeks', 'perihal_suratrepoeks', 'fk_suratsubkode', 'nomor_suratrepoeks', 'owner', 'sifat', 'jenis', 'ttd_by', 'approver'], 'required'],
             [['fk_agenda', 'fk_suratsubkode'], 'integer'],
-            [['tanggal_suratrepoeks', 'timestamp', 'timestamp_suratrepoeks_lastupdate', 'tembusan', 'lampiran', 'komentar', 'invisibility', 'shared_to'], 'safe'],
+            [['tanggal_suratrepoeks', 'timestamp', 'timestamp_suratrepoeks_lastupdate', 'isi_suratrepoeks', 'tembusan', 'lampiran', 'komentar', 'invisibility', 'isi_lampiran', 'isi_lampiran_orientation', 'shared_to', 'sent_by', 'is_sent_by_sek'], 'safe'],
             [['perihal_suratrepoeks'], 'string'],
             [['nomor_suratrepoeks'], 'unique'],
             [['penerima_suratrepoeks', 'nomor_suratrepoeks'], 'string', 'max' => 255],
@@ -22,7 +24,13 @@ class Suratrepoeks extends \yii\db\ActiveRecord
             ['tanggal_suratrepoeks', 'validateSembilanBelasMei'],
             ['nomor_suratrepoeks', 'validateDuplikasi'],
             [['filepdf'], 'file', 'extensions' => 'pdf'],
-            [['fileword'], 'file', 'extensions' => 'doc, docx, pdf'],
+            [
+                ['fileword'],
+                'file',
+                'extensions' => 'doc, docx, pdf',
+                'wrongExtension' => 'Berkas harus berekstensi DOC, DOCX, atau PDF. Jika file Anda download dari Google Docs, mohon buka di Microsoft Word dan simpan (Save As) ulang dalam ekstensi .doc atau .docx.'
+            ],
+
         ];
     }
     public function attributeLabels()
@@ -38,6 +46,7 @@ class Suratrepoeks extends \yii\db\ActiveRecord
             'owner' => 'Owner',
             'timestamp' => 'Diinput',
             'timestamp_suratrepoeks_lastupdate' => 'Dimutakhirkan',
+            'isi_suratrepoeks' => 'Isi Surat (Opsional)',
             'ttd_by_jabatan' => 'TTD Oleh (Jabatannya)',
             'ttd_by' => 'Keterangan TTD',
             'invisibility' => 'Surat Anda Rahasiakan',
@@ -59,6 +68,10 @@ class Suratrepoeks extends \yii\db\ActiveRecord
     public function getOwnere()
     {
         return $this->hasOne(Pengguna::className(), ['username' => 'owner']);
+    }
+    public function getApprovere()
+    {
+        return $this->hasOne(Pengguna::className(), ['username' => 'approver']);
     }
     public function getTtdbye()
     {

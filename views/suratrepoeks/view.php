@@ -23,7 +23,8 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-copy-clipboa
                 <?php } else { ?>
                     <span class="badge bg-success"><i class="fas fa-clipboard-check"></i> Telah disetujui</span>
                 <?php } ?>
-                <?php if (                    
+                <?php if (
+                    $model->isi_suratrepoeks != NULL &&
                     (Yii::$app->user->identity->username === $model['owner']
                         || Yii::$app->user->identity->username === $model['approver']
                         || Yii::$app->user->identity->issekretaris === true)
@@ -109,8 +110,26 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-copy-clipboa
                         'format' => 'html',
                     ],
                     [
+                        'attribute' => 'approver',
+                        'value' => $model->approvere->nama,
+                    ],
+                    [
                         'attribute' => 'owner',
                         'value' => $model->ownere->nama,
+                    ],
+                    [
+                        'attribute' => 'sent_by',
+                        'value' => $model->sent_by == 0 ? '<span class="badge bg-primary rounded-pill"><i class="fas fa-portrait"></i> Oleh Sekretaris ' . Yii::$app->params['namaSatker'] . '</span>' : ($model->sent_by == 1 ? '<span class="badge bg-success rounded-pill"><i class="fas fa-users"></i> Oleh Tim Teknis/ Pengusul Surat</span>' : ($model->sent_by == 2 ? '<span  class="badge bg-secondary rounded-pill"><i class="fas fa-user-slash"></i> Tidak Dikirim Melalui Surel</span>' : '-')),
+                        'format' => 'html',
+                        'label' => 'Pengiriman PDF/Scan Surat',
+
+                    ],
+                    [
+                        'attribute' => 'is_sent_by_sek',
+                        'value' => $model->is_sent_by_sek == 1 ? '<span class="badge bg-success rounded-pill"><i class="fas fa-check-double"></i> Sent</span>' : ($model->is_sent_by_sek == 0 ? '<span class="badge bg-warning rounded-pill"><i class="fas fa-stop"></i> To Be Sent</span>' : '-'),
+                        'format' => 'html',
+                        'label' => 'Pengiriman PDF/Scan Surat',
+
                     ],
                     [
                         'attribute' => 'shared_to',
@@ -128,7 +147,101 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-copy-clipboa
                 ],
             ])
             ?>
-            <br />                     
+            <br />
+            <?php if (
+                $model->isi_suratrepoeks != NULL &&
+                (Yii::$app->user->identity->username === $model['owner']
+                    || Yii::$app->user->identity->username === $model['approver']
+                    || Yii::$app->user->identity->issekretaris)
+            ) { ?>
+                <hr class="bps" />
+                <div class="text-center">
+                    <h3>
+                        <span class="badge bg-primary">Isi Surat</span>
+                    </h3>
+                    <?= Html::a('<i class="fas fa-file-pdf"></i> Cetak PDF', ['cetaksurat', 'id' => $model->id_suratrepoeks], ['class' => 'btn btn-sm btn btn-outline-warning', 'target' => '_blank']) ?>
+                    <button id="btn-export" onclick="exportHTMLWord('<?php echo $model->perihal_suratrepoeks ?>')" type="button" class="btn btn-sm btn-outline-success">
+                        <i class="fas fa-file-word"></i> Export to Word
+                    </button>
+                </div>
+                <br />
+                <div class="container" id="source-html">
+                    <div data-size="A4" style="min-height: 1200px">
+                        <?php
+                        echo $html; ?>
+                    </div>
+                </div>
+            <?php } ?>
+            <?php if (
+                $model->isi_lampiran != NULL &&
+                (Yii::$app->user->identity->username === $model['owner']
+                    || Yii::$app->user->identity->username === $model['approver']
+                    || Yii::$app->user->identity->issekretaris)
+            ) { ?>
+                <hr class="bps" />
+                <div class="text-center">
+                    <h3>
+                        <span class="badge bg-primary">Lampiran Surat</span>
+                    </h3>
+                    <?= Html::a('<i class="fas fa-file-pdf"></i> Cetak PDF', ['cetaklampiran', 'id' => $model->id_suratrepoeks], ['class' => 'btn btn-sm btn btn-outline-warning', 'target' => '_blank']) ?>
+                    <button id="btn-export" onclick="exportHTMLWordLampiran('Lampiran - <?php echo $model->perihal_suratrepoeks ?>')" type="button" class="btn btn-sm btn-outline-success">
+                        <i class="fas fa-file-word"></i> Export to Word
+                    </button>
+                </div>
+                <br />
+                <div class="container" id="source-html-lampiran">
+                    <div data-size="A4" style="min-height: 1200px">
+                        <?php
+                        echo $model->isi_lampiran; ?>
+                    </div>
+                </div>
+            <?php } ?>
         </div>
     </div>
 </div>
+<script src="https://unpkg.com/html-docx-js/dist/html-docx.js"></script>
+<script>
+    function exportHTMLWord(rapat) {
+        var sourceHTML = document.getElementById("source-html").innerHTML;
+        var converted = htmlDocx.asBlob(sourceHTML, {
+            margins: {
+                top: -100,
+                bottom: 1200,
+                left: 1200,
+                right: 1200
+            },
+            padding: {
+                left: 40,
+                right: 40
+            }
+        });
+        var fileDownload = document.createElement("a");
+        document.body.appendChild(fileDownload);
+        fileDownload.href = URL.createObjectURL(converted);
+        fileDownload.download = rapat + '.docx';
+        fileDownload.click();
+        document.body.removeChild(fileDownload);
+    }
+
+    function exportHTMLWordLampiran(rapat) {
+        var sourceHTML = document.getElementById("source-html-lampiran").innerHTML;
+        var converted = htmlDocx.asBlob(sourceHTML, {
+            margins: {
+                top: -100,
+                bottom: 1200,
+                left: 1200,
+                right: 1200
+            },
+            padding: {
+                left: 40,
+                right: 40
+            }
+        });
+        var fileDownload = document.createElement("a");
+        document.body.appendChild(fileDownload);
+        fileDownload.href = URL.createObjectURL(converted);
+        fileDownload.download = rapat + '.docx';
+        fileDownload.click();
+        document.body.removeChild(fileDownload);
+    }
+</script>

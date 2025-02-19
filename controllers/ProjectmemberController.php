@@ -1,5 +1,7 @@
 <?php
+
 namespace app\controllers;
+
 use app\models\Projectmember;
 use app\models\ProjectmemberSearch;
 use Yii;
@@ -43,6 +45,13 @@ class ProjectmemberController extends BaseController
             ]
         );
     }
+    public function beforeAction($action)
+    {
+        if ($action->id === 'delete' || $action->id === 'toggleoperator') {
+            $this->enableCsrfValidation = false; // Disable CSRF validation for the action
+        }
+        return parent::beforeAction($action);
+    }
     public function actionIndex($year)
     {
         $searchModel = new ProjectmemberSearch();
@@ -68,7 +77,7 @@ class ProjectmemberController extends BaseController
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
                 Yii::$app->session->setFlash('success', "Data berhasil ditambahkan. Terima kasih.");
-                return $this->redirect(['index', 'year'=>'']);
+                return $this->redirect(['index', 'year' => '']);
             }
         } else {
             $model->loadDefaultValues();
@@ -82,7 +91,7 @@ class ProjectmemberController extends BaseController
         $model = $this->findModel($id);
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', "Data berhasil dimutakhirkan. Terima kasih.");
-            return $this->redirect(['index', 'year'=>'']);
+            return $this->redirect(['index', 'year' => '']);
         }
         return $this->render('update', [
             'model' => $model,
@@ -94,10 +103,10 @@ class ProjectmemberController extends BaseController
         $affected_rows = Projectmember::updateAll(['member_status' => 0, 'timetstamp_projectmember_lastupdate' => date('Y-m-d H:i:s')], 'id_projectmember = "' . $id . '"');
         if ($affected_rows == 0) {
             Yii::$app->session->setFlash('warning', "Gagal. Mohon hubungi Admin.");
-            return $this->redirect(['index', 'year'=>'']);
+            return $this->redirect(['index', 'year' => '']);
         } else {
             Yii::$app->session->setFlash('success', "Pengguna berhasil di-nonaktifkan dari project terkait. Terima kasih.");
-            return $this->redirect(['index', 'year'=>'']);
+            return $this->redirect(['index', 'year' => '']);
         }
     }
     public function actionAktifkanlagi($id)
@@ -106,10 +115,10 @@ class ProjectmemberController extends BaseController
         $affected_rows = Projectmember::updateAll(['member_status' => 1, 'timetstamp_projectmember_lastupdate' => date('Y-m-d H:i:s')], 'id_projectmember = "' . $id . '"');
         if ($affected_rows == 0) {
             Yii::$app->session->setFlash('warning', "Gagal. Mohon hubungi Admin.");
-            return $this->redirect(['index', 'year'=>'']);
+            return $this->redirect(['index', 'year' => '']);
         } else {
             Yii::$app->session->setFlash('success', "Pengguna berhasil diaktifkan kembali pada project terkait. Terima kasih.");
-            return $this->redirect(['index', 'year'=>'']);
+            return $this->redirect(['index', 'year' => '']);
         }
     }
     protected function findModel($id_projectmember)
@@ -128,10 +137,10 @@ class ProjectmemberController extends BaseController
             $affected_rows = Projectmember::updateAll(['member_status' => 2], ['id_projectmember' => $id]);
         if ($affected_rows === 0) {
             Yii::$app->session->setFlash('warning', "Gagal. Mohon hubungi Admin.");
-            return $this->redirect(['index', 'year'=>'']);
+            return $this->redirect(['index', 'year' => '']);
         } else {
             Yii::$app->session->setFlash('success', "Status ketua berhasil ditetap/batalkan. Terima kasih.");
-            return $this->redirect(['index', 'year'=>'']);
+            return $this->redirect(['index', 'year' => '']);
         }
     }
     public function actionToggleoperator($id)
@@ -146,7 +155,7 @@ class ProjectmemberController extends BaseController
             ->count();
         if (Yii::$app->user->identity->level != 0 && $ketua <= 0) {
             Yii::$app->session->setFlash('warning', "Anda hanya dapat mengatur data project yang Anda ketuai. Terima kasih.");
-            return $this->redirect(['index', 'year'=>'']);
+            return $this->redirect(['index', 'year' => '']);
         }
         if ($model->member_status == 3) {
             $affected_rows = Projectmember::updateAll(['member_status' => 1], ['id_projectmember' => $id]);
@@ -154,10 +163,10 @@ class ProjectmemberController extends BaseController
             $affected_rows = Projectmember::updateAll(['member_status' => 3], ['id_projectmember' => $id]);
         if ($affected_rows === 0) {
             Yii::$app->session->setFlash('warning', "Gagal. Mohon hubungi Admin.");
-            return $this->redirect(['index', 'year'=>'']);
+            return $this->redirect(['index', 'year' => '']);
         } else {
             Yii::$app->session->setFlash('success', "Status operator pengguna berhasil ditetap/batalkan. Terima kasih.");
-            return $this->redirect(['index', 'year'=>'']);
+            return $this->redirect(['index', 'year' => '']);
         }
     }
 }

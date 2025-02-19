@@ -7,7 +7,7 @@ use Yii;
 class Agenda extends \yii\db\ActiveRecord
 {
 
-    public $waktu, $pilihpelaksana, $pelaksanatext, $tempattext, $pilihtempat, $teams;
+    public $waktu, $pilihpelaksana, $pelaksanatext, $tempattext, $pilihtempat, $teams, $approval;
     public static function tableName()
     {
         return 'agenda';
@@ -18,7 +18,7 @@ class Agenda extends \yii\db\ActiveRecord
         return [
             [['kegiatan', 'metode', 'progress', 'peserta', 'reporter', 'waktumulai', 'waktuselesai', 'pemimpin', 'fk_kategori', 'surat_lanjutan'], 'required'],
             [['pilihpelaksana', 'pilihtempat'], 'required', 'on' => ['create', 'update']],
-            [['waktumulai_tunda', 'waktuselesai_tunda', 'peserta_lain', 'hashtags'], 'safe'],
+            [['waktumulai_tunda', 'waktuselesai_tunda', 'peserta_lain', 'hashtags', 'by_event_team', 'event_team_leader'], 'safe'],
             [['kegiatan'], 'string'],
             [['waktumulai', 'waktuselesai', 'timestamp', 'timestamp_lastupdate'], 'safe'],
             [['metode', 'progress', 'id_lanjutan', 'pilihpelaksana'], 'integer'],
@@ -112,10 +112,10 @@ class Agenda extends \yii\db\ActiveRecord
             ->andWhere(['progress' => '0'])
             ->andWhere(['deleted' => 0]);
 
-        if (Yii::$app->controller->action->id == 'update') {
+        if (Yii::$app->controller->action->id = 'update') {
             $id = $this->id_agenda;
             $query->andWhere(['<>', 'id_agenda', $id]);
-        } elseif (Yii::$app->controller->action->id == 'tunda') {
+        } elseif (Yii::$app->controller->action->id = 'tunda') {
             $id = $this->id_agenda;
             $mulai = $this->waktumulai_tunda;
             $selesai = $this->waktuselesai_tunda;
@@ -137,7 +137,7 @@ class Agenda extends \yii\db\ActiveRecord
         $agenda = $query->all();
 
         if (Yii::$app->controller->action->id != 'editpeserta' && count($agenda) > 0 && $ruangan != 13) {
-            $this->addError('tempat', "Ruangan dan jadwal tersebut sudah digunakan untuk " . $agenda[0]['kegiatan']);
+            $this->addError('tempat', "Ruangan dan jadwal tersebut sudah digunakan untuk " . $agenda[0]['kegiatan'] . $this->waktumulai_tunda);
         } elseif (Yii::$app->controller->action->id != 'editpeserta' && count($agenda) > 1 && $ruangan == 13) {
             $this->addError('tempat', "Zoom dan jadwal tersebut sudah digunakan untuk " . $agenda[0]['kegiatan']);
         }
@@ -218,6 +218,10 @@ class Agenda extends \yii\db\ActiveRecord
     public function getLaporane()
     {
         return $this->hasOne(Laporan::className(), ['id_laporan' => 'id_agenda']);
+    }
+    public function getUploadere()
+    {
+        return $this->hasOne(Pengguna::className(), ['username' => 'uploader'])->via('laporane');
     }
     public function getLanjutan()
     {

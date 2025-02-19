@@ -24,19 +24,22 @@ $this->title = 'Detail Agenda # ' . $model->id_agenda;
                     'data' => [
                         'confirm' => 'Anda yakin akan menghapus agenda ini dari sistem?',
                         'method' => 'post',
-                        'bs-toggle'=>'modal',
-                        'bs-dismiss'=>'modal'
+                        'bs-toggle' => 'modal',
+                        'bs-dismiss' => 'modal'
                     ],
                 ]) ?>
             <?php endif; ?>
         </div>
         <div class="p-2">
-        <h5>
+            <h5>
+                <?php if ($model->presensi != null): ?>
+                    <?= Html::a('<i class="fas fa-link"></i> Link Presensi', $model->presensi, ['class' => 'btn btn-sm btn-warning', 'target' => '_blank']) ?>
+                <?php endif; ?>
                 <?php if ($model->progress == 1 && !isset($model->laporane->id_laporan)) { ?>
                     <span class="badge bg-danger"><i class="fas fa-exclamation"></i> Belum Ada Laporan</span>
                 <?php } elseif ($model->progress == 1 && isset($model->laporane->id_laporan)) { ?>
-                    <?= Html::a('<i class="fas fa-file"></i> Lihat Laporan', ['laporan/view', 'id' => $model->laporane->id_laporan], ['class' => 'btn btn-sm btn-success']) ?>                    
-                <?php } ?>                
+                    <?= Html::a('<i class="fas fa-file"></i> Lihat Laporan', ['laporan/view', 'id' => $model->laporane->id_laporan], ['class' => 'btn btn-sm btn-success']) ?>
+                <?php } ?>
             </h5>
         </div>
     </div>
@@ -124,7 +127,7 @@ $this->title = 'Detail Agenda # ' . $model->id_agenda;
             'kegiatan:ntext',
             [
                 'attribute' => 'fk_kategori',
-                'value' => $model->kategorie->nama_kategori,
+                'value' => $model->fk_kategori != 0 ? $model->kategorie->nama_kategori : '-',
                 'label' => 'Kategori Kegiatan'
             ],
             [
@@ -156,6 +159,11 @@ $this->title = 'Detail Agenda # ' . $model->id_agenda;
             [
                 'attribute' => 'pelaksana',
                 'value' => $model->pelaksanalengkape,
+            ],
+            [
+                'attribute' => 'by_event_team',
+                'value' => $model->by_event_team == 1 ? '<span title="Tidak" class="badge bg-success rounded-pill"><i class="fas fa-signal"></i> Supported</span>' : '-',
+                'format' => 'html',
             ],
             [
                 'attribute' => 'pemimpin',

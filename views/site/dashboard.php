@@ -11,7 +11,7 @@ use yii\helpers\Html;
 $searchModel = new AccessLogsSearch();
 $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-$this->title = 'Riwayat Akses Aplikasi';
+$this->title = 'Riwayat Akses Aplikasi per 19 Juni 2024';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="container-fluid" data-aos="fade-up">

@@ -2,6 +2,7 @@
 
 use app\models\Suratrepoeks;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use kartik\grid\SerialColumn;
 use kartik\grid\ActionColumn;
 use kartik\grid\GridView;
@@ -11,7 +12,36 @@ use yii\web\View;
 $this->title = 'Surat-surat';
 
 $this->registerCssFile(Yii::$app->request->baseUrl . '/library/css/fi-agenda-index.css', ['position' => View::POS_HEAD, 'depends' => [\yii\web\JqueryAsset::class]]);
+$script = <<< JS
+$(document).ready(function() {
+    $('.lapor-surel-btn').on('click', function(event) {
+        event.preventDefault(); // Prevent the default action
+
+        var url = $(this).data('url'); // Get the URL
+        var message = $(this).data('confirm'); // Get the confirmation message
+
+        // Show confirmation dialog
+        if (confirm(message)) {
+            // Show loading overlay
+            $('#loading-overlay').show();
+
+            // Redirect to the URL
+            window.location.href = url;
+        }
+    });
+});
+JS;
+$this->registerJs($script);
 ?>
+<!-- Loading Overlay -->
+<div id="loading-overlay" style="display: none; position: fixed; width: 100%; height: 100%; top: 0; left: 0; background: rgba(0, 0, 0, 0.5); z-index: 9999; text-align: center;">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 48px;">
+        <div class="spinner-border text-light" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <p>Memproses Pelaporan<br />dan WA Blast Notification<br />Mohon tunggu...</p>
+    </div>
+</div>
 <?php
 $surats = Suratrepoeks::find()->select('*')
     ->andWhere(['approver' => Yii::$app->user->identity->username])
@@ -109,18 +139,18 @@ $surats = Suratrepoeks::find()->select('*')
                             'class' => SerialColumn::class,
                         ],
                         // 'id_suratrepoeks',
-                        [
-                            'attribute' => 'fk_agenda',
-                            'label' => 'Agenda',
-                            'value' => function ($model) {
-                                if (!Yii::$app->user->isGuest && $model->sifat != 2 || ($model->sifat == 2 && Yii::$app->user->identity->username === $model['owner'])) //datanya sendiri                          
-                                {
-                                    return $model->agendae->kegiatan ?? '-';
-                                } else {
-                                    return '';
-                                }
-                            },
-                        ],
+                        // [
+                        //     'attribute' => 'fk_agenda',
+                        //     'label' => 'Agenda',
+                        //     'value' => function ($model) {
+                        //         if (!Yii::$app->user->isGuest && $model->sifat != 2 || ($model->sifat == 2 && Yii::$app->user->identity->username === $model['owner'])) //datanya sendiri                          
+                        //         {
+                        //             return $model->agendae->kegiatan ?? '-';
+                        //         } else {
+                        //             return '';
+                        //         }
+                        //     },
+                        // ],
                         [
                             'attribute' => 'penerima_suratrepoeks',
                             'value' => function ($model) {
@@ -179,27 +209,24 @@ $surats = Suratrepoeks::find()->select('*')
                         ],
                         [
                             'attribute' => 'nomor_suratrepoeks',
-                            'value' => function ($model) {
-                                if (!Yii::$app->user->isGuest && $model->sifat != 2 || ($model->sifat == 2 && Yii::$app->user->identity->username === $model['owner'])) //datanya sendiri                          
-                                {
-                                    return $model->invisibility == 0 ? $model->nomor_suratrepoeks : '~';
-                                } else {
-                                    return '';
-                                }
-                            },
+
                         ],
                         [
                             'attribute' => 'jenis',
                             'value' => function ($data) {
-                                if ($data->jenis == 0)
-                                    return '<center><span class="badge bg-primary rounded-pill"><i class="fas fa-scroll"></i> Surat Biasa</span></center>';
-                                elseif ($data->jenis == 1)
-                                    return '<center><span class="badge bg-success rounded-pill"><i class="fas fa-scroll"></i> Surat Perintah Lembur</span></center>';
-                                elseif ($data->jenis == 2)
-                                    return '<center><span class="badge bg-secondary rounded-pill"><i class="fas fa-scroll"></i> Surat Keterangan</span></center>';
-                                elseif ($data->jenis == 3)
-                                    return '<center><span class="badge bg-warning rounded-pill"><i class="fas fa-scroll"></i> Berita Acara</span></center>';
-                                else
+                                if (!Yii::$app->user->isGuest && $data->sifat != 2 || ($data->sifat == 2 && Yii::$app->user->identity->username === $data['owner'])) //datanya sendiri                          
+                                {
+                                    if ($data->jenis == 0)
+                                        return '<center><span class="badge bg-primary rounded-pill"><i class="fas fa-scroll"></i> Surat Biasa</span></center>';
+                                    elseif ($data->jenis == 1)
+                                        return '<center><span class="badge bg-success rounded-pill"><i class="fas fa-scroll"></i> Surat Perintah Lembur</span></center>';
+                                    elseif ($data->jenis == 2)
+                                        return '<center><span class="badge bg-secondary rounded-pill"><i class="fas fa-scroll"></i> Surat Keterangan</span></center>';
+                                    elseif ($data->jenis == 3)
+                                        return '<center><span class="badge bg-warning rounded-pill"><i class="fas fa-scroll"></i> Berita Acara</span></center>';
+                                    else
+                                        return '';
+                                } else
                                     return '';
                             },
                             'header' => 'Jenis',
@@ -269,11 +296,15 @@ $surats = Suratrepoeks::find()->select('*')
                         [
                             'attribute' => 'approval',
                             'value' => function ($data) {
-                                if ($data->approval == 0)
-                                    return '<center><span title="Belum Disetujui" class="badge bg-danger rounded-pill"><i class="fas fa-times"></i> Belum</span></center>';
-                                elseif ($data->approval == 1)
-                                    return '<center><span title="Disetujui" class="badge bg-success rounded-pill"><i class="fas fa-check"></i> Disetujui</span></center>';
-                                else
+                                if (!Yii::$app->user->isGuest && $data->sifat != 2 || ($data->sifat == 2 && Yii::$app->user->identity->username === $data['owner'])) //datanya sendiri                          
+                                {
+                                    if ($data->approval == 0)
+                                        return '<center><span title="Belum Disetujui" class="badge bg-danger rounded-pill"><i class="fas fa-times"></i> Belum</span></center>';
+                                    elseif ($data->approval == 1)
+                                        return '<center><span title="Disetujui" class="badge bg-success rounded-pill"><i class="fas fa-check"></i> Disetujui</span></center>';
+                                    else
+                                        return '';
+                                } else
                                     return '';
                             },
                             'header' => 'Disetujui',
@@ -284,8 +315,8 @@ $surats = Suratrepoeks::find()->select('*')
                         ],
                         [
                             'class' => ActionColumn::class,
-                            'header' => 'Draft/Word dan Persetujuan',
-                            'template' => '{setujui}{komentar}{uploadword}{lihatword}',
+                            'header' => 'Drafting & Persetujuan',
+                            'template' => '{setujui}{cetak}{komentar}{uploadword}{lihatword}',
                             'visibleButtons' =>
                             [
                                 'setujui' => function ($model, $key, $index) {
@@ -296,7 +327,13 @@ $surats = Suratrepoeks::find()->select('*')
                                     return ((Yii::$app->user->identity->username === $model['owner'] && $model['komentar'] != null)
                                         || ($model->approval == 0 && Yii::$app->user->identity->username === $model['approver'] && $model->jumlah_revisi < 2)
                                         || Yii::$app->user->identity->issekretaris) ? true : false;
-                                },                                
+                                },
+                                'cetak' => function ($model) {
+                                    return $model->isi_suratrepoeks != null &&
+                                        (Yii::$app->user->identity->username === $model['owner']
+                                            || Yii::$app->user->identity->username === $model['approver']
+                                            || Yii::$app->user->identity->issekretaris) ? true : false;
+                                },
                                 'uploadword' => function ($model) {
                                     return (!Yii::$app->user->isGuest && Yii::$app->user->identity->username === $model['owner'] //datanya sendiri                               
                                     ) ? true : false;
@@ -332,7 +369,10 @@ $surats = Suratrepoeks::find()->select('*')
                                         return Html::a('<i class="fas fa-comment-alt"></i> ',  ['suratrepoeks/komentar/' . $model->id_suratrepoeks], ['title' => 'Beri koreksi untuk surat ini', 'class' => 'modalButton', 'data-pjax' => '0']);
                                     else
                                         return Html::a('<i class="fas fa-comment-alt"></i> ',  ['suratrepoeks/komentar/' . $model->id_suratrepoeks], ['title' => 'Beri koreksi untuk surat ini', 'class' => 'modalButton', 'data-pjax' => '0']);
-                                },                                
+                                },
+                                'cetak' => function ($url, $model, $key) {
+                                    return Html::a('<i class="fas fa-file-pdf"></i> ',  ['suratrepoeks/cetaksurat/' . $model->id_suratrepoeks], ['title' => 'Cetak surat ini', 'target' => '_blank']);
+                                },
                                 'uploadword' => function ($url, $model, $key) {
                                     return Html::a('<i class="fas fa-cloud-upload-alt"></i> ',  ['suratrepoeks/uploadword/' . $model->id_suratrepoeks], ['title' => 'Upload scan surat ini', 'target' => '_blank']);
                                 },
@@ -389,6 +429,59 @@ $surats = Suratrepoeks::find()->select('*')
                                     ]);
                                 },
                             ],
+                        ],
+                        [
+                            'attribute' => 'sent_by',
+                            'value' => function ($data, $url) {
+                                $statusText = '';
+
+                                if ($data->sent_by === null) {
+                                    $statusText = '-';
+                                } elseif ($data->sent_by === 0) {
+                                    if ($data->is_sent_by_sek === 0 || $data->is_sent_by_sek === null) {
+                                        $statusText = '<center><span title="Belum Dikirim Sekretaris" class="badge bg-warning rounded-pill">
+                                            <i class="fas fa-stop"></i> Belum Dikirim<br/>oleh Sekretaris
+                                        </span></center>';
+                                    } elseif ($data->is_sent_by_sek === 1) {
+                                        $statusText = '<center><span title="Dikirim Sekretaris" class="badge bg-info rounded-pill">
+                                            <i class="fas fa-check"></i> Sudah Dikirim<br/>oleh Sekretaris
+                                        </span></center>';
+                                    }
+                                } elseif ($data->sent_by === 1) {
+                                    $statusText = '<center><span title="Dikirim Teknis" class="badge bg-success rounded-pill">
+                                        <i class="fas fa-user"></i> Sudah/Akan Dikirim<br/>oleh Teknis/Pengusul Surat
+                                    </span></center>';
+                                } elseif ($data->sent_by === 2) {
+                                    $statusText = '<center><span title="Tidak Dikirim PDF" class="badge bg-secondary rounded-pill">
+                                        <i class="fas fa-user-slash"></i> Tidak Dikirim<br/>dalam Bentuk Surel/Email
+                                    </span></center>';
+                                }
+
+                                // Add Action Button (Laporan Pengiriman Surat) if conditions are met
+                                if (
+                                    !Yii::$app->user->isGuest &&
+                                    Yii::$app->user->identity->issekretaris &&
+                                    $data->sent_by === 0 &&
+                                    ($data->is_sent_by_sek === 0 || $data->is_sent_by_sek === null) &&
+                                    $data->approval === 1
+                                ) {
+                                    $url = Url::to(['suratrepoeks/lapor-surel', 'id' => $data->id_suratrepoeks]); // FIX: Correct URL generation
+
+                                    $statusText .= '<br>' . Html::a('<i class="fas fa-user-check text-success"></i> Laporkan', '#', [
+                                        'title' => 'Laporkan status pengiriman surel/berkas cetak surat ini',
+                                        'class' => 'lapor-surel-btn',
+                                        'data-url' => $url, // FIX: Pass correct URL
+                                        // 'data-url' => '/bengkulu'.$url, // untuk webapps Store the URL for navigation
+                                        'data-confirm' => 'Anda yakin ingin mengonfirmasi pengiriman PDF Surat ini? Dari <br/><strong>' . Html::encode($data->ownere->nama) . '</strong>', // FIX: Encode to prevent XSS
+                                    ]);
+                                }
+                                return $statusText;
+                            },
+                            'header' => 'Status & Laporan Pengiriman Surat',
+                            'enableSorting' => false,
+                            'format' => 'raw',
+                            'vAlign' => 'middle',
+                            'hAlign' => 'center'
                         ],
                     ],
                     'layout' => $layout,

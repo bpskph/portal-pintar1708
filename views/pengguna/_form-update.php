@@ -54,7 +54,7 @@ use yii\helpers\Url;
                 <?php elseif ($bengkulu == 'TIDAK') : ?>
                     <div class="alert alert-secondary alert-dismissable">
                         <p>
-                            Mohon maaf, pegawai yang dapat ditambahkan ke sistem Portal Pintar hanya pegawai yang pada Community BPS tercatat di Kabupaten Bengkulu Selatan.
+                            Mohon maaf, pegawai yang dapat ditambahkan ke sistem Portal Pintar hanya pegawai yang pada Community BPS tercatat di <?=Yii::$app->params['namaSatker']?>.
                         </p>
                     </div>
                 <?php elseif ($ada == 'COMMUNITY') : ?>

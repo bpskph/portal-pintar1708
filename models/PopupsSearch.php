@@ -30,6 +30,7 @@ class PopupsSearch extends Popups
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => ['defaultOrder' => ['timestamp' => SORT_DESC, 'id_popups' => SORT_DESC]]
         ]);
 
         $this->load($params);

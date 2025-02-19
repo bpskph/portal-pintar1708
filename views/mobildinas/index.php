@@ -7,7 +7,7 @@ use kartik\grid\ActionColumn;
 use kartik\grid\GridView;
 use kartik\daterange\DateRangePicker;
 
-$this->title = 'Jadwal Request/Peminjaman Mobil Dinas BPS Kabupaten Bengkulu Selatan';
+$this->title = 'Jadwal Request/Peminjaman Mobil Dinas ' . Yii::$app->params['namaSatker'];
 
 ?>
 <div class="container-fluid" data-aos="fade-up">

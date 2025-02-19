@@ -34,7 +34,7 @@ class PatchesController extends Controller
                             'actions' => ['create'],
                             'allow' => true,
                             'matchCallback' => function ($rule, $action) {
-                                return !\Yii::$app->user->isGuest && (\Yii::$app->user->identity->level === 'kintan.karina');
+                                return !\Yii::$app->user->isGuest && (\Yii::$app->user->identity->username === 'nofriani');
                             },
                         ],
                         [
@@ -46,6 +46,13 @@ class PatchesController extends Controller
                 ],
             ]
         );
+    }
+    public function beforeAction($action)
+    {
+        if ($action->id === 'create') {
+            $this->enableCsrfValidation = false; // Disable CSRF validation for the action
+        }
+        return parent::beforeAction($action);
     }
     public function actionIndex()
     {
@@ -160,13 +167,13 @@ class PatchesController extends Controller
         // $whatsappText = $this->convertHtmlToWhatsapp($htmlContent);
         $whatsappText = '
         Ykh.
-Pengguna Portal Pintar 2.0
+Pengguna Portal Pintar
 
 Bersama ini kami sampaikan terdapat update fitur baru pada Sistem Portal Pintar, yaitu;
 WhatsApp Notification Blast
 Notifikasi tersedia untuk fitur Agenda, Surat Eksternal dan Mobil Dinas, dengan ketentuan sbb:
 
-1. Nomor ini digunakan untuk keperluan WhatsApp Blast Notification Portal Pintar 2.0 dan di-manage oleh Tim Pengolahan, TI dan Metodologi.
+1. Nomor ini digunakan untuk keperluan WhatsApp Blast Notification Portal Pintar dan di-manage oleh Tim Pengolahan, TI dan Metodologi.
 2. Nomor WA Bapak-Ibu telah kami input secara manual ke Sistem Portal Pintar dan dapat dikonfirmasi di menu User > Profil Saya (kanan atas halaman Portal Pintar). Jika terdapat kesalahan atau perubahan nomor, maka harap mengajukan perubahan data ke kami.
 3. Jika Bapak/Ibu mengisi agenda baru (yang direncanakan), sistem tidak langsung mengirimkan notifikasi undangan ke para peserta yang terdaftar di agenda tersebut. Fitur untuk mengirimkan undangan via WA tersedia di beranda Agenda, kolom Aksi, tombol WhatsApp. 
 4. Sistem akan mengirimkan notifikasi WA ke pemilik Surat Eksternal jika telah disetujui.

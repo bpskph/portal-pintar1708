@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Pengguna;
 use app\models\Popups;
 use app\models\PopupsSearch;
 use Yii;
@@ -68,6 +69,29 @@ class PopupsController extends BaseController
 
         if ($this->request->isPost && $model->load($this->request->post())) {
             if ($model->save()) {
+                // Query the pengguna table for the list of names that correspond to the extracted usernames
+                $penggunas = Pengguna::find()
+                    ->select(['nama', 'nomor_hp'])
+                    ->where([
+                        'or',
+                        ['level' => '1'],
+                        ['level' => '0']
+                    ])
+                    ->all();
+                $judul = $model->judul_popups;
+
+                // Convert the list of names to a string in the format that can be used for autofill
+                foreach ($penggunas as $name) {
+                    $nomor_tujuan = $name->nomor_hp;
+                    $nama_peserta = $name->nama;
+                    $isi_notif = '*Portal Pintar - WhatsApp Notification Blast*
+
+Bapak/Ibu ' . $nama_peserta . ', Terdapat Pengumuman Terbaru yang dikirimkan oleh Sistem Portal Pintar, tentang *' . $judul . '*.
+Silahkan melihat berkas pengumuman di ' . Yii::$app->params['webhostingSatker'] . 'portalpintar/popups/index. Terima kasih.
+        
+_#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
+                    $response = AgendaController::wa_engine($nomor_tujuan, $isi_notif);
+                }
                 Yii::$app->session->setFlash('success', "Popup berhasil ditambahkan.Terima kasih.");
                 return $this->redirect(['index']);
             }

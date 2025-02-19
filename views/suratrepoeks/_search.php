@@ -72,7 +72,7 @@ use kartik\daterange\DateRangePicker;
         ]) ?>
         <?=
         $form->field($model, 'sifat')->dropDownList([
-            0 => "Biasa", 1 => "Penting", 2 => "Rahasia"
+            0 => "Biasa", 1 => "Penting"
         ], ['prompt' => 'Sifat ...'])
         ?>
         <?= $form->field($model, 'nomor_suratrepoeks', [

@@ -30,6 +30,15 @@ class LoginForm extends Model
             }
         }
     }
+    public function validateActive($attribute, $params)
+    {
+        if (!$this->hasErrors()) {
+            $user = $this->getUser();
+            if (!$user || !$user->validateActive($this->username)) {
+                $this->addError($attribute, 'This user is no longer an active member of Portal Pintar. Please contact Admin.');
+            }
+        }
+    }
     public function login()
     {
         if ($this->validate()) {

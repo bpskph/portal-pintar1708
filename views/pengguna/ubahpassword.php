@@ -9,7 +9,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-6">
-                <div class="card card-success">
+                <div class="card alert <?= ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? 'bg-light' : 'bg-dark') ?>">
                     <div class="card-header">
                         <h3 class="card-title">Ubah Password</h3>
                     </div>

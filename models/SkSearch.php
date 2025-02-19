@@ -28,6 +28,7 @@ class SkSearch extends Sk
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => ['defaultOrder' => ['tanggal_sk' => SORT_DESC]]
         ]);
 
         $this->load($params);

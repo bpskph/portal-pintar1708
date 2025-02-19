@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\Html;
 use yii\web\View;
 
@@ -60,21 +61,24 @@ $this->registerCssFile(Yii::$app->request->baseUrl . '/library/css/fi-page-invoi
         </div>
     </div>
 
-    <div class="card <?= ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? '' : 'bg-dark') ?>">
+    <div class="card <?= ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? '' : 'bg-dark text-light') ?>">
         <div class="card-body">
             <h3>
                 <span class="badge bg-primary">Detail Kegiatan</span>
             </h3>
             <?= $header; ?>
-
-            <div class="text-center">
-                <div id="pdf-container container" data-aos="fade-up">
-
-                    <h5 class="text-center mt-2 mb-2"><em>Jika tampilan file belum berubah (untuk upload ulang), <br /> lakukan clear cache pada browser Anda, atau lihat melalui Moda Privasi (Incognito). Terima kasih.</em></h5>
-
-                    <iframe id="pdf-iframe" src="<?= Yii::getAlias('@web') ?>/laporans/<?php echo $model->id_laporan ?>.pdf" width="100%" height="500px"></iframe>
+            <?php if (file_exists(Yii::getAlias('@webroot/laporans/' . $model->id_laporan . '.pdf'))) : ?>
+                <div class="text-center">
+                    <div id="pdf-container container" data-aos="fade-up">
+                        <h5 class="text-center mt-2 mb-2"><em>Jika tampilan file belum berubah (untuk upload ulang), <br /> lakukan clear cache pada browser Anda, atau lihat melalui Moda Privasi (Incognito). Terima kasih.</em></h5>
+                        <iframe id="pdf-iframe" src="<?= Yii::getAlias('@web') ?>/laporans/<?php echo $model->id_laporan ?>.pdf" width="100%" height="500px"></iframe>
+                    </div>
                 </div>
-            </div>
+            <?php else: ?>
+                <div id="pdf-container container" data-aos="fade-up">
+                    <h5 class="text-center mt-2 mb-2"><em>Berkas PDF belum tersedia (belum diunggah oleh penyusun agenda).<br />Jika berkas sudah diupload namun belum tampil, mohon lakukan clear cache pada browser Anda, atau lihat melalui Moda Privasi (Incognito). Terima kasih.</em></h5>
+                </div>
+            <?php endif; ?>
             <br />
         </div>
     </div>

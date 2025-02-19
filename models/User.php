@@ -39,6 +39,10 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     {
         return $this->password === md5($password);
     }
+    public function validateActive()
+    {
+        return $this->level !== 2;
+    }
     public function getThemechoice()
     {
         $theme = $this->theme;
@@ -114,5 +118,15 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
         $ketuatim = Teamleader::find()->select('nama_teamleader')->where('leader_status = 1')->column();
 
         return in_array($username, $ketuatim);
+    }
+    public function getIsapprovermobildinas()
+    {
+        $user = $this->approver_mobildinas;
+        if ($user == 1) {
+            $themechoice = true;
+        } else {
+            $themechoice = false;
+        }
+        return $themechoice;
     }
 }

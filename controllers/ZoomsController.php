@@ -47,6 +47,13 @@ class ZoomsController extends BaseController
             ]
         );
     }
+    public function beforeAction($action)
+    {
+        if ($action->id === 'delete') {
+            $this->enableCsrfValidation = false; // Disable CSRF validation for the action
+        }
+        return parent::beforeAction($action);
+    }
     public function actionIndex()
     {
         $searchModel = new ZoomsSearch();

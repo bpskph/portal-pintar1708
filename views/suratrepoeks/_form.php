@@ -22,6 +22,74 @@ if ($model->isNewRecord) {
 $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-suratrepoeks-form.js', ['position' => View::POS_END, 'depends' => [\yii\web\JqueryAsset::class]]);
 
 ?>
+<style>
+   /* Radio Button Styling */
+   .custom-radio-wrapper {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .custom-radio-option {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #ccc;
+        border-radius: 50%;
+        margin-right: 10px;
+        position: relative;
+        cursor: pointer;
+        vertical-align: middle;
+    }
+
+    .custom-radio-option:checked {
+        border-color: #007bff;
+        background-color: #007bff;
+    }
+
+    .custom-radio-option:checked::after {
+        content: "";
+        width: 10px;
+        height: 10px;
+        background: white;
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    /* Label Styling */
+    .custom-radio-label {
+        font-size: 16px;
+        font-weight: 500;
+        color: #d1d1d1; /* Light color */
+        transition: font-weight 0.2s ease-in-out, color 0.2s ease-in-out;
+    }
+
+    /* Bold label when selected */
+    .custom-radio-option:checked + .custom-radio-label {
+        font-weight: bold;
+        color: #007bff;
+    }
+
+    /* #suratrepoeks-sent_by {
+        border-style: solid;
+        border-color: #ffc107;
+        border-width: thin;
+        background-color: #ffe8a4;
+        border-radius: 5px;
+    }
+
+    #suratrepoeks-sent_by>.form-check-label {
+        font-size: 16px;
+        font-weight: 500;
+        color: rgb(255, 255, 255);
+    } */
+</style>
 <div class="container-fluid" data-aos="fade-up">
     <div class="card alert <?= ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? 'bg-light' : 'bg-dark') ?>">
         <div class="row">
@@ -56,7 +124,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-suratrepoeks
                     ]
                 ])->hint('Untuk menjaga ketertiban nomor, surat yang dapat diinput adalah sebatas tanggal hari ini.', ['class' => '', 'style' => 'color: #999']) ?>
                 <?= $form->field($model, 'perihal_suratrepoeks')->textarea(['rows' => 3])
-                    ->hint('Jika ingin memisahkan perihal menjadi beberapa baris, pisahkan dengan "&ltbr/&gt". Contoh: <b>Usulan Penetapan Penggunaan (PSP) &ltbr/&gt BMN Wilayah BPS Kabupaten Bengkulu Selatan</b>', ['class' => '', 'style' => 'color: #999']) ?>
+                    ->hint('Jika ingin memisahkan perihal menjadi beberapa baris, pisahkan dengan "&ltbr/&gt". Contoh: <b>Usulan Penetapan Penggunaan (PSP) &ltbr/&gt BMN Wilayah ' . Yii::$app->params['namaSatker'] . '</b>', ['class' => '', 'style' => 'color: #999']) ?>
                 <?= $form->field($model, 'lampiran')->textInput(['maxlength' => true])
                     ->hint('Contoh Pengisian: <b>1 (Satu) Berkas</b><br/>Kosongkan bila tidak ada lampiran. ', ['class' => '', 'style' => 'color: #999']) ?>
                 <?= $form->field($model, 'fk_suratsubkode')->widget(Select2::classname(), [
@@ -196,8 +264,25 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-suratrepoeks
                     ],
                 ])->hint('Penyetuju Surat adalah Ketua Proyek Menurut SK <b>Tahun Berjalan (' . date("Y") . ')</b>', ['class' => '', 'style' => 'color: #999']) ?>
 
+                <?php if ($model->isNewRecord)
+                    $model->sent_by = 0
+                ?>
+                <?= $form->field($model, 'sent_by')->radioList([
+                    0 => "PDF Surat akan dikirim oleh Sekretaris ' . Yii::$app->params['namaSatker'] . '",
+                    1 => "PDF Surat akan dikirim oleh Anda (Tim Teknis)",
+                    2 => "PDF Surat tidak dikirim melalui surel/email"
+                ], [
+                    'item' => function ($index, $label, $name, $checked, $value) {
+                        return '<div class="custom-radio-wrapper">
+                            <input type="radio" id="sent_by_' . $value . '" name="' . $name . '" value="' . $value . '" 
+                                class="custom-radio-option" ' . ($checked ? 'checked' : '') . '>
+                            <label for="sent_by_' . $value . '" class="custom-radio-label">' . $label . '</label>
+                        </div>';
+                    }
+                ])->label(false); ?>
+
                 <?= $form->field($model, 'tembusan')->textarea(['rows' => 3])
-                    ->hint('Jika daftar tembusan lebih dari satu, pisahkan dengan koma. Contoh: <b>Kepala BPS Kabupaten Bengkulu Selatan, Kepala Bagian Umum BPS Kabupaten Bengkulu Selatan</b>', ['class' => '', 'style' => 'color: #999']) ?>
+                    ->hint('Jika daftar tembusan lebih dari satu, pisahkan dengan koma. Contoh: <b>Kepala ' . Yii::$app->params['namaSatker'] . ', Kepala Bagian Umum ' . Yii::$app->params['namaSatker'] . '</b>', ['class' => '', 'style' => 'color: #999']) ?>
 
                 <?= $form->field($model, 'shared_to')->widget(Select2::classname(), [
                     'name' => 'shared_to',

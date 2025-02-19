@@ -123,9 +123,9 @@ class SiteController extends Controller
         }
         $sso = new SSOBPS();
         /* pakai OpenID*/
-        $sso->setCredential("11701-portalpintar-sd3", "0ecaf0b0-ae36-4e1f-9ecf-2f8986b85f73");
+        $sso->setCredential("11700-portalpintar-g64", "1de86905-2d74-46f3-b609-3594f2855287");
         $sso->setRedirectUri('http://localhost/portalpintar/site/login');
-        // $sso->setRedirectUri('https://webapps.bps.go.id/bengkulu/portalpintar/site/login');
+        $sso->setRedirectUri(Yii::$app->params['namaSatkerKop'] . 'portalpintar/site/login');
         $model = new LoginForm();
         try {
             $post = Yii::$app->request->post();
@@ -138,7 +138,7 @@ class SiteController extends Controller
                     $user_login = User::findByUsername($user['username']); // di sini pakai contoh user bawaan yii2
                     // bisa juga pakai user yang ada di database, tinggal manfaatin aja variabel $user untuk login
                     if ($user_login) {
-                        if ($user_login->level == 2) { //cek aktivasi
+                        if ($user_login->level === 2) { //cek aktivasi
                             Yii::$app->session->setFlash('error', "Maaf, user ini sudah tidak aktif di database Portal Pintar. Silahkan hubungi Admin.");
                             return $this->redirect('https://sso.bps.go.id/auth/realms/pegawai-bps/protocol/openid-connect/logout?redirect_uri=' . $loginurl);
                         }
@@ -165,7 +165,7 @@ class SiteController extends Controller
                 $model->addError('username', 'Username atau Password salah');
             }
         } catch (Exception $e) {
-            $model->addError('username', 'Terjadi kesalahan pada SSO. Mohon coba beberapa saat lagi atau hubungi kintan.karina@bps.go.id.');
+            $model->addError('username', 'Terjadi kesalahan pada SSO. Mohon coba beberapa saat lagi atau hubungi nofriani@bps.go.id.');
         }
         return $this->render('login', [
             'model' => $model,

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Dec 09, 2024 at 01:22 AM
--- Server version: 8.0.27
--- PHP Version: 7.4.26
+-- Generation Time: Feb 19, 2025 at 08:00 AM
+-- Server version: 8.3.0
+-- PHP Version: 8.1.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `portalpintar1701`
+-- Database: `portalpintar3.0`
 --
 
 -- --------------------------------------------------------
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `access_logs` (
   `user_agent` text,
   `timestamp` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=119510 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -64,12 +64,14 @@ CREATE TABLE IF NOT EXISTS `agenda` (
   `pemimpin` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `id_lanjutan` bigint DEFAULT NULL,
   `surat_lanjutan` int NOT NULL,
+  `by_event_team` tinyint NOT NULL DEFAULT '0',
+  `event_team_leader` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `reporter` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `deleted` tinyint NOT NULL DEFAULT '0',
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `timestamp_lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_agenda`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=695 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -91,7 +93,7 @@ CREATE TABLE IF NOT EXISTS `agendapimpinan` (
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `timestamp_agendapimpinan_lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_agendapimpinan`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=470 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -104,26 +106,26 @@ CREATE TABLE IF NOT EXISTS `apel` (
   `id_apel` bigint NOT NULL AUTO_INCREMENT,
   `jenis_apel` tinyint NOT NULL DEFAULT '0',
   `tanggal_apel` date NOT NULL,
-  `pembina_inspektur` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `pemimpin_komandan` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `perwira` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `mc` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `uud` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `korpri` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `doa` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `ajudan` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `operator` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `bendera` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  `tambahsatu_text` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `tambahsatu_petugas` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `tambahdua_text` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `tambahdua_petugas` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `reporter` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `pembina_inspektur` varchar(50) NOT NULL,
+  `pemimpin_komandan` varchar(50) NOT NULL,
+  `perwira` varchar(50) DEFAULT NULL,
+  `mc` varchar(50) NOT NULL,
+  `uud` varchar(50) NOT NULL,
+  `korpri` varchar(50) NOT NULL,
+  `doa` varchar(50) NOT NULL,
+  `ajudan` varchar(50) NOT NULL,
+  `operator` varchar(50) NOT NULL,
+  `bendera` text,
+  `tambahsatu_text` varchar(255) DEFAULT NULL,
+  `tambahsatu_petugas` varchar(50) DEFAULT NULL,
+  `tambahdua_text` varchar(255) DEFAULT NULL,
+  `tambahdua_petugas` varchar(50) DEFAULT NULL,
+  `reporter` varchar(50) NOT NULL,
   `deleted` tinyint NOT NULL DEFAULT '0',
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `timestamp_apel_lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_apel`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -136,15 +138,15 @@ CREATE TABLE IF NOT EXISTS `beritarilis` (
   `id_beritarilis` bigint NOT NULL AUTO_INCREMENT,
   `waktumulai` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `waktuselesai` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `materi_rilis` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `narasumber` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `lokasi` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `reporter` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `materi_rilis` text NOT NULL,
+  `narasumber` varchar(50) NOT NULL,
+  `lokasi` varchar(255) NOT NULL,
+  `reporter` varchar(50) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `timestamp_lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_beritarilis`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -166,7 +168,7 @@ CREATE TABLE IF NOT EXISTS `dl` (
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `timestamp_lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_dl`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=71 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -768,10 +770,10 @@ INSERT INTO `dltujuanprov` (`id_dltujuanprov`, `nama_tujuanprov`) VALUES
 DROP TABLE IF EXISTS `kategori`;
 CREATE TABLE IF NOT EXISTS `kategori` (
   `id_kategori` int NOT NULL AUTO_INCREMENT,
-  `nama_kategori` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `nama_kategori` varchar(255) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_kategori`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `kategori`
@@ -800,11 +802,12 @@ CREATE TABLE IF NOT EXISTS `laporan` (
   `id_laporan` bigint NOT NULL AUTO_INCREMENT,
   `laporan` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `dokumentasi` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `uploader` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `approval` int NOT NULL DEFAULT '0',
   `timestamp_laporan` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `timestamp_laporan_lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_laporan`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=685 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -824,15 +827,7 @@ CREATE TABLE IF NOT EXISTS `linkapp` (
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `timestamp_lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_linkapp`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `linkapp`
---
-
-INSERT INTO `linkapp` (`id_linkapp`, `judul`, `link`, `keyword`, `views`, `active`, `owner`, `timestamp`, `timestamp_lastupdate`) VALUES
-(1, 'Portal Pengolahan', 'http://pengolahan.bps.go.id/', 'pengolahan, sakernas, susenas', 0, 1, 'alya.azzahra', '2024-12-09 01:14:28', '2024-12-09 01:14:28'),
-(2, 'SIMPEG (Sistem Informasi Kepegawaian)', 'https://simpeg.bps.go.id/', 'pegawai, sistem, kepegawaian', 0, 1, 'alya.azzahra', '2024-12-09 01:14:50', '2024-12-09 01:14:50');
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -853,14 +848,7 @@ CREATE TABLE IF NOT EXISTS `linkmat` (
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `timestamp_lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_linkmat`)
-) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `linkmat`
---
-
-INSERT INTO `linkmat` (`id_linkmat`, `judul`, `link`, `keyword`, `views`, `active`, `owner`, `keterangan`, `timestamp`, `timestamp_lastupdate`) VALUES
-(21, 'Easily Understanding English', 'https://s.bps.go.id/eue_fi', 'bahasa inggris, english', 2, 1, 'alya.azzahra', 'Belajar Grammar bahasa Inggris.', '2024-12-09 00:53:47', '2024-12-09 00:53:47');
+) ENGINE=MyISAM AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -882,7 +870,7 @@ CREATE TABLE IF NOT EXISTS `mobildinas` (
   `timestamp_lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_mobildinas`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=178 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -904,7 +892,7 @@ CREATE TABLE IF NOT EXISTS `mobildinaskeperluan` (
 
 INSERT INTO `mobildinaskeperluan` (`id_mobildinaskeperluan`, `nama_mobildinaskeperluan`, `timestamp`) VALUES
 (1, 'Agenda di DPRD atau OPD Lainnya', '2024-02-07 07:45:29'),
-(2, 'Narasumber di Luar Kantor BPS Kabupaten Bengkulu Selatan', '2024-02-07 07:45:29'),
+(2, 'Narasumber di Luar Kantor BPS Provinsi Bengkulu', '2024-02-07 07:45:29'),
 (3, 'Koordinasi/Enumerasi Data', '2024-02-07 07:45:29'),
 (4, 'Agenda Kehumasan', '2024-02-07 07:45:29'),
 (5, 'Agenda Keuangan (ke Bank)', '2024-02-07 07:45:29'),
@@ -927,7 +915,7 @@ CREATE TABLE IF NOT EXISTS `notification` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `read_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=8036 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -939,18 +927,11 @@ DROP TABLE IF EXISTS `patches`;
 CREATE TABLE IF NOT EXISTS `patches` (
   `id_patches` bigint NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `title` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `title` text,
   `is_notification` tinyint NOT NULL DEFAULT '0',
-  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `description` text NOT NULL,
   PRIMARY KEY (`id_patches`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `patches`
---
-
-INSERT INTO `patches` (`id_patches`, `timestamp`, `title`, `is_notification`, `description`) VALUES
-(1, '2024-12-09 00:55:42', 'Portal Pintar', 0, 'Portal Pintar dari BPS Kabupaten Bengkulu Selatan, versi 2.32.70');
+) ENGINE=MyISAM AUTO_INCREMENT=154 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -982,14 +963,80 @@ CREATE TABLE IF NOT EXISTS `pengguna` (
 --
 
 INSERT INTO `pengguna` (`username`, `password`, `nipbaru`, `nip`, `nama`, `nomor_hp`, `tgl_daftar`, `tgl_update`, `level`, `approver_mobildinas`, `sk_maker`, `theme`) VALUES
-('alya.azzahra', 'e532ae6f28f4c2be70b500d3d34724eb', 200109292023022004, 340061670, 'Alya Azzahra S.Tr.Stat.', '6281279725710', '2025-01-01 07:00:00', '2025-01-01 00:00:00', 0, 0, 0, 1),
-('defri', 'd0f6ee77d7774fbb14e948877b2764b6', 198701272009121002, 340053296, 'Defri Ariyanto S.ST', '6281287149064', '2024-12-09 08:06:01', '2024-12-09 01:06:01', 1, 0, 0, 0),
-('engkyhendarmadi', 'd0f6ee77d7774fbb14e948877b2764b6', 198311102006041013, 340018800, 'Engky Hendarmadi R SE', '6288880000000', '2024-12-09 08:05:06', '2024-12-09 01:05:06', 1, 0, 0, 0),
-('fathan', 'd0f6ee77d7774fbb14e948877b2764b6', 198306162006021003, 340017842, 'Mohammad Fathan Romdhoni SST., M.Sc', '6281351633314', '2024-12-09 08:02:23', '2024-12-09 01:02:23', 1, 0, 0, 0),
-('kintan.karina', 'd0f6ee77d7774fbb14e948877b2764b6', 199911042022012003, 340060873, 'Ratu Kintan Karina A.P. S.Tr.Stat.', '6282268899904', '2024-12-09 08:06:54', '2024-12-09 01:06:54', 1, 0, 0, 0),
-('nofriani', 'f76ac3527148a002346d344e7b4f9597', 199111192014102002, 340056745, 'Nofriani, SST', '6285664991937', '2025-01-01 07:00:00', '2023-04-18 04:14:00', 0, 0, 0, 1),
-('novrian', 'e532ae6f28f4c2be70b500d3d34724eb', 198311072006021003, 340017824, 'Novrian Pratama, SST, M.Si', '6282281381036', '2025-01-01 07:00:00', '2025-01-01 00:00:00', 1, 0, 0, 1),
-('ranimanda', 'd0f6ee77d7774fbb14e948877b2764b6', 198811032012122002, 340056022, 'I Rani Mandasari S.Si.', '6281295360465', '2024-12-09 08:12:06', '2024-12-09 01:12:06', 1, 0, 0, 0);
+('afif', 'e532ae6f28f4c2be70b500d3d34724eb', 198103202003121006, 340017087, 'Afif Afandi, SST, M.Si.', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('aldilla.nugroho', 'e532ae6f28f4c2be70b500d3d34724eb', 199703222022012001, 340060498, 'Aldilla Devitasari Nugroho S.Tr.Stat.', '6285664991937', '2023-04-11 16:11:19', '2025-01-03 01:49:16', 1, 0, 0, 1),
+('amalela', 'e532ae6f28f4c2be70b500d3d34724eb', 197106231994012001, 340014255, 'Amalela Neti, SE.', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('ardiansyah3', 'e532ae6f28f4c2be70b500d3d34724eb', 198203262011011011, 340054730, 'Ardiansyah S.E.', '6285664991937', '2025-01-13 10:10:00', '2025-01-13 03:10:00', 1, 0, 0, 0),
+('aswien', 'e532ae6f28f4c2be70b500d3d34724eb', 198710172009121004, 340053269, 'Aswien Oktavian Perdana, SST', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('aypratama', 'e532ae6f28f4c2be70b500d3d34724eb', 199308152014121001, 340057005, 'Auliya Yudha Pratama, S.ST., M.Stat.', '6285664991937', '2023-02-15 20:49:45', '2024-08-07 18:46:40', 1, 0, 0, 1),
+('bangkit.nurcahyo', 'e532ae6f28f4c2be70b500d3d34724eb', 199308262022031005, 340061209, 'Bangkit Nurcahyo, S.Ak', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('betty', 'e532ae6f28f4c2be70b500d3d34724eb', 197101151992012001, 340013031, 'Betty Viozita, SE', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('boby.fernando', 'e532ae6f28f4c2be70b500d3d34724eb', 199402022017011001, 340057697, 'Boby Fernando, SST', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 1),
+('budi.ansori', 'e532ae6f28f4c2be70b500d3d34724eb', 197901212011011006, 340054732, 'Budi Ansori, S.P.', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 1, 0, 1),
+('budih', 'e532ae6f28f4c2be70b500d3d34724eb', 196309251988021001, 340011854, 'Budi Hardiyono, S.Si, M.E', '6285664991937', '2023-02-15 20:49:45', '2024-03-07 20:21:16', 2, 0, 0, 0),
+('budik', 'e532ae6f28f4c2be70b500d3d34724eb', 197408291993011001, 340013488, 'Budi Kurniawan, SST, M.Si.', '6285664991937', '2023-02-15 20:49:45', '2023-05-31 00:51:15', 2, 0, 0, 0),
+('bukhariadam', 'e532ae6f28f4c2be70b500d3d34724eb', 198707242010121004, 340054189, 'Arie Bukhari Adam Semenguk, SST, M.E.', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('dianpratiwi-pppk', 'e532ae6f28f4c2be70b500d3d34724eb', 199210202024212015, 340062812, 'Dian Pratiwi A.Md.Kom.', '6285664991937', '2024-03-04 08:21:51', '2024-03-04 01:21:51', 1, 0, 0, 0),
+('dina.livie', 'e532ae6f28f4c2be70b500d3d34724eb', 197905282005022002, 340017557, 'Dina Darliviyarsih, S.E., M.Stat.', '6285664991937', '2023-02-15 20:49:45', '2024-03-07 20:26:29', 1, 0, 0, 0),
+('dota', 'e532ae6f28f4c2be70b500d3d34724eb', 198705092011011010, 340054735, 'Dota Dwi Rely, S.E.', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 1),
+('edwine', 'e532ae6f28f4c2be70b500d3d34724eb', 197708301999121001, 340015991, 'Edwin Erifiandi, SST.,M.Si', '6285664991937', '2023-02-15 20:49:45', '2023-07-24 01:15:12', 2, 0, 0, 0),
+('ega.afni', 'e532ae6f28f4c2be70b500d3d34724eb', 198504012011012012, 340054736, 'Ega Afri Neni, S.E.', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('eka.putrawansyah', 'e532ae6f28f4c2be70b500d3d34724eb', 197403272009011008, 340052073, 'Eka Putrawansyah, SE', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('eko.fajar', 'e532ae6f28f4c2be70b500d3d34724eb', 197907102002121007, 340016480, 'Eko Fajariyanto, S.ST, M.Stat', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('elyasumarni', 'e532ae6f28f4c2be70b500d3d34724eb', 196812121989032002, 340012260, 'Elya Sumarni, SE', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 1),
+('esti.kartika', 'e532ae6f28f4c2be70b500d3d34724eb', 198804092010122003, 340054191, 'Esti Kartika Rini, SST', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('farelya', 'e532ae6f28f4c2be70b500d3d34724eb', 198808252012112001, 340055891, 'Ratih Farelya, SST, M.E.', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 1),
+('fatmasari', 'e532ae6f28f4c2be70b500d3d34724eb', 198606242009022008, 340051129, 'Fatmasari Damayanti, S.Si.,M.Si', '6285664991937', '2023-02-15 20:49:45', '2025-01-15 01:24:09', 2, 0, 0, 0),
+('fikratuz.isman', 'e532ae6f28f4c2be70b500d3d34724eb', 199305232014122001, 340057066, 'Fikratuz Auliyah Adima Isman, SST, M.Stat.', '6285664991937', '2023-02-15 20:49:45', '2024-03-07 20:27:30', 1, 0, 0, 0),
+('fitriar', 'e532ae6f28f4c2be70b500d3d34724eb', 198108252003122001, 340016989, 'Fitri Aryati, SST, M.Si', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('fkurniawati', 'e532ae6f28f4c2be70b500d3d34724eb', 199110242014102001, 340056952, 'Fera Kurniawati, SST', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('galuh.diantoro', 'e532ae6f28f4c2be70b500d3d34724eb', 199203162016021001, 340057393, 'Galuh Diantoro, SST', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('guswandi', 'e532ae6f28f4c2be70b500d3d34724eb', 198508052009021001, 340050104, 'Guswandi Alfian, SST', '6285664991937', '2023-02-15 20:49:45', '2025-01-15 01:24:24', 2, 0, 0, 1),
+('hafidh.redho', 'e532ae6f28f4c2be70b500d3d34724eb', 200005072022011003, 340061088, 'Hafidh Redho Nasrullah, A.Md.Kb.N', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 1),
+('hafrizal', 'e532ae6f28f4c2be70b500d3d34724eb', 197103051991011001, 340012675, 'Hafrizal', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('hendarto', 'e532ae6f28f4c2be70b500d3d34724eb', 198307042010031002, 340053581, 'Hendarto, S.E', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('hendri3', 'e532ae6f28f4c2be70b500d3d34724eb', 197402011998031003, 340015622, 'Hendri, SST, M.Si.', '6285664991937', '2023-02-15 20:49:45', '2025-01-15 02:56:51', 2, 0, 0, 0),
+('herlinawaty', 'e532ae6f28f4c2be70b500d3d34724eb', 197802231999122001, 340016007, 'Herlinawaty, S.Si, M.Si', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('hestin.rahmanita', 'e532ae6f28f4c2be70b500d3d34724eb', 198812302010122005, 340054193, 'Hestin Rahmanita SST, M.Si.', '6285664991937', '2025-01-13 10:10:00', '2025-01-13 03:10:00', 1, 0, 0, 0),
+('jomecho', 'e532ae6f28f4c2be70b500d3d34724eb', 198701022012111001, 340055936, 'Tommy Jomecho, SST, M.E.', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('kiki.fajri', 'e532ae6f28f4c2be70b500d3d34724eb', 198907112011011004, 340054747, 'Kiki Fajri, SE', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('mardhatilla', 'e532ae6f28f4c2be70b500d3d34724eb', 199905292023022001, 340061886, 'Mardhatilla S.Tr.Stat.', '6285664991937', '2024-02-23 16:47:45', '2024-09-17 22:29:32', 1, 0, 0, 0),
+('maulinda', 'e532ae6f28f4c2be70b500d3d34724eb', 198811062012122003, 340056025, 'Siti Maulinda, S.T.', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 1),
+('meidian.rinaldi', 'e532ae6f28f4c2be70b500d3d34724eb', 199805192021041001, 340060197, 'Meidian Rinaldi S.Tr.Stat.', '6285664991937', '2023-11-20 10:53:40', '2023-11-20 03:53:40', 1, 0, 0, 1),
+('meidio.talo', 'e532ae6f28f4c2be70b500d3d34724eb', 199505112018021001, 340058349, 'Meidio Talo Prista, SST', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('nagatondi-pppk', '3f49a11d3dc4639f05fceec3a9efbef2', 198808032023211005, 340062287, 'Naga Tondi Hasibuan S.IKom', '6285664991937', '2023-08-01 11:34:47', '2023-08-01 04:34:47', 1, 0, 0, 0),
+('nelse.trivianita', 'e532ae6f28f4c2be70b500d3d34724eb', 199410092017012001, 340057699, 'Nelse Trivianita, SST', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('nofriani', 'ab32a89ca9ca1167805fae30406c1676', 199111192014102002, 340056745, 'Nofriani, SST', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 0, 0, 0, 0),
+('novrian', '965f013c359d8cf74f4cd7feeaaa9838', 198311072006021003, 340017824, 'Novrian Pratama, SST, M.Si', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 1),
+('nur.iman', 'e532ae6f28f4c2be70b500d3d34724eb', 198706162009121001, 340053279, 'Nur Iman Taufik, S.ST', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('nurlaisa', 'e532ae6f28f4c2be70b500d3d34724eb', 197112041992032002, 340013198, 'Nurlaisa, SE', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('nurtia', 'e532ae6f28f4c2be70b500d3d34724eb', 199409052017012001, 340057671, 'Nurtia, SST', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('rahmahulfah', 'e532ae6f28f4c2be70b500d3d34724eb', 198603082008012001, 340020094, 'Rahmah Ulfah, SST.,M.Sc', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('rasyidka', 'e532ae6f28f4c2be70b500d3d34724eb', 199311132016021001, 340057255, 'Abdur Rasyid Karim Amrullah, SST', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 1),
+('ratnaka', 'e532ae6f28f4c2be70b500d3d34724eb', 198701292011012008, 340054404, 'Ratna Kusuma Astuti, S.Si, M.E.', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('renypuspa', 'e532ae6f28f4c2be70b500d3d34724eb', 198704122009122007, 340053280, 'Reny Puspasari SST, M.E.', '6285664991937', '2024-04-16 10:17:10', '2024-04-16 03:17:10', 1, 0, 0, 0),
+('reyronald', 'e532ae6f28f4c2be70b500d3d34724eb', 198705182009021001, 340051287, 'Rey Ronald Purba S.Stat., M.M.', '6285664991937', '2023-02-15 20:49:45', '2024-03-07 20:26:00', 1, 0, 0, 0),
+('rizwaldi', 'e532ae6f28f4c2be70b500d3d34724eb', 196802171988031001, 340011927, 'Rizwandi', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('roky', 'e532ae6f28f4c2be70b500d3d34724eb', 198007102011012011, 340054762, 'Roky Yulita, S.Psi.', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 1, 1),
+('rolianardi', 'e532ae6f28f4c2be70b500d3d34724eb', 198408192009021006, 340050233, 'Rolian Ardi, SST, M.T.', '6285664991937', '2023-02-15 20:49:45', '2024-07-25 19:43:17', 1, 0, 0, 0),
+('saharudin', 'e532ae6f28f4c2be70b500d3d34724eb', 196508072009111001, 340053027, 'Saharudin', '6285664991937', '2023-02-15 20:49:45', '2024-03-07 20:23:38', 2, 0, 0, 0),
+('sahranudin', 'e532ae6f28f4c2be70b500d3d34724eb', 197109291993021001, 340013583, 'Sahranudin, S.E., M.Si.', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:31:52', 1, 0, 0, 1),
+('sekbps17', '11fa43ca0780b23adfad4940296f31cf', 999999999999999999, 999999999, 'Sekretaris BPS Prov. Bengkulu', '6285664991937', '2023-05-23 13:11:19', '2024-09-17 22:30:13', 1, 0, 0, 0),
+('suhanderi', 'e532ae6f28f4c2be70b500d3d34724eb', 198701012011011016, 340054770, 'Suhanderi, S.H., M.H.', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 1, 0),
+('syifa.nurhidayah', 'e532ae6f28f4c2be70b500d3d34724eb', 199611212019012001, 340059002, 'Syifa Nurhidayah S.Tr.Stat.', '6285664991937', '2023-08-08 16:20:09', '2023-08-08 09:20:09', 1, 0, 0, 1),
+('taufan.hidayat', 'e532ae6f28f4c2be70b500d3d34724eb', 197707302006041008, 450017079, 'Taufan Hidayat', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('taufik.rahman', 'e532ae6f28f4c2be70b500d3d34724eb', 198902052012121001, 340056023, 'KMS. Taufik Rahman S.Si., M.E.', '6285664991937', '2024-08-01 13:19:45', '2024-07-31 23:32:41', 1, 0, 0, 0),
+('teuku_fr', 'e532ae6f28f4c2be70b500d3d34724eb', 197610111997121001, 340015502, 'Teuku Fahrulriza, S.Si., M.E.', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 1),
+('ts.masruroh', 'e532ae6f28f4c2be70b500d3d34724eb', 199402042019032003, 340059192, 'Tsamrotul Masruroh, S.Stat.', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 1),
+('wahyu.setiadi', '92d79b6638e518da629b37d7a3dcad44', 198106122003121004, 340017036, 'Wahyu Setiadi S.ST, M.Ec.Dev.', '6285664991937', '2024-08-19 10:49:45', '2024-08-19 04:14:00', 1, 0, 0, 0),
+('widiyaningsih', 'e532ae6f28f4c2be70b500d3d34724eb', 198107272004122001, 340017324, 'Widiyaningsih, SST, M.M.', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 1),
+('wina.prima', 'e532ae6f28f4c2be70b500d3d34724eb', 198805102010122008, 340054195, 'Wina Prima Nurmala, SST, M.Si.', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('winrizal', '49d8a6de1a4208295613ad7ae372599a', 196608251988021001, 340011837, 'Ir. Win Rizal, M.E.', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 1),
+('yamanora.rosalin', 'e532ae6f28f4c2be70b500d3d34724eb', 199401292016022001, 340057644, 'Yamanora Sylvia Rosalin, SST', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('yogos', 'e532ae6f28f4c2be70b500d3d34724eb', 198203292004121001, 340017326, 'Dwi Yogo Supriyanto, SST, M.E.', '6285664991937', '2023-02-15 20:49:45', '2023-08-08 02:23:01', 2, 0, 0, 0),
+('yosepoktavianus', 'e532ae6f28f4c2be70b500d3d34724eb', 198610092009021003, 340050274, 'Yosep Oktavianus Sitohang, SST, M.Stat', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('yuli.widiastuti', 'e532ae6f28f4c2be70b500d3d34724eb', 198007142002122004, 340016578, 'Yuli Widiastuti, S.M.', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0),
+('yuni.marliana', 'e532ae6f28f4c2be70b500d3d34724eb', 196906161994032003, 340014857, 'Yuni Marliana, S.Sos', '6285664991937', '2023-02-15 20:49:45', '2023-04-18 04:14:00', 1, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -1000,13 +1047,13 @@ INSERT INTO `pengguna` (`username`, `password`, `nipbaru`, `nip`, `nama`, `nomor
 DROP TABLE IF EXISTS `popups`;
 CREATE TABLE IF NOT EXISTS `popups` (
   `id_popups` int NOT NULL AUTO_INCREMENT,
-  `judul_popups` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `rincian_popups` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `judul_popups` varchar(255) NOT NULL,
+  `rincian_popups` text NOT NULL,
   `deleted` tinyint NOT NULL DEFAULT '0',
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `timestamp_lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_popups`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -1023,15 +1070,7 @@ CREATE TABLE IF NOT EXISTS `project` (
   `panggilan_project` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `aktif` int NOT NULL DEFAULT '1',
   PRIMARY KEY (`id_project`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `project`
---
-
-INSERT INTO `project` (`id_project`, `tahun`, `nama_project`, `fk_team`, `panggilan_project`, `aktif`) VALUES
-(1, 2024, 'Subbagian Umum', 1, 'Subbag Umum', 1),
-(2, 2024, 'Pengolahan', 2, 'Pengolahan', 1);
+) ENGINE=MyISAM AUTO_INCREMENT=110 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1047,17 +1086,7 @@ CREATE TABLE IF NOT EXISTS `projectmember` (
   `member_status` tinyint NOT NULL DEFAULT '1',
   `timetstamp_projectmember_lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_projectmember`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `projectmember`
---
-
-INSERT INTO `projectmember` (`id_projectmember`, `fk_project`, `pegawai`, `member_status`, `timetstamp_projectmember_lastupdate`) VALUES
-(1, 1, 'engkyhendarmadi', 2, '2024-12-09 01:12:30'),
-(2, 1, 'ranimanda', 1, '2024-12-09 01:12:39'),
-(3, 2, 'defri', 2, '2024-12-09 01:12:46'),
-(4, 2, 'kintan.karina', 3, '2024-12-09 01:13:07');
+) ENGINE=MyISAM AUTO_INCREMENT=883 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1071,16 +1100,26 @@ CREATE TABLE IF NOT EXISTS `rooms` (
   `nama_ruangan` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `timestamp_rooms` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_rooms`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `rooms`
 --
 
 INSERT INTO `rooms` (`id_rooms`, `nama_ruangan`, `timestamp_rooms`) VALUES
-(1, 'Aula BPS Kabupaten Bengkulu Selatan', '2024-12-09 00:56:48'),
-(2, 'Ruang Kepala BPS Kabupaten Bengkulu Selatan', '2024-12-09 00:56:48'),
-(3, 'Lapangan Kantor BPS Kabupaten Bengkulu Selatan', '2024-12-09 00:56:48');
+(1, 'Aula Bunga Kibut BPS Provinsi Bengkulu', '2023-05-02 04:29:56'),
+(2, 'Aula Raflesia BPS Provinsi Bengkulu', '2023-05-02 04:29:56'),
+(3, 'Ruang Mako/Agro BPS Provinsi Bengkulu', '2023-05-02 04:29:56'),
+(4, 'Ruang Kepala BPS Provinsi Bengkulu', '2023-05-02 04:29:56'),
+(5, 'Ruang Pengolahan, TI dan Metodologi (PTM) BPS Provinsi Bengkulu', '2023-05-02 04:29:56'),
+(6, 'Ruang Statistik Sosial BPS Provinsi Bengkulu', '2023-05-02 04:29:56'),
+(7, 'Ruang Statistik Distribusi BPS Provinsi Bengkulu', '2023-05-02 04:29:56'),
+(8, 'Ruang Neraca Wilayah dan Analisis Statistik BPS Provinsi Bengkulu', '2023-05-02 04:29:56'),
+(9, 'Ruang Statistik Produksi BPS Provinsi Bengkulu', '2023-05-02 04:29:56'),
+(10, 'Ruang Bagian Umum BPS Provinsi Bengkulu', '2023-05-02 04:29:56'),
+(11, 'Unit Pelayanan Statistik Terpadu (PST) BPS Provinsi Bengkulu', '2023-05-02 04:29:56'),
+(12, 'Lapangan Kantor BPS Provinsi Bengkulu', '2023-05-30 02:10:03'),
+(13, 'Zoom Meeting/Google Meeting', '2024-02-16 19:36:50');
 
 -- --------------------------------------------------------
 
@@ -1100,7 +1139,7 @@ CREATE TABLE IF NOT EXISTS `sk` (
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `timestamp_lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_sk`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=89 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1144,6 +1183,76 @@ INSERT INTO `suratkode` (`id_suratkode`, `jenis`, `rincian_suratkode`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `suratmasuk`
+--
+
+DROP TABLE IF EXISTS `suratmasuk`;
+CREATE TABLE IF NOT EXISTS `suratmasuk` (
+  `id_suratmasuk` bigint NOT NULL AUTO_INCREMENT,
+  `pengirim_suratmasuk` varchar(255) NOT NULL,
+  `perihal_suratmasuk` text NOT NULL,
+  `tanggal_diterima` date NOT NULL,
+  `nomor_suratmasuk` varchar(255) NOT NULL,
+  `tanggal_suratmasuk` date NOT NULL,
+  `sifat` tinyint NOT NULL,
+  `fk_suratmasukpejabat` varchar(50) NOT NULL,
+  `reporter` varchar(50) NOT NULL,
+  `deleted` tinyint NOT NULL DEFAULT '0',
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `timestamp_lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_suratmasuk`)
+) ENGINE=MyISAM AUTO_INCREMENT=94 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `suratmasukdisposisi`
+--
+
+DROP TABLE IF EXISTS `suratmasukdisposisi`;
+CREATE TABLE IF NOT EXISTS `suratmasukdisposisi` (
+  `id_suratmasukdisposisi` bigint NOT NULL AUTO_INCREMENT,
+  `level_disposisi` varchar(2) NOT NULL,
+  `fk_suratmasuk` bigint NOT NULL,
+  `tanggal_disposisi` date NOT NULL,
+  `pemberi_disposisi` varchar(50) NOT NULL,
+  `tujuan_disposisi_team` bigint DEFAULT NULL,
+  `tujuan_disposisi_pegawai` varchar(50) DEFAULT NULL,
+  `instruksi` text NOT NULL,
+  `status_penyelesaian` tinyint DEFAULT NULL,
+  `laporan_penyelesaian` text,
+  `deleted` tinyint NOT NULL DEFAULT '0',
+  `timestamp_lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_suratmasukdisposisi`)
+) ENGINE=MyISAM AUTO_INCREMENT=199 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `suratmasukpejabat`
+--
+
+DROP TABLE IF EXISTS `suratmasukpejabat`;
+CREATE TABLE IF NOT EXISTS `suratmasukpejabat` (
+  `id_suratmasukpejabat` int NOT NULL AUTO_INCREMENT,
+  `pegawai` varchar(50) NOT NULL,
+  `jabatan` varchar(255) NOT NULL,
+  `status` tinyint NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id_suratmasukpejabat`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `suratmasukpejabat`
+--
+
+INSERT INTO `suratmasukpejabat` (`id_suratmasukpejabat`, `pegawai`, `jabatan`, `status`) VALUES
+(1, 'winrizal', 'Kepala BPS Provinsi Bengkulu', 1),
+(2, 'sahranudin', 'Kepala Bagian Umum BPS Provinsi Bengkulu', 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `suratrepo`
 --
 
@@ -1159,6 +1268,9 @@ CREATE TABLE IF NOT EXISTS `suratrepo` (
   `fk_suratsubkode` int NOT NULL,
   `jenis` tinyint NOT NULL DEFAULT '0',
   `nomor_suratrepo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `isi_suratrepo` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `isi_lampiran` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `isi_lampiran_orientation` tinyint NOT NULL DEFAULT '0',
   `pihak_pertama` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `pihak_kedua` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ttd_by` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1169,7 +1281,7 @@ CREATE TABLE IF NOT EXISTS `suratrepo` (
   `timestamp_suratrepo_lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_suratrepo`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=2213 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1181,28 +1293,34 @@ DROP TABLE IF EXISTS `suratrepoeks`;
 CREATE TABLE IF NOT EXISTS `suratrepoeks` (
   `id_suratrepoeks` bigint NOT NULL AUTO_INCREMENT,
   `fk_agenda` bigint DEFAULT NULL,
-  `penerima_suratrepoeks` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `penerima_suratrepoeks` text NOT NULL,
   `tanggal_suratrepoeks` date NOT NULL,
-  `perihal_suratrepoeks` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `lampiran` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '-',
+  `perihal_suratrepoeks` text NOT NULL,
+  `lampiran` varchar(255) DEFAULT '-',
   `fk_suratsubkode` int NOT NULL,
   `sifat` tinyint NOT NULL DEFAULT '0',
   `jenis` tinyint NOT NULL DEFAULT '0',
-  `nomor_suratrepoeks` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `ttd_by` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `tembusan` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  `owner` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `nomor_suratrepoeks` varchar(255) NOT NULL,
+  `isi_suratrepoeks` text,
+  `isi_lampiran` text,
+  `isi_lampiran_orientation` tinyint NOT NULL DEFAULT '0',
+  `ttd_by` varchar(50) DEFAULT NULL,
+  `tembusan` text,
+  `owner` varchar(50) NOT NULL,
   `invisibility` tinyint NOT NULL DEFAULT '0',
   `shared_to` tinyint DEFAULT NULL,
-  `approver` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `komentar` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `approver` varchar(50) NOT NULL,
+  `komentar` text,
   `jumlah_revisi` tinyint NOT NULL DEFAULT '0',
   `approval` tinyint NOT NULL DEFAULT '0',
+  `sent_by` tinyint DEFAULT NULL,
+  `is_sent_by_sek` tinyint DEFAULT NULL,
+  `timestamp_sent_by_sek` timestamp NULL DEFAULT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `timestamp_suratrepoeks_lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_suratrepoeks`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=3713 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -1224,8 +1342,8 @@ CREATE TABLE IF NOT EXISTS `suratrepoeksttd` (
 --
 
 INSERT INTO `suratrepoeksttd` (`id_suratrepoeksttd`, `nama`, `jabatan`, `deleted`) VALUES
-(1, 'MOHAMMAD FATHAN ROMDHONI', 'Kepala Badan Pusat Statistik<br/>Kabupaten Bengkulu Selatan,', 0),
-(2, 'ENGKY HENDARMANDI', 'a.n. Kepala BPS Kabupaten Bengkulu Selatan\n<br/>\nKepala Sub-Bagian Umum', 0);
+(1, 'WIN RIZAL', 'Kepala Badan Pusat Statistik<br/>Provinsi Bengkulu,', 0),
+(2, 'SAHRANUDIN', 'a.n. Kepala BPS Provinsi Bengkulu\r\n<br/>\r\nKepala Bagian Umum', 0);
 
 -- --------------------------------------------------------
 
@@ -1890,15 +2008,7 @@ CREATE TABLE IF NOT EXISTS `team` (
   `nama_team` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `panggilan_team` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id_team`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `team`
---
-
-INSERT INTO `team` (`id_team`, `nama_team`, `panggilan_team`) VALUES
-(1, 'Subbagian Umum', 'Subbag Umum'),
-(2, 'Pengolahan, TI dan Metodologi', 'PTIM');
+) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1913,15 +2023,7 @@ CREATE TABLE IF NOT EXISTS `teamleader` (
   `fk_team` bigint NOT NULL,
   `leader_status` tinyint NOT NULL DEFAULT '1',
   PRIMARY KEY (`id_teamleader`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `teamleader`
---
-
-INSERT INTO `teamleader` (`id_teamleader`, `nama_teamleader`, `fk_team`, `leader_status`) VALUES
-(1, 'engkyhendarmadi', 1, 1),
-(2, 'defri', 2, 1);
+) ENGINE=MyISAM AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1941,7 +2043,7 @@ CREATE TABLE IF NOT EXISTS `zooms` (
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `timestamp_lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_zooms`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=116 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 

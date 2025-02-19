@@ -16,6 +16,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Html;
 use yii\helpers\Json;
+
 class AgendaController extends BaseController
 {
     /**
@@ -59,7 +60,7 @@ class AgendaController extends BaseController
     }
     public function beforeAction($action)
     {
-        if ($action->id === 'getlistpeserta') {
+        if ($action->id === 'getlistpeserta' || $action->id === 'selesai' || $action->id === 'delete' || $action->id = 'batal') {
             $this->enableCsrfValidation = false; // Disable CSRF validation for the action
         }
         return parent::beforeAction($action);
@@ -186,17 +187,34 @@ class AgendaController extends BaseController
         }
 
         $agendas = Agenda::find()
-            ->select('*')
-            ->leftJoin('laporan', 'agenda.id_agenda = laporan.id_laporan') // LEFT JOIN with laporan table
-            ->where(['agenda.reporter' => Yii::$app->user->identity->username])
-            ->andWhere(['agenda.progress' => 1])
-            ->andWhere(['>', 'agenda.id_agenda', 340])
-            ->andWhere(
-                ['>', 'DATEDIFF(NOW(), DATE(timestamp_lastupdate))', 3], // diinput dalam span 3 hari
-            )
-            ->andWhere(['laporan.id_laporan' => null]) // Conditions for no matching laporans
+            ->select('agenda.*, laporan.id_laporan as approval') // Select agenda fields
+            ->leftJoin('laporan', 'agenda.id_agenda = laporan.id_laporan') // LEFT JOIN to include all agendas
+            ->where(['agenda.reporter' => Yii::$app->user->identity->username]) // Filter by reporter
+            ->andWhere(['>', 'agenda.id_agenda', 340]) // Only agendas with id > 340
+            ->andWhere([
+                'or',
+                // Case 1: No laporan exists for the agenda
+                [
+                    'and',
+                    ['laporan.id_laporan' => null], // No paired laporan
+                    ['agenda.deleted' => 0], // Not deleted
+                    ['agenda.progress' => 1], // Progress = 1
+                    ['<', 'DATEDIFF(NOW(), DATE(agenda.timestamp_lastupdate))', 3], // Last update > 3 days ago
+                ],
+                // Case 2: A laporan exists, but its approval is not yet true
+                [
+                    'and',
+                    ['>', 'agenda.waktumulai', '2024-10-01 00:00:00'],
+                    ['>', 'DATEDIFF(NOW(), DATE(agenda.timestamp_lastupdate))', 30], // Last update > 30 days ago
+                    ['laporan.approval' => 0], // Laporan approval is false
+                    ['agenda.deleted' => 0], // Not deleted
+                    ['agenda.progress' => 1], // Progress = 1
+                ]
+            ])
             ->all();
+
         if (count($agendas) > 0) {
+            // var_dump($agendas);
             $teks = '<ol>';
             foreach ($agendas as $agenda) {
                 $kegiatan = $agenda->kegiatan;
@@ -221,11 +239,14 @@ class AgendaController extends BaseController
                     $waktuFormatted = $waktumulaiFormatted . ' WIB <br/>s.d ' . $waktuselesaiFormatted . ' WIB'; // concatenate the formatted dates
                 }
 
-                $teks .= '<li>' . $kegiatan . ' - ' . $waktuFormatted . ' | ' . Html::a(' <i class="fas fa-upload"></i> BUAT LAPORAN', ['laporan/create?agenda=' . $agendaId], []) . '</li>';
+                if ($agenda->approval != null)
+                    $teks .= '<li>' . $kegiatan . ' - ' . $waktuFormatted . ' | ' . Html::a(' <i class="fas fa-eye"></i> LIHAT', ['laporan/' . $agendaId], []) . '</li>';
+                else
+                    $teks .= '<li>' . $kegiatan . ' - ' . $waktuFormatted . ' | ' . Html::a(' <i class="fas fa-upload"></i> BUAT LAPORAN', ['laporan/create?agenda=' . $agendaId], []) . '</li>';
             }
             $teks .= '</ol>';
-            Yii::$app->session->setFlash('warning', "Maaf. Sejak 4 Juni 2024, masih ada agenda yang telah selesai, namun belum diberikan laporan.
-                <br/>Mohon berikan laporan yang sesuai. <br/>" . $teks);
+            Yii::$app->session->setFlash('warning', "Maaf. Sejak 1 Oktober 2024, ada agenda yang telah selesai lebih dari 3 hari, namun belum diberikan laporan. Atau, agenda yang telah selesai lebih dari 1 bulan, namun laporannya belum disetujui.
+                <br/>" . $teks);
             return $this->redirect(['index', 'owner' => '', 'year' => '', 'nopage' => 0]);
         }
 
@@ -313,6 +334,7 @@ class AgendaController extends BaseController
                 }
                 if ($model->save()) {
                     if ($model->progress == 0) {
+                        //SIMPAN NOTIFIKASI SISTEM
                         $pelaksana = \app\models\Project::findOne($model->pelaksana);
                         if (!empty($pelaksana))
                             $pelaksana = $pelaksana->nama_project;
@@ -320,13 +342,10 @@ class AgendaController extends BaseController
                             $pelaksana = $model->pelaksana;
                         $agendaId = Agenda::find()->max('id_agenda');
                         $formatter = Yii::$app->formatter;
-                        $formatter->locale = 'id-ID'; // set the locale to Indonesian
-                        $timezone = new \DateTimeZone('Asia/Jakarta'); // create a timezone object for WIB
-                        $waktumulai = new \DateTime($model->waktumulai, new \DateTimeZone('UTC')); // create a datetime object for waktumulai with UTC timezone
-                        $waktumulai->setTimeZone($timezone); // set the timezone to WIB
+                        $formatter->locale = 'id-ID';
+                        $waktumulai = new \DateTime($model->waktumulai, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktumulai with UTC timezone
                         $waktumulaiFormatted = $formatter->asDatetime($waktumulai, 'd MMMM Y, H:mm'); // format the waktumulai datetime value
-                        $waktuselesai = new \DateTime($model->waktuselesai, new \DateTimeZone('UTC')); // create a datetime object for waktuselesai with UTC timezone
-                        $waktuselesai->setTimeZone($timezone); // set the timezone to WIB
+                        $waktuselesai = new \DateTime($model->waktuselesai, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktuselesai with UTC timezone
                         $waktuselesaiFormatted = $formatter->asDatetime($waktuselesai, 'H:mm'); // format the waktuselesai time value only
                         if ($waktumulai->format('Y-m-d') === $waktuselesai->format('Y-m-d')) {
                             // if waktumulai and waktuselesai are on the same day, format the time range differently
@@ -335,10 +354,50 @@ class AgendaController extends BaseController
                         } else {
                             // if waktumulai and waktuselesai are on different days, format the date range normally
                             $waktuselesaiFormatted = $formatter->asDatetime($waktuselesai, 'd MMMM Y, H:mm'); // format the waktuselesai datetime value
-                            $waktuFormatted = $waktumulaiFormatted . ' WIB <br/>s.d ' . $waktuselesaiFormatted . ' WIB'; // concatenate the formatted dates
+                            $waktuFormatted = $waktumulaiFormatted . ' WIB s.d ' . $waktuselesaiFormatted . ' WIB'; // concatenate the formatted dates
                         }
                         foreach ($peserta as $userId) {
                             \app\models\Notification::createNotification($userId, 'Anda diundang dalam Kegiatan <strong>' . $model->kegiatan . '</strong> dari Project/Tim <strong>' . $pelaksana . '</strong> yang akan dilaksanakan pada <strong>' . $waktuFormatted . '</strong>', Yii::$app->controller->id, $agendaId);
+                        }
+                        //KIRIM NOTIFIKASI UNTUK CC dan EVENT TEAM
+                        if ($model->by_event_team == true) {
+                            // NOTIFIKASI UNTUK KETUA EVENT TEAM
+                            // die($model->event_team_leader);
+                            $event_team_leader = Pengguna::findOne($model->event_team_leader);
+                            $nomor_tujuan_event_team_leader = $event_team_leader->nomor_hp;
+                            $nama_event_team_leader = $event_team_leader->nama;
+                            \app\models\Notification::createNotification($event_team_leader->username, 'Terdapat permohonan support Kegiatan <strong>' . $model->kegiatan . '</strong> dari Project/Tim <strong>' . $pelaksana . '</strong> yang akan dilaksanakan pada <strong>' . $waktuFormatted . '</strong>', Yii::$app->controller->id, $agendaId);
+                            // Convert the list of names to a string in the format that can be used for autofill
+                            $isi_notif_event_team_leader = '*Portal Pintar - WhatsApp Notification Blast*
+
+Bapak/Ibu Ketua Event Team ' . $nama_event_team_leader . ', terdapat permohonan support Kegiatan *' . $model->kegiatan . '* dari Project/Tim *' . $pelaksana . '* yang akan dilaksanakan pada:
+Jadwal : *' . $waktuFormatted . '*
+Tempat : *' . $model->getTempate() . '*
+            
+_#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
+                            $response = $this->wa_engine($nomor_tujuan_event_team_leader, $isi_notif_event_team_leader);
+
+                            // NOTIFIKASI UNTUK CHANGE CHAMPION
+                            $change_champion = Projectmember::find()->joinWith('projecte')->where(
+                                [
+                                    'tahun' => date("Y"),
+                                    'nama_project' => 'Change Agent Network',
+                                    'member_status' => 2
+                                ]
+                            )->one();
+                            $change_champion_data = Pengguna::findOne($change_champion->pegawai);
+                            $nomor_tujuan_change_champion = $change_champion_data->nomor_hp;
+                            $nama_change_champion = $change_champion_data->nama;
+                            \app\models\Notification::createNotification($change_champion->pegawai, 'Terdapat usulan support Event Team untuk Kegiatan <strong>' . $model->kegiatan . '</strong> dari Project/Tim <strong>' . $pelaksana . '</strong> yang akan dilaksanakan pada <strong>' . $waktuFormatted . '</strong>', Yii::$app->controller->id, $agendaId);
+                            // Convert the list of names to a string in the format that can be used for autofill
+                            $isi_notif_change_champion = '*Portal Pintar - WhatsApp Notification Blast*
+
+Bapak/Ibu Change Champion, ' . $nama_change_champion . ', terdapat usulan support Event Team untuk Kegiatan *' . $model->kegiatan . '* dari Project/Tim *' . $pelaksana . '* yang akan dilaksanakan pada:
+Jadwal : *' . $waktuFormatted . '*
+Tempat : *' . $model->getTempate() . '*
+            
+_#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
+                            $response = $this->wa_engine($nomor_tujuan_change_champion, $isi_notif_change_champion);
                         }
                     }
                     if (($model->pelaksana <= 65 && $model->peserta_lain == NULL && $model->surat_lanjutan == 1)) { //65: jumlah tim
@@ -466,6 +525,73 @@ class AgendaController extends BaseController
                 $model->timestamp_lastupdate = date('Y-m-d H:i:s');
                 $zoom = Zooms::find()->select('*')->where('fk_agenda = ' . $model->id_agenda)->andWhere('deleted = 0')->count();
                 if ($model->save()) {
+                    //SIMPAN NOTIFIKASI SISTEM
+                    $pelaksana = \app\models\Project::findOne($model->pelaksana);
+                    if (!empty($pelaksana))
+                        $pelaksana = $pelaksana->nama_project;
+                    else
+                        $pelaksana = $model->pelaksana;
+                    $agendaId = Agenda::find()->max('id_agenda');
+                    $formatter = Yii::$app->formatter;
+                    $formatter->locale = 'id-ID';
+                    $waktumulai = new \DateTime($model->waktumulai, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktumulai with UTC timezone
+                    $waktumulaiFormatted = $formatter->asDatetime($waktumulai, 'd MMMM Y, H:mm'); // format the waktumulai datetime value
+                    $waktuselesai = new \DateTime($model->waktuselesai, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktuselesai with UTC timezone
+                    $waktuselesaiFormatted = $formatter->asDatetime($waktuselesai, 'H:mm'); // format the waktuselesai time value only
+                    if ($waktumulai->format('Y-m-d') === $waktuselesai->format('Y-m-d')) {
+                        // if waktumulai and waktuselesai are on the same day, format the time range differently
+                        $waktumulaiFormatted = $formatter->asDatetime($waktumulai, 'd MMMM Y, H:mm'); // format the waktumulai datetime value with the year and time
+                        $waktuFormatted = $waktumulaiFormatted . ' - ' . $waktuselesaiFormatted . ' WIB'; // concatenate the formatted dates
+                    } else {
+                        // if waktumulai and waktuselesai are on different days, format the date range normally
+                        $waktuselesaiFormatted = $formatter->asDatetime($waktuselesai, 'd MMMM Y, H:mm'); // format the waktuselesai datetime value
+                        $waktuFormatted = $waktumulaiFormatted . ' WIB s.d ' . $waktuselesaiFormatted . ' WIB'; // concatenate the formatted dates
+                    }
+                    if ($model->waktumulai != $_POST['Agenda']['waktumulai'] || $model->waktuselesai != $_POST['Agenda']['waktuselesai']) {
+                        foreach ($peserta as $userId) {
+                            \app\models\Notification::createNotification($userId, 'Jadwal kegiatan <strong>' . $model->kegiatan . '</strong> dari Project/Tim <strong>' . $pelaksana . '</strong> dipindahkan ke <strong>' . $waktuFormatted . '</strong>', Yii::$app->controller->id, $agendaId);
+                        }
+                    }
+
+                    if ($model->by_event_team == true) {
+                        // NOTIFIKASI UNTUK KETUA EVENT TEAM
+                        // die($model->event_team_leader);
+                        $event_team_leader = Pengguna::findOne($model->event_team_leader);
+                        $nomor_tujuan_event_team_leader = $event_team_leader->nomor_hp;
+                        $nama_event_team_leader = $event_team_leader->nama;
+                        \app\models\Notification::createNotification($event_team_leader->username, 'Terdapat permohonan support Kegiatan <strong>' . $model->kegiatan . '</strong> dari Project/Tim <strong>' . $pelaksana . '</strong> yang akan dilaksanakan pada <strong>' . $waktuFormatted . '</strong>', Yii::$app->controller->id, $agendaId);
+                        // Convert the list of names to a string in the format that can be used for autofill
+                        $isi_notif_event_team_leader = '*Portal Pintar - WhatsApp Notification Blast*
+
+Bapak/Ibu Ketua Event Team ' . $nama_event_team_leader . ', terdapat permohonan support Kegiatan *' . $model->kegiatan . '* dari Project/Tim *' . $pelaksana . '* yang akan dilaksanakan pada:
+Jadwal : *' . $waktuFormatted . '*
+Tempat : *' . $model->getTempate() . '*
+        
+_#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
+                        $response = $this->wa_engine($nomor_tujuan_event_team_leader, $isi_notif_event_team_leader);
+
+                        // NOTIFIKASI UNTUK CHANGE CHAMPION
+                        $change_champion = Projectmember::find()->joinWith('projecte')->where(
+                            [
+                                'tahun' => date("Y"),
+                                'nama_project' => 'Change Agent Network',
+                                'member_status' => 2
+                            ]
+                        )->one();
+                        $change_champion_data = Pengguna::findOne($change_champion->pegawai);
+                        $nomor_tujuan_change_champion = $change_champion_data->nomor_hp;
+                        $nama_change_champion = $change_champion_data->nama;
+                        \app\models\Notification::createNotification($change_champion->pegawai, 'Terdapat usulan support Event Team untuk Kegiatan <strong>' . $model->kegiatan . '</strong> dari Project/Tim <strong>' . $pelaksana . '</strong> yang akan dilaksanakan pada <strong>' . $waktuFormatted . '</strong>', Yii::$app->controller->id, $agendaId);
+                        // Convert the list of names to a string in the format that can be used for autofill
+                        $isi_notif_change_champion = '*Portal Pintar - WhatsApp Notification Blast*
+
+Bapak/Ibu Change Champion, ' . $nama_change_champion . ', terdapat usulan support Event Team untuk Kegiatan *' . $model->kegiatan . '* dari Project/Tim *' . $pelaksana . '* yang akan dilaksanakan pada:
+Jadwal : *' . $waktuFormatted . '*
+Tempat : *' . $model->getTempate() . '*
+        
+_#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
+                        $response = $this->wa_engine($nomor_tujuan_change_champion, $isi_notif_change_champion);
+                    }
                     if (($model->pelaksana <= 65 && $model->peserta_lain == NULL && $model->surat_lanjutan == 1)) {
                         Yii::$app->session->setFlash('success', "Agenda berhasil ditambahkan. Jika memerlukan, silahkan lanjutkan pengisian Surat Internal. Terima kasih.");
                         return $this->redirect(['suratrepo/create/0']);
@@ -644,11 +770,13 @@ class AgendaController extends BaseController
         $header = AgendaController::findHeader($id);
         $pelaksana = $dataagenda->getPelaksanalengkape();
         $surat = Suratrepo::findOne(['fk_agenda' => $id, 'is_undangan' => 1]);
-        $waktutampil = '';
+        $waktutampil = new \DateTime(date("Y-m-d"), new \DateTimeZone('UTC'));;
         $formatter = Yii::$app->formatter;
         $formatter->locale = 'id-ID'; // set the locale to Indonesian
         $timezone = new \DateTimeZone('Asia/Jakarta'); // create a timezone object for WIB
-        $waktutampil = new \DateTime($surat->tanggal_suratrepo, new \DateTimeZone('UTC')); // create a datetime object for waktumulai with UTC timezone
+        if (!empty($surat->tanggal_suratrepo)) {
+            $waktutampil = new \DateTime($surat->tanggal_suratrepo, new \DateTimeZone('UTC')); // create a datetime object for waktumulai with UTC timezone            
+        }
         $waktutampil->setTimeZone($timezone); // set the timezone to WIB
         $waktutampil = $formatter->asDatetime($waktutampil, 'd MMMM Y'); // format the waktumulai datetime value
         $autofillString =
@@ -668,7 +796,7 @@ class AgendaController extends BaseController
                                 <td></td>
                                 <td>
                                     <center>
-                                        Kota Manna, " . $waktutampil . "
+                                        " . Yii::$app->params['ibukotaSatker'] . ", " . $waktutampil . "
                                         <br />
                                         <br />
                                         <br />
@@ -680,7 +808,7 @@ class AgendaController extends BaseController
                         </table>                                              
                         <br/>
                         <br/>
-                        " . ($surat->tembusan != null ? "Tembusan: " . $surat->tembusan : "") . "<br/>";
+                        " . (!empty($surat->tembusan) ? "Tembusan: " . $surat->tembusan : "") . "<br/>";
         // Step 1: Get the list of email addresses from the peserta attribute in the agenda table
         $emailList = explode(', ', $dataagenda->peserta);
         // Step 2: Extract the username (without "@bps.go.id") from each email address
@@ -716,8 +844,21 @@ class AgendaController extends BaseController
             }
             $recipients = array_merge(['rb1700@bps.go.id'], $recipients);
             $recipients = array_merge([$dataagenda->pemimpin . '@bps.go.id'], $recipients);
+            $subject = 'Undangan Digital Portal Pintar';
+            $message = $this->renderPartial('_email_blast_template', ['message' => $model->body]);
             // die(var_dump($recipients));
-            if ($model->contact($recipients)) {
+
+            $result = true;
+            foreach ($recipients as $chunk) {
+                $result = \app\components\Emailer::sendEmail($chunk, $subject, $message);
+                // die(var_dump($result));
+                if ($result != true) {
+                    Yii::$app->session->setFlash('error', "There was an issue sending emails to some recipients.");
+                    break;
+                }
+            }
+
+            if ($result = true) {
                 Yii::$app->session->setFlash('contactFormSubmitted');
                 return $this->refresh();
             }
@@ -786,12 +927,12 @@ class AgendaController extends BaseController
     public static function wa_engine($nomor_tujuan, $isi_notif)
     {
         // URL tujuan
-        $url = 'https://dialogwa.id/api/send-text';
-        $token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NTZhYzMyMjY4Yzg2MGE1MGU5MWYzZSIsInVzZXJuYW1lIjoiYnBzMTcwMSIsImlhdCI6MTczMzczMzQyNiwiZXhwIjo0ODg5NDkzNDI2fQ.WAnpGxIQhVjbeglztzxUaJY_QoaclWyj2HPTV0jKIbE';
+        $url = 'https://dialogwa.web.id/api/send-text';
+        $token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NmNjNjA4ZGM2NDQyMmVkOTE1MzdjMiIsInVzZXJuYW1lIjoibm9mcmlhbmkiLCJpYXQiOjE3MjE3OTg3NDgsImV4cCI6NDg3NzU1ODc0OH0.5dnMRRM-G0bktsNFvArEnBkH1Qr5Snn8LvEBpswVhtw';
 
         // Data yang akan dikirim dalam body request
         $data = array(
-            'session' => 'portalpintar1701',
+            'session' => 'portalpintar',
             'target' => $nomor_tujuan . '@s.whatsapp.net', //format nomor tujuan harus menggunakan kode negara contoh : 628......@s.whatsapp.net
             'message' => $isi_notif
         );
@@ -828,12 +969,53 @@ class AgendaController extends BaseController
             return $response;
         }
     }
+    public static function wa_engine_fonnte($nomor_tujuan, $isi_notif)
+    {
+        // URL tujuan
+        $url = 'https://api.fonnte.com/send';
+        $token = 'GmcguyaWvLMQmv7hNGES';
+        $ch = curl_init();
+
+        curl_setopt_array($ch, array(
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => array(
+                'target' => $nomor_tujuan,
+                'message' => $isi_notif,
+                // 'countryCode' => '62', //optional
+            ),
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: ' .  $token //change TOKEN to your actual token
+            ),
+        ));
+
+
+        // Eksekusi request dan simpan responsenya
+        $response = curl_exec($ch);
+
+        // Periksa apakah terjadi kesalahan saat melakukan request
+        if (curl_errno($ch)) {
+            $error_msg = curl_error($ch);
+            curl_close($ch);
+            return 'Error: ' . $error_msg;
+        } else {
+            // Tutup cURL
+            curl_close($ch);
+            return $response;
+        }
+    }
     public function actionWa_blast($id)
     {
         $dataagenda = $this->findModel($id);
 
-        if ($dataagenda->progress != 0) {
-            Yii::$app->session->setFlash('warning', "WA Blast hanya disediakan untuk Agenda berstatus -direncanakan-.");
+        if ($dataagenda->progress != 0 && $dataagenda->progress != 2) {
+            Yii::$app->session->setFlash('warning', "WA Blast hanya disediakan untuk Agenda berstatus -direncanakan- atau -ditunda-.");
             return $this->redirect(['index', 'owner' => '', 'year' => '', 'nopage' => 0]);
         }
 
@@ -846,12 +1028,21 @@ class AgendaController extends BaseController
         $formatter = Yii::$app->formatter;
         $formatter->locale = 'id-ID'; // set the locale to Indonesian
         $timezone = new \DateTimeZone('Asia/Jakarta'); // create a timezone object for WIB
-        $waktumulai = new \DateTime($dataagenda->waktumulai, new \DateTimeZone('UTC')); // create a datetime object for waktumulai with UTC timezone
-        $waktumulai->setTimeZone($timezone); // set the timezone to WIB
-        $waktumulaiFormatted = $formatter->asDatetime($waktumulai, 'd MMMM Y, H:mm'); // format the waktumulai datetime value
-        $waktuselesai = new \DateTime($dataagenda->waktuselesai, new \DateTimeZone('UTC')); // create a datetime object for waktuselesai with UTC timezone
-        $waktuselesai->setTimeZone($timezone); // set the timezone to WIB
-        $waktuselesaiFormatted = $formatter->asDatetime($waktuselesai, 'H:mm'); // format the waktuselesai time value only
+        if ($dataagenda->progress == 0) {
+            $waktumulai = new \DateTime($dataagenda->waktumulai, new \DateTimeZone('UTC')); // create a datetime object for waktumulai with UTC timezone
+            $waktumulai->setTimeZone($timezone); // set the timezone to WIB
+            $waktumulaiFormatted = $formatter->asDatetime($waktumulai, 'd MMMM Y, H:mm'); // format the waktumulai datetime value
+            $waktuselesai = new \DateTime($dataagenda->waktuselesai, new \DateTimeZone('UTC')); // create a datetime object for waktuselesai with UTC timezone
+            $waktuselesai->setTimeZone($timezone); // set the timezone to WIB
+            $waktuselesaiFormatted = $formatter->asDatetime($waktuselesai, 'H:mm'); // format the waktuselesai time value only            
+        } elseif ($dataagenda->progress == 2) {
+            $waktumulai = new \DateTime($dataagenda->waktumulai_tunda, new \DateTimeZone('UTC')); // create a datetime object for waktumulai with UTC timezone
+            $waktumulai->setTimeZone($timezone); // set the timezone to WIB
+            $waktumulaiFormatted = $formatter->asDatetime($waktumulai, 'd MMMM Y, H:mm'); // format the waktumulai datetime value
+            $waktuselesai = new \DateTime($dataagenda->waktuselesai_tunda, new \DateTimeZone('UTC')); // create a datetime object for waktuselesai with UTC timezone
+            $waktuselesai->setTimeZone($timezone); // set the timezone to WIB
+            $waktuselesaiFormatted = $formatter->asDatetime($waktuselesai, 'H:mm'); // format the waktuselesai time value only           
+        }
         if ($waktumulai->format('Y-m-d') === $waktuselesai->format('Y-m-d')) {
             // if waktumulai and waktuselesai are on the same day, format the time range differently
             $waktumulaiFormatted = $formatter->asDatetime($waktumulai, 'd MMMM Y, H:mm'); // format the waktumulai datetime value with the year and time
@@ -879,7 +1070,7 @@ class AgendaController extends BaseController
         foreach ($penggunas as $name) {
             $nomor_tujuan = $name->nomor_hp;
             $nama_peserta = $name->nama;
-            $isi_notif = '*Portal Pintar 2.0 - WhatsApp Notification Blast*
+            $isi_notif = '*Portal Pintar - WhatsApp Notification Blast*
 
 Bapak/Ibu ' . $nama_peserta . ', Anda diundang dalam Kegiatan *' . $dataagenda->kegiatan . '* dari Project/Tim *' . $pelaksana . '* yang akan dilaksanakan pada:
 Jadwal : *' . $waktuFormatted . '*
@@ -892,7 +1083,7 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
         $pemimpin = Pengguna::findOne($dataagenda->pemimpin);
         $nomor_tujuan_pimpinan = $pemimpin->nomor_hp;
         $nama_pimpinan = $pemimpin->nama;
-        $isi_notif_pimpinan = '*Portal Pintar 2.0 - WhatsApp Notification Blast*
+        $isi_notif_pimpinan = '*Portal Pintar - WhatsApp Notification Blast*
 
 Bapak/Ibu ' . $nama_pimpinan . ', Anda diundang untuk memimpin agenda dalam Kegiatan *' . $dataagenda->kegiatan . '* dari Project/Tim *' . $pelaksana . '* yang akan dilaksanakan pada:
 Jadwal : *' . $waktuFormatted . '*
@@ -920,8 +1111,8 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
             ->where(['owner' => Yii::$app->user->identity->username])
             ->andWhere(['deleted' => 0])
             ->andWhere(
-                ['>', 'DATEDIFF(NOW(), DATE(timestamp_suratrepo_lastupdate))', 3], // diinput dalam span 3 hari
-            )
+                ['>', 'DATEDIFF(NOW(), DATE(timestamp_suratrepo_lastupdate))', 3]
+            ) // diinput dalam span 3 hari
             ->asArray()
             ->all();
         // Get the current date and time

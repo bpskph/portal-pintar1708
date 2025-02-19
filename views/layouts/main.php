@@ -84,6 +84,7 @@ $this->registerJs($script, \yii\web\View::POS_HEAD);
                                     <ul>
                                         <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/suratrepo/index?owner=&year=<?php echo date("Y") ?>" class="<?= (Yii::$app->controller->id == 'suratrepo') ? 'aktip' : '' ?>">Surat Internal</a></li>
                                         <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/suratrepoeks/index?owner=&year=<?php echo date("Y") ?>" class="<?= (Yii::$app->controller->id == 'suratrepoeks') ? 'aktip' : '' ?>">Surat Eksternal</a></li>
+                                        <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/suratmasuk/index?year=<?php echo date("Y") ?>&from=&for=" class="<?= (Yii::$app->controller->id == 'suratmasuk') ? 'aktip' : '' ?>">Surat Masuk/Disposisi</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -149,7 +150,7 @@ $this->registerJs($script, \yii\web\View::POS_HEAD);
             ?>
                 <a href="<?= Yii::$app->request->baseUrl . '/site/theme?choice=1' ?>" class="book-a-table-btn scrollto d-none d-lg-flex" style="background-color: #cda45e"><i class="icon fa fa-moon text-dark"></i></a>
             <?php } ?>
-            <a href="https://www.canva.com/design/DAGYwXfq69I/YfjEP0muGHbVuGZlnPDJgA/view?utm_content=DAGYwXfq69I&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hc4eecfb8f9" class="book-a-table-btn scrollto d-none d-lg-flex text-warning d-flex align-items-center justify-content-center" title="Panduan Portal Pintar" target="_blank">
+            <a href="https://www.canva.com/design/DAGQgVxVcSI/NPzAMvj5-fVqwimvxD6DkQ/view?utm_content=DAGQgVxVcSI&utm_campaign=designshare&utm_medium=link&utm_source=editor" class="book-a-table-btn scrollto d-none d-lg-flex text-warning d-flex align-items-center justify-content-center" title="Panduan Portal Pintar" target="_blank">
                 <i class="fas fa-book-open"></i>
             </a>
         </div>
@@ -206,21 +207,21 @@ $this->registerJs($script, \yii\web\View::POS_HEAD);
                 <div class="row">
                     <div class="col-lg-7 col-md-6">
                         <div class="footer-info">
-                            <h3>BPS KABUPATEN BENGKULU SELATAN</h3>
+                            <h3><?= Yii::$app->params['namaSatker'] ?></h3>
                             <p>
-                                Jalan Affan Bachsin No.108A, Kabupaten Bengkulu Selatan,
+                                <?= Yii::$app->params['alamatSatker'] ?>,
                                 Indonesia<br><br>
-                                <strong>Phone:</strong> (+62 739) 21048<br>
-                                <strong>Email:</strong> bps1701@bps.go.id<br>
+                                <strong>Fax:</strong> <?= Yii::$app->params['faxSatker'] ?><br>
+                                <strong>Email:</strong> <?= Yii::$app->params['emailSatker'] ?><br>
                             </p>
                         </div>
                     </div>
                     <div class="col-lg-5 col-md-6 footer-links">
                         <h4>Tautan Lainnya</h4>
                         <ul>
-                            <li><i class="bi bi-globe"></i> <i class="bx bx-chevron-right"></i> <a href="https://bengkulu.bps.go.id/">Website BPS Kabupaten Bengkulu Selatan</a></li>
-                            <li><i class="bi bi-globe"></i> <i class="bx bx-chevron-right"></i><a href="https://webapps.bps.go.id/bengkulu/portalpintar/">Website Portal Pintar</a></li>
-                            <li><i class="bi bi-instagram"></i> <i class="bx bx-chevron-right"></i><a href="https://webapps.bps.go.id/bengkulu/">List Aplikasi Aktif BPS Kabupaten Bengkulu Selatan</a></li>
+                            <li><i class="bi bi-globe"></i> <i class="bx bx-chevron-right"></i> <a href="<?= Yii::$app->params['webSatker'] ?>">Website <?= Yii::$app->params['namaSatker'] ?></a></li>
+                            <li><i class="bi bi-browser-chrome"></i> <i class="bx bx-chevron-right"></i><a href="<?= Yii::$app->params['webhostingSatker'] ?>portalpintar/">Website Portal Pintar</a></li>
+                            <li><i class="bi bi-menu-app-fill"></i> <i class="bx bx-chevron-right"></i><a href="<?= Yii::$app->params['webhostingSatker'] ?>">List Aplikasi Aktif <?= Yii::$app->params['namaSatker'] ?></a></li>
                         </ul>
                     </div>
                 </div>
@@ -228,7 +229,7 @@ $this->registerJs($script, \yii\web\View::POS_HEAD);
         </div>
         <div class="container">
             <div class="copyright">
-                &copy; Copyright <strong><span>Tim PTM BPS Provinsi Bengkulu</span></strong>. All Rights Reserved | <span class="text-secondary"> App Version:</span> <?= Yii::$app->params['appVersion']; ?>
+                &copy; Copyright <strong><span>Tim TIP <?= Yii::$app->params['namaSatker'] ?></span></strong>. All Rights Reserved | <span class="text-secondary"> App Version:</span> <?= Yii::$app->params['appVersion']; ?>
             </div>
             <div class="credits" style="color: #aaa">
                 Coded by <a href="https://khansasafira19.github.io/">nofriani@bps.go.id</a> | <a href="https://wa.me/6285664991937?text=Salam+Senyum,+Developer+Portal+Pintar%0ASaya+ingin+berdiskusi+terkait+Sistem+Portal+Pintar" target="_blank">Hubungi Developer</a>

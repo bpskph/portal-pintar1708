@@ -12,7 +12,7 @@ use app\models\Rooms;
         <?php
         $roomOptions = ArrayHelper::map(Rooms::find()->select(['id_rooms', 'nama_ruangan'])->all(), 'id_rooms', 'nama_ruangan');
         $roomOptions['other'] = 'Lainnya';
-        $projectOptions = ArrayHelper::map(Project::find()->select(['id_project', 'panggilan_project'])->all(), 'id_project', 'panggilan_project');
+        $projectOptions = ArrayHelper::map(Project::find()->select(['id_project', 'panggilan_project'])->where(['tahun' => date("Y")])->all(), 'id_project', 'panggilan_project');
         $projectOptions['other'] = 'Lainnya';
         ?>
         <?php
@@ -65,6 +65,15 @@ use app\models\Rooms;
         $form->field($model, 'pelaksana')->dropDownList(
             $projectOptions,
             ['prompt' => 'Pelaksana ...']
+        )
+        ?>
+        <?=
+        $form->field($model, 'by_event_team')->dropDownList(
+            [
+                0 => 'Tidak Di-support',
+                1 => 'Di-support'
+            ],
+            ['prompt' => 'Event Team ...']
         )
         ?>
         <?= $form->field($model, 'reporter', ['autoPlaceholder' => false,])->textInput(['placeholder' => 'Pengusul ...']) ?>

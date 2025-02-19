@@ -57,10 +57,10 @@ $this->title = 'Portal SK';
                     [
                         'class' => SerialColumn::class,
                     ],
-                    [
-                        'attribute' => 'nomor_sk',
-                        'label' => 'Tanggal pada SK',
-                    ],
+                    // [
+                    //     'attribute' => 'nomor_sk',
+                    //     'label' => 'Tanggal pada SK',
+                    // ],
                     [
                         'attribute' => 'tanggal_sk',
                         'value' => function ($model) {
@@ -79,9 +79,47 @@ $this->title = 'Portal SK';
                         'attribute' => 'tentang_sk',
                         'label' => 'Judul/Perihal pada SK',
                     ],
+                    // [
+                    //     'attribute' => 'nama_dalam_sk',
+                    // ],
                     [
                         'attribute' => 'nama_dalam_sk',
-                    ],
+                        'value' => function ($model) {
+                            if ($model->nama_dalam_sk != null) {
+                                // Step 1: Get the list of email addresses from the peserta attribute in the agenda table
+                                $emailList = explode(', ', $model->nama_dalam_sk);
+                                // Step 2: Extract the username (without "@bps.go.id") from each email address
+                                $usernames = [];
+                                foreach ($emailList as $email) {
+                                    $username = substr($email, 0, strpos($email, '@'));
+                                    $usernames[] = $username;
+                                }
+                                // Step 3: Query the pengguna table for the list of names that correspond to the extracted usernames
+                                $names = \app\models\Pengguna::find()
+                                    ->select('nama')
+                                    ->where(['in', 'username', $usernames])
+                                    ->column();
+                                
+                                // Step 4: Limit the list to the first 10 names if there are more than 10
+                                if (count($names) > 10) {
+                                    $names = array_slice($names, 0, 10); // Get only the first 10 names
+                                    $names[] = '...'; // Add ellipsis to indicate more names are available
+                                }
+                                
+                                // Convert the list of names to an ordered list (HTML format)
+                                $listItems = '';
+                                foreach ($names as $name) {
+                                    $listItems .= '<li>' . $name . '</li>';
+                                }
+                                $autofillString = '<ol>' . $listItems . '</ol>';
+                            } else {
+                                $autofillString = '-';
+                            }
+                            return $autofillString;
+                        },
+                        'format' => 'html',
+                        'vAlign' => 'middle'
+                    ],                    
                     [
                         'attribute' => 'reporter',
                     ],

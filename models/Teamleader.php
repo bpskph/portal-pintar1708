@@ -33,4 +33,9 @@ class Teamleader extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Pengguna::className(), ['username' => 'nama_teamleader']);
     }
+
+    public function getProjecte()
+    {
+        return $this->hasMany(Project::className(), ['fk_team' => 'fk_team']);
+    }
 }

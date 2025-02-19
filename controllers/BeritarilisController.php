@@ -23,6 +23,13 @@ class BeritarilisController extends BaseController
             ]
         );
     }
+    public function beforeAction($action)
+    {
+        if ($action->id === 'delete') {
+            $this->enableCsrfValidation = false; // Disable CSRF validation for the action
+        }
+        return parent::beforeAction($action);
+    }
     public function actionIndex()
     {
         $searchModel = new BeritarilisSearch();
@@ -118,7 +125,7 @@ class BeritarilisController extends BaseController
                 }
                 if ($model->save()) {
                     Yii::$app->session->setFlash('success', "Beritarilis berhasil ditambahkan. Terima kasih.");
-                    return $this->redirect(['view', 'id' => $model->id_Beritarilis]);
+                    return $this->redirect(['view', 'id' => $model->id_beritarilis]);
                 }
             }
         } else {

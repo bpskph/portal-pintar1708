@@ -14,9 +14,10 @@ $this->title = 'Daftar Patches Portal Pintar';
 </style>
 <div class="container-fluid" data-aos="fade-up">
     <h1 class="text-center"><?= Html::encode($this->title) ?></h1>
-    <h6 class="text-center"><i>by kintan.karina@bps.go.id</i></h6>
+    <h5 class="text-center">Sejak 23 Mei 2023</h5>
+    <h6 class="text-center"><i>by nofriani@bps.go.id</i></h6>
     <hr class="bps" />
-    <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->username == 'kintan.karina') : ?>
+    <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->username == 'nofriani') : ?>
         <p class="text-right">
             <?= Html::a('<i class="fas fa-folder-plus"></i> Tambah Data Baru', ['create'], ['class' => 'btn btn btn-outline-warning btn-sm']) ?>
         </p>
@@ -66,14 +67,14 @@ $this->title = 'Daftar Patches Portal Pintar';
                         'visibleButtons' => [
                             'wa_blast' => function ($model, $key, $index) {
                                 return (!Yii::$app->user->isGuest
-                                    && Yii::$app->user->identity->username === 'kintan.karina'
+                                    && Yii::$app->user->identity->username === 'nofriani'
                                     && $model['is_notification'] === 1 
                                 ) ? true : false;
                             },                            
                         ],
                         'visible'=>function ($model, $key, $index) {
                             return (!Yii::$app->user->isGuest
-                                && Yii::$app->user->identity->username === 'kintan.karina'
+                                && Yii::$app->user->identity->username === 'nofriani'
                             ) ? true : false;
                         },
                         'buttons'  => [                            

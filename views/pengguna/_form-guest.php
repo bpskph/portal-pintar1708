@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\Html;
 use kartik\form\ActiveForm;
 use yii\helpers\Url;
@@ -7,6 +8,7 @@ use yii\helpers\Url;
     .control-label {
         float: left;
     }
+
     /* Style the label as a clickable element */
     .form-checkbox-label {
         display: inline-block;
@@ -15,6 +17,7 @@ use yii\helpers\Url;
         margin-right: 10px;
         cursor: pointer;
     }
+
     .form-check {
         padding-left: 0rem !important;
     }
@@ -78,7 +81,7 @@ use yii\helpers\Url;
                 <?php elseif ($bengkulu == 'TIDAK') : ?>
                     <div class="alert alert-secondary alert-dismissable">
                         <p>
-                            Mohon maaf, pegawai yang dapat ditambahkan ke sistem Portal Pintar hanya pegawai yang pada Community BPS tercatat di Kabupaten Bengkulu Selatan.
+                            Mohon maaf, pegawai yang dapat ditambahkan ke sistem Portal Pintar hanya pegawai yang pada Community BPS tercatat di <?= Yii::$app->params['namaSatker'] ?>.
                         </p>
                     </div>
                 <?php elseif ($ada == 'COMMUNITY') : ?>
@@ -126,4 +129,4 @@ use yii\helpers\Url;
             </div>
         </div>
     </div>
-</div>
+    </div>

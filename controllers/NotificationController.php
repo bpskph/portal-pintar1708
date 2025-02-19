@@ -38,6 +38,13 @@ class NotificationController extends BaseController
             ]
         );
     }
+    public function beforeAction($action)
+    {
+        if ($action->id === 'mark-as-read-and-view') {
+            $this->enableCsrfValidation = false; // Disable CSRF validation for the action
+        }
+        return parent::beforeAction($action);
+    }
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
@@ -76,9 +83,9 @@ class NotificationController extends BaseController
             $notification->is_read = 1;
             $notification->read_at = date('Y-m-d H:i:s');
             $notification->save();
-            return $this->redirect([$notification->link . '/' . $notification->link_id]);
+            // return $this->redirect([$notification->link . '/' . $notification->link_id]);
         }
-        throw new \yii\web\ForbiddenHttpException('You are not allowed to perform this action.');
+        // throw new \yii\web\ForbiddenHttpException('You are not allowed to perform this action.');
     }
     public function actionMarkallread()
     {

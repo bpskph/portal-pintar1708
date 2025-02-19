@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Trigger the click event on the close button
                 var closeButton = myToast.querySelector('.btn-close');
                 closeButton.click();
-            }, 60000);
+            }, 100000);
         }
         else {
             setTimeout(function () {
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Trigger the click event on the close button
                 var closeButton = myToast.querySelector('.btn-close');
                 closeButton.click();
-            }, 6000);
+            }, 10000);
         }
     }
 });

@@ -31,7 +31,7 @@ class LaporanController extends BaseController
                     'class' => \yii\filters\AccessControl::className(),
                     'rules' => [
                         [
-                            'actions' => ['error', 'view'],
+                            'actions' => ['error'],
                             'allow' => true,
                         ],
                         [
@@ -42,7 +42,7 @@ class LaporanController extends BaseController
                             },
                         ],
                         [
-                            'actions' => ['create', 'update', 'setujui', 'cetaklaporan'], // add all actions to take guest to login page
+                            'actions' => ['create', 'update', 'setujui', 'cetaklaporan', 'view'], // add all actions to take guest to login page
                             'allow' => true,
                             'roles' => ['@'],
                         ],
@@ -50,6 +50,13 @@ class LaporanController extends BaseController
                 ],
             ]
         );
+    }
+    public function beforeAction($action)
+    {
+        if ($action->id === 'setujui') {
+            $this->enableCsrfValidation = false; // Disable CSRF validation for the action
+        }
+        return parent::beforeAction($action);
     }
     public function actionView($id)
     {
@@ -104,6 +111,7 @@ class LaporanController extends BaseController
             $model->id_laporan = $agenda;
             $model->laporan = null;
             $model->dokumentasi = $_POST['Laporan']['dokumentasi'];
+            $model->uploader = Yii::$app->user->identity->username;
             $model->filepdf = UploadedFile::getInstance($model, 'filepdf');
             // Check if there's an existing file and delete it
             if ($model->filepdf && $model->id_laporan) {
@@ -147,10 +155,23 @@ class LaporanController extends BaseController
         $waktutampil = $this->findWaktutampil($id);
         date_default_timezone_set('Asia/Jakarta');
         $model->timestamp_laporan_lastupdate = date('Y-m-d H:i:s');
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', "Laporan Agenda berhasil dimutakhirkan. Terima kasih.");
-            return $this->redirect(['view', 'id' => $model->id_laporan]);
+
+        if ($this->request->isPost) {
+            $model->dokumentasi = $_POST['Laporan']['dokumentasi'];
+            $model->uploader = Yii::$app->user->identity->username;
+            $model->filepdf = UploadedFile::getInstance($model, 'filepdf');
+            // Check if there's an existing file and delete it
+            if ($model->filepdf && $model->id_laporan) {
+                if (file_exists(Yii::getAlias('@webroot/laporans/' . $model->id_laporan . '.pdf'))) {
+                    unlink(Yii::getAlias('@webroot/laporans/') . $model->id_laporan . '.pdf');
+                }
+            }
+            if ($model->save() && $model->upload()) {
+                Yii::$app->session->setFlash('success', "Laporan Agenda berhasil ditambahkan. Terima kasih.");
+                return $this->redirect(['view', 'id' => $model->id_laporan]);
+            }
         }
+
         return $this->render('update', [
             'model' => $model,
             'dataagenda' => $dataagenda,
@@ -218,23 +239,27 @@ class LaporanController extends BaseController
             <div class="row">
                 <div class="col-sm-12">
                     <div class="table-responsive">
-                        <table class="table table-sm align-self-end ' . ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? '' : 'table-dark') . '">
+                        <table class="table table-sm align-self-end ' . ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? 'text-dark' : 'table-dark') . '">
                             <tbody>
                                 <tr>
-                                    <td class="col-sm-2">Nama Kegiatan</td>
-                                    <td>: ' . $dataagenda->kegiatan . '</td>
+                                    <td class="col-sm-2 ' . ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? 'text-dark' : '') . '">Nama Kegiatan</td>
+                                    <td class="' . ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? 'text-dark' : '') . '">: ' . $dataagenda->kegiatan . '</td>
                                 </tr>                            
                                 <tr>
-                                    <td>Waktu</td>
-                                    <td>: ' . $waktutampil . '</td>
+                                    <td class="' . ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? 'text-dark' : '') . '">Waktu</td>
+                                    <td class="' . ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? 'text-dark' : '') . '">: ' . $waktutampil . '</td>
                                 </tr>
                                 <tr>
-                                    <td>Pemimpin Rapat/Kegiatan</td>
-                                    <td>: ' . $dataagenda->pemimpine->nama . '</td>
+                                    <td class="' . ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? 'text-dark' : '') . '">Pemimpin Rapat/Kegiatan</td>
+                                    <td class="' . ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? 'text-dark' : '') . '">: ' . $dataagenda->pemimpine->nama . '</td>
                                 </tr>
                                 <tr>
-                                    <td>Reporter/Notulis</td>
-                                    <td>: ' . $dataagenda->reportere->nama . '</td>
+                                    <td class="' . ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? 'text-dark' : '') . '">Pengusul Agenda</td>
+                                    <td class="' . ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? 'text-dark' : '') . '">: ' . $dataagenda->reportere->nama . '</td>
+                                </tr>
+                                <tr>
+                                    <td class="' . ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? 'text-dark' : '') . '">Penambah Laporan</td>
+                                    <td class="' . ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? 'text-dark' : '') . '">: ' . ($dataagenda->laporane->uploader == null ? $dataagenda->reportere->nama : $dataagenda->uploadere->nama) . '</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -317,7 +342,7 @@ class LaporanController extends BaseController
                     <table width="500" border="0" bordercolor="33FFFF" align="center" cellpadding="3" cellspacing="00">
                         <tr>
                             <td height="55" colspan="0" align="center"><img src="data:image/png;base64,' . Yii::$app->params['imagebase64'] . '" height="50" width="60" /><br>
-                                <h4><i>BADAN PUSAT STATISTIK<br/>KABUPATEN BENGKULU SELATAN</h4></i>
+                                <h4><i>BADAN PUSAT STATISTIK<br/>' . Yii::$app->params['namaSatkerKop'] . '</h4></i>
                             </td>
                         </tr>
                     </table>
@@ -371,8 +396,8 @@ class LaporanController extends BaseController
                 </body>
                 <foot style="font-size:10px">
                     <div class="footer">
-                        <center>Jalan Affan Bachsin No.108A Kota Manna, 38512, Telp./Fax: (0739) 21048
-                            <br>E-mail: bps1701@bps.go.id
+                        <center>' . Yii::$app->params['alamatSatker'] . '
+                            <br>Fax. ' . Yii::$app->params['faxSatker'] . ', E-mail: '.Yii::$app->params['emailSatker'].'
                         </center>
                     </div>
                 </foot>

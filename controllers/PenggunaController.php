@@ -45,6 +45,13 @@ class PenggunaController extends BaseController
             ]
         );
     }
+    public function beforeAction($action)
+    {
+        if ($action->id === 'delete') {
+            $this->enableCsrfValidation = false; // Disable CSRF validation for the action
+        }
+        return parent::beforeAction($action);
+    }
     public function actionIndex()
     {
         $searchModel = new PenggunaSearch();
@@ -63,8 +70,8 @@ class PenggunaController extends BaseController
         $url_base = 'https://sso.bps.go.id/auth/';
         $url_token = $url_base . 'realms/pegawai-bps/protocol/openid-connect/token';
         $url_api = $url_base . 'admin/realms/pegawai-bps/users';
-        $client_id      = '11701-portalpintar-sd3';
-        $client_secret  = '0ecaf0b0-ae36-4e1f-9ecf-2f8986b85f73';
+        $client_id      = '11700-portalpintar-g64';
+        $client_secret  = '1de86905-2d74-46f3-b609-3594f2855287';
         $ch = curl_init($url_token);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
         curl_setopt($ch, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
@@ -122,9 +129,9 @@ class PenggunaController extends BaseController
                     $ada = 'YA';
                 else
                     $ada = 'TIDAK';
-                /* ngecek bahwa pengguna ada di BPS Kabupaten Bengkulu Selatan menurut Community */
+                /* ngecek bahwa pengguna ada di Satuan Kerja Terkait menurut Community */
                 $lokasi = $json[$key]['attributes']['attribute-kabupaten'][0];
-                if ($lokasi == 'Kab. Bengkulu Selatan')
+                if ($lokasi == Yii::$app->params['namaSatkerSSO'])
                     $bengkulu = 'YA';
                 else
                     $bengkulu = 'TIDAK';

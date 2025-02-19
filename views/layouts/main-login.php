@@ -1,21 +1,25 @@
 <?php
+
 use app\assets\LoginAsset;
 use yii\bootstrap5\Html;
+
 LoginAsset::register($this);
 $this->registerCsrfMetaTags();
 $this->registerMetaTag(['charset' => Yii::$app->charset], 'charset');
 $this->registerMetaTag(['name' => 'viewport', 'content' => 'width=device-width, initial-scale=1, shrink-to-fit=no']);
 $this->registerMetaTag(['name' => 'description', 'content' => Yii::$app->params['meta_description']]);
 $this->registerMetaTag(['name' => 'keywords', 'content' => Yii::$app->params['meta_keywords']]);
-$this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii::$app->request->baseUrl.'/images/favicon.png']);
+$this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii::$app->request->baseUrl . '/images/favicon.png']);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>" class="h-100">
+
 <head>
     <title><?= Html::encode(Yii::$app->name) ?> - Login</title>
     <?php $this->head() ?>
 </head>
+
 <body class="d-flex flex-column h-100">
     <?php $this->beginBody() ?>
     <div class="container">
@@ -71,7 +75,22 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         <span style="--i:48;"></span>
         <span style="--i:49;"></span>
     </div>
+    <?php if (Yii::$app->session->hasFlash('error')) : ?>
+        <div class="toast-container p-3 top-0 end-0" data-aos="fade-left">
+            <div class="toast show shadow-sm p-1 mb-2 rounded" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2" id="myToast">
+                <div class="toast-header bg-warning text-dark">
+                    <img src="<?php echo Yii::$app->request->baseUrl ?>/images/favicon.png" class="rounded me-2" width="20" height="20" alt="Portal Pintar Alert">
+                    <strong class="me-auto"><?= Yii::$app->name ?></strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body bg-light text-dark">
+                    <?= Yii::$app->session->getFlash('error') ?>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
     <?php $this->endBody() ?>
 </body>
+
 </html>
 <?php $this->endPage() ?>

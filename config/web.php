@@ -26,14 +26,14 @@ $config = [
     ],
     'components' => [
         'assetManager' => [
-            'linkAssets' => false,
+            'linkAssets' => true,
             'forceCopy' => true,
         ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'RLXOJYUIJZ3lrNN1b8OWBF5gKq5WiCgK',
-            'hostInfo' => 'http://localhost',
-            // 'hostInfo' => 'https://bengkuluselatankab.web.bps.go.id',
+            'hostInfo' => 'http://localhost:8080',
+            // 'hostInfo' =>  Yii::$app->params['webhostingSatker'],
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -45,19 +45,19 @@ $config = [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        'mailer' => [
-            'class' => \yii\symfonymailer\Mailer::class,
-            'useFileTransport' => false,
-            'transport' => [
-                'scheme' => 'smtps',
-                'host' => 'smtp.bps.go.id',
-                'username' => 'xxx',
-                'password' => 'xxx',
-                'encryption' => 'ssl',
-                'port' => '465',
-                'dsn' => 'sendmail://default',
-            ],
-        ],
+        // 'mailer' => [
+        //     'class' => \yii\symfonymailer\Mailer::class,
+        //     'useFileTransport' => false,
+        //     'transport' => [
+        //         'scheme' => 'smtps',
+        //         'host' => 'smtp.bps.go.id',
+        //         'username' => 'portalpintar',
+        //         'password' => 'Portalpintar1700',
+        //         'encryption' => 'ssl',
+        //         'port' => '465',
+        //         'dsn' => 'sendmail://default',
+        //     ],
+        // ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
@@ -80,7 +80,7 @@ $config = [
         ],
         'session' => [
             'class' => '\yii\web\Session',
-            'name' => 'PORTALSESSION',
+            'name' => 'PORTAL4SESSION',
             'savePath' => __DIR__ . '/session',
         ],
     ],

@@ -46,6 +46,13 @@ class MobildinasController extends BaseController
             ]
         );
     }
+    public function beforeAction($action)
+    {
+        if ($action->id === 'setujui') {
+            $this->enableCsrfValidation = false; // Disable CSRF validation for the action
+        }
+        return parent::beforeAction($action);
+    }
     public function actionIndex()
     {
         $searchModel = new MobildinasSearch();
@@ -140,7 +147,7 @@ class MobildinasController extends BaseController
                     /* PENGIRIMAN WHATSAPP BLAST */
                     $pengguna = \app\models\Pengguna::findOne($userId);
 
-                    $isi_notif_wa = '*Portal Pintar 2.0 - WhatsApp Notification Blast*
+                    $isi_notif_wa = '*Portal Pintar - WhatsApp Notification Blast*
 
 Bapak/Ibu ' . $pengguna->nama . ', Terdapat usulan peminjaman mobil dinas untuk *' . $waktuFormatted  . '* dari * ' . $borrower->nama . '*.
 
@@ -266,8 +273,10 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
     public function actionSetujui($id)
     {
         $model = $this->findModel($id);
-        date_default_timezone_set('Asia/Jakarta');
-        $affected_rows = Mobildinas::updateAll(['approval' => 1, 'timestamp_lastupdate' => date('Y-m-d H:i:s')], 'id_mobildinas = "' . $id . '"');
+        $affected_rows = Mobildinas::updateAll([
+            'approval' => 1,
+            'timestamp_lastupdate' => date('Y-m-d H:i:s', strtotime('+7 hours'))
+        ], 'id_mobildinas = "' . $id . '"');
         if ($affected_rows == 0) {
             Yii::$app->session->setFlash('warning', "Gagal. Mohon hubungi Admin.");
             return $this->redirect(['view', 'id' => $model->id_mobildinas]);
@@ -294,7 +303,7 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
             /* PENGIRIMAN WHATSAPP BLAST */
             $pengguna = \app\models\Pengguna::findOne($model->borrower);
 
-            $isi_notif_wa = '*Portal Pintar 2.0 - WhatsApp Notification Blast*
+            $isi_notif_wa = '*Portal Pintar - WhatsApp Notification Blast*
 
 Bapak/Ibu ' . $pengguna->nama . ', Pengajuan Anda untuk peminjaman mobil dinas untuk *' . $waktuFormatted  . '* sudah disetujui.
 
@@ -329,8 +338,8 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
         if ($this->request->isPost) {
             $model->load($this->request->post());
             if ($model->validate()) {
-                date_default_timezone_set('Asia/Jakarta');
-                $model->timestamp_lastupdate = date('Y-m-d H:i:s');
+                // date_default_timezone_set('Asia/Jakarta');
+                $model->timestamp_lastupdate = date('Y-m-d H:i:s', strtotime('+7 hours'));
                 $model->approval = 2;
                 if ($model->save()) {
                     $formatter = Yii::$app->formatter;
@@ -355,7 +364,7 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
                     /* PENGIRIMAN WHATSAPP BLAST */
                     $pengguna = \app\models\Pengguna::findOne($model->borrower);
 
-                    $isi_notif_wa = '*Portal Pintar 2.0 - WhatsApp Notification Blast*
+                    $isi_notif_wa = '*Portal Pintar - WhatsApp Notification Blast*
 
 Bapak/Ibu ' . $pengguna->nama . ', Pengajuan Anda untuk peminjaman mobil dinas untuk *' . $waktuFormatted  . '* ditolak.
             
@@ -400,8 +409,8 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
         if ($this->request->isPost) {
             $model->load($this->request->post());
             if ($model->validate()) {
-                date_default_timezone_set('Asia/Jakarta');
-                $model->timestamp_lastupdate = date('Y-m-d H:i:s');
+                // date_default_timezone_set('Asia/Jakarta');
+                $model->timestamp_lastupdate = date('Y-m-d H:i:s', strtotime('+7 hours'));
                 $model->approval = 3;
                 if ($model->save()) {
                     $formatter = Yii::$app->formatter;
@@ -426,7 +435,7 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
                     /* PENGIRIMAN WHATSAPP BLAST */
                     $pengguna = \app\models\Pengguna::findOne($model->borrower);
 
-                    $isi_notif_wa = '*Portal Pintar 2.0 - WhatsApp Notification Blast*
+                    $isi_notif_wa = '*Portal Pintar - WhatsApp Notification Blast*
  
 Bapak/Ibu ' . $pengguna->nama . ', Pengajuan Anda untuk peminjaman mobil dinas untuk *' . $waktuFormatted  . '* dibatalkan.
              

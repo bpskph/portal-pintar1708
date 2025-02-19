@@ -78,6 +78,8 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-notification
                             'view' => function ($url, $model, $key) {
                                 $viewUrl = Url::to([$model->link . '/view', 'id' => $model->link_id]);//localhost
                                 $markAsReadUrl = Url::to(['notification/mark-as-read-and-view', 'id' => $model->id]);//localhost
+                                $viewUrl = Url::to(['../bengkulu/portalpintar/' . $model->link . '/view', 'id' => $model->link_id]);//webhosting
+                                $markAsReadUrl = Url::to(['../bengkulu/portalpintar/notification/mark-as-read-and-view', 'id' => $model->id]);//webhosting
 
                                 return Html::a('<i class="fas fa-eye"></i> Lihat', '#', [
                                     'title' => 'Lihat rincian notifikasi ini',

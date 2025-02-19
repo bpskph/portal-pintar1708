@@ -16,9 +16,39 @@ use yii\web\View;
 $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-copy-link-agenda.js', ['position' => View::POS_END, 'depends' => [\yii\web\JqueryAsset::class]]);
 $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-agenda-index.js', ['position' => View::POS_END, 'depends' => [\yii\web\JqueryAsset::class]]);
 $this->registerCssFile(Yii::$app->request->baseUrl . '/library/css/fi-agenda-index.css', ['position' => View::POS_HEAD, 'depends' => [\yii\web\JqueryAsset::class]]);
-$this->title = 'Agenda Kantor BPS Kabupaten Bengkulu Selatan';
+$this->title = 'Agenda Kantor ' . Yii::$app->params['namaSatker'];
+
+$script = <<< JS
+$(document).ready(function() {
+    $('.wa-blast-btn').on('click', function(event) {
+        event.preventDefault(); // Prevent the default action
+
+        var url = $(this).data('url'); // Get the URL
+        var message = $(this).data('confirm'); // Get the confirmation message
+
+        // Show confirmation dialog
+        if (confirm(message)) {
+            // Show loading overlay
+            $('#loading-overlay').show();
+
+            // Redirect to the URL
+            window.location.href = url;
+        }
+    });
+});
+JS;
+$this->registerJs($script);
 
 ?>
+<!-- Loading Overlay -->
+<div id="loading-overlay" style="display: none; position: fixed; width: 100%; height: 100%; top: 0; left: 0; background: rgba(0, 0, 0, 0.5); z-index: 9999; text-align: center;">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 48px;">
+        <div class="spinner-border text-light" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <p>Memproses WA Blast Notification<br/>Mohon tunggu...</p>
+    </div>
+</div>
 <?php
 if (!Yii::$app->user->isGuest)
     $agendas = Agenda::find()
@@ -28,7 +58,12 @@ if (!Yii::$app->user->isGuest)
         ->andWhere(['>', 'id_agenda', 340])
         ->andWhere([
             'or',
-            ['laporan.id_laporan' => null],
+            [
+                'and',
+                ['laporan.id_laporan' => null],
+                ['deleted' => 0],
+                ['progress' => 1],
+            ],
             [
                 'and',
                 ['approval' => 0],
@@ -441,10 +476,12 @@ $kolomTampil = [
             'wa_blast' => function ($url, $model, $key) {
                 return Html::a('<i class="fab fa-whatsapp"></i> ', $url, [
                     'title' => 'Kirim undangan via WhatsApp',
+                    'class' => 'wa-blast-btn',
                     'data-pjax' => 0,
-                    'data-confirm' => 'Anda yakin ingin mengirimkan WhatsApp Blast untuk agenda ini? <br/><strong>' . $model['kegiatan'] . '</strong>'
+                    'data-confirm' => 'Anda yakin ingin mengirimkan WhatsApp Blast untuk agenda ini? <br/><strong>' . $model['kegiatan'] . '</strong>',
+                    'data-url' => $url, // Store the URL for navigation
+                    // 'data-url' => '/bengkulu'.$url, // Store the URL for navigation untuk di webapps
                 ]);
-                return Html::a('<i class="fab fa-whatsapp"></i> ', $key, ['title' => 'Kirim notifikasi via WhatsApp']);
             },
             'editpeserta' => function ($key, $client) {
                 return Html::a('<i class="fas fa-users-cog"></i> ', $key, ['title' => 'Edit Data Peserta']);
@@ -666,7 +703,7 @@ $kolomTampil = [
         <div class="p-2 d-flex align-items-center flex-wrap gap-2">
             <?= Html::a('<i class="fas fa-file-archive"></i> Arsip Agenda', ['agenda/index?owner=&year=&nopage=0'], ['class' => 'btn btn-outline-warning btn-sm']) ?>
             |
-            <?php if (!Yii::$app->user->isGuest) : ?>                
+            <?php if (!Yii::$app->user->isGuest) : ?>
                 <div class="dropdown">
                     <button class="btn btn-outline-warning btn-sm dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-chevron-down"></i> Surat-surat
@@ -691,7 +728,17 @@ $kolomTampil = [
                                 ['suratrepoeks/index?owner=&year=' . date("Y")],
                                 ['class' => 'btn btn-outline-warning btn-sm dropdown-item']
                             ) ?>
-                        </li>                        
+                        </li>
+                        <li>
+                            <?= Html::a(
+                                '<div class="dropdown-item-container">
+                                    <div class="icon-container"><i class="fas fa-user-md"></i></div>
+                                    <div class="text-container">Surat Masuk/Disposisi</div>
+                                </div>',
+                                ['suratmasuk/index?year=' . date("Y") . '&from=&for='],
+                                ['class' => 'btn btn-outline-warning btn-sm dropdown-item']
+                            ) ?>
+                        </li>
                     </ul>
                 </div>
                 |

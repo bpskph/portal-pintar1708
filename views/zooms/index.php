@@ -5,7 +5,7 @@ use kartik\grid\SerialColumn;
 use kartik\grid\ActionColumn;
 use kartik\grid\GridView;
 
-$this->title = 'Jadwal Request/Pemakaian Zoom BPS Kabupaten Bengkulu Selatan';
+$this->title = 'Jadwal Request/Pemakaian Zoom ' . Yii::$app->params['namaSatker'];
 ?>
 <style>
     .modal-link .icon-wrapper {

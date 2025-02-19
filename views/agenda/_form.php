@@ -25,11 +25,33 @@ if ($model->isNewRecord) {
 // Registering your custom JS and CSS files
 $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-agenda-form.js', ['position' => View::POS_END, 'depends' => [\yii\web\JqueryAsset::class]]);
 ?>
+<?php
+$script = <<< JS
+$(document).ready(function() {
+    $('#agenda-form-id').on('beforeSubmit', function() {
+        // Show loading overlay
+        $('#loading-overlay').show();
+        // Disable all buttons to prevent multiple clicks
+        $('button, input[type="submit"]').prop('disabled', true);
+    });
+});
+JS;
+$this->registerJs($script);
+?>
 <style>
     .col-sm-3 {
         display: inline-flex;
     }
 </style>
+<!-- Loading Overlay -->
+<div id="loading-overlay" style="display: none; position: fixed; width: 100%; height: 100%; top: 0; left: 0; background: rgba(0, 0, 0, 0.5); z-index: 9999; text-align: center;">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 48px;">
+        <div class="spinner-border text-light" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <p>Memproses usulan agenda<br />Mohon tunggu...</p>
+    </div>
+</div>
 <div class="container-fluid" data-aos="fade-up">
     <div class="card alert <?= ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? 'bg-light' : 'bg-dark') ?>">
         <?php $form = ActiveForm::begin([
@@ -75,7 +97,10 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-agenda-form.
                 <div class="row">
                     <div class="col-sm-6">
                         <?= $form->field($model, 'waktumulai')->widget(DateTimePicker::classname(), [
-                            'options' => ['placeholder' => 'Pilih Tanggal dan Jam ...'],
+                            'options' => [
+                                'id' => 'waktumulai',
+                                'placeholder' => 'Pilih Tanggal dan Jam ...',
+                            ],
                             'pluginOptions' => [
                                 'autoclose' => true,
                                 'format' => 'yyyy-mm-dd hh:ii:ss'
@@ -222,11 +247,13 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-agenda-form.
                                             Project::find()
                                                 ->select('*, team.panggilan_team as namateam')
                                                 ->joinWith(['teame', 'projectmembere', 'teamleadere'])
-                                                ->where(['project.tahun' => date("Y")])
-                                                ->andWhere(['project.aktif' => 1])
-                                                ->andWhere(['projectmember.member_status' => 3, 'projectmember.pegawai' => Yii::$app->user->identity->username])
-                                                ->orWhere(['projectmember.member_status' => 2, 'projectmember.pegawai' => Yii::$app->user->identity->username])
-                                                ->orWhere(['teamleader.leader_status' => 1, 'teamleader.nama_teamleader' => Yii::$app->user->identity->username])
+                                                ->where(['project.tahun' => date("Y"), 'project.aktif' => 1])
+                                                ->andWhere([
+                                                    'or',
+                                                    ['projectmember.member_status' => 3, 'projectmember.pegawai' => Yii::$app->user->identity->username],
+                                                    ['projectmember.member_status' => 2, 'projectmember.pegawai' => Yii::$app->user->identity->username],
+                                                    ['teamleader.leader_status' => 1, 'teamleader.nama_teamleader' => Yii::$app->user->identity->username]
+                                                ])
                                                 ->asArray()
                                                 ->all(),
                                             'id_project',
@@ -240,6 +267,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-agenda-form.
                                         ],
                                     ])->hint('Isikan Pelaksana Agenda <strong>(Tim Tahun ' . date("Y") . ')</strong>', ['class' => '', 'style' => 'color: #999']);
                                     ?>
+
                                 </div>
                                 <div id="no" <?= $model->pilihpelaksana == false ? ' style="display:none"' : '' ?>>
                                     <?= $form->field($model, 'pelaksanatext')->textInput(['maxlength' => true, 'value' => $model->isNewRecord ? '' : $model->pelaksanalengkape])
@@ -272,6 +300,24 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-agenda-form.
                 <?php endif; ?>
                 <?= $form->field($model, 'presensi')->textInput([])
                     ->label('Link Presensi')->hint('<strong>Isikan jika sudah ada.</strong>', ['class' => '', 'style' => 'color: #999']); ?>
+                <!-- Checkbox for Event Team -->
+                <?= $form->field($model, 'by_event_team')->checkbox([
+                    'id' => 'by_event_team',
+                ])->label('<span style="background-color: #ffc107; border-radius: 5px">&nbsp;Tandai ini jika kegiatan ini akan di-support by&nbsp;</span>&nbsp;<a href="' . Yii::$app->request->baseUrl . '/library/pedoman/surtug_event_team.pdf" class="btn btn-sm btn-outline-warning"><i class="fas fa-file-pdf"></i> Event Team</a>&nbsp;', []); ?>
+
+                <!-- Display selected Event Team Leader (Initially Hidden) -->
+                <div id="event_team_leader_display" style="display:none">
+                    <button type="button" class="btn btn-primary position-relative">
+                        Ketua Event Team yang Bertugas di <span id="selected_event_leader">Belum dipilih</span>
+                        <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                            <span class="visually-hidden">New alerts</span>
+                        </span>
+                    </button>
+                </div>
+
+                <!-- Hidden input to store event team leader's key -->
+                <?= $form->field($model, 'event_team_leader')->hiddenInput(['id' => 'event_team_leader'])->label(false); ?>
+
                 <?= $form->field($model, 'pemimpin')->widget(Select2::classname(), [
                     'data' => ArrayHelper::map(
                         \app\models\Pengguna::find()->select('*')->where('level<>2')->asArray()->all(),
@@ -332,7 +378,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-agenda-form.
                     ],
                 ])->label('Atau Pilih dari Daftar Pegawai'); ?>
                 <?= $form->field($model, 'peserta_lain')->textarea(['rows' => 3])
-                    ->hint('Input nama badan/orang di luar BPS Kabupaten Bengkulu Selatan serta alamat email valid (<b>hanya</b> jika ingin mengirimkan undangan digital via email blast). Data dapat terisi lebih dari satu, pisahkan dengan koma. Contoh: <b>Bappeda Kabupaten Bengkulu Selatan, Nofriana, S.Pd., dianputra@bps.go.id, khansa.safira19@gmail.com</b>', ['class' => '', 'style' => 'color: #999']) ?>
+                    ->hint('Input nama badan/orang di luar ' . Yii::$app->params['namaSatker'] . ' serta alamat email valid (<b>hanya</b> jika ingin mengirimkan undangan digital via email blast). Data dapat terisi lebih dari satu, pisahkan dengan koma. Contoh: <b>Bappeda Provinsi Bengkulu, Nofriana, S.Pd., dianputra@bps.go.id, khansa.safira19@gmail.com</b>', ['class' => '', 'style' => 'color: #999']) ?>
                 <?= $form->field($model, 'id_lanjutan')->widget(Select2::classname(), [
                     'data' => ArrayHelper::map(
                         Agenda::find()
@@ -388,19 +434,19 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-agenda-form.
                             <h5 class="card-title text-center <?php echo (Yii::$app->user->identity->theme == 0 ? '' : 'text-light') ?>">Kegiatan yang <i>Direncanakan</i> 2 Minggu ke Depan<br /><span><?php echo date("d-F-Y") . ' s.d. ' . date('d-F-Y', strtotime('+2 weeks')) ?></span></h5>
                             <?php
                             $layout = '
-                        <div class=" ' . (!Yii::$app->user->isGuest ? Yii::$app->user->identity->themechoice : '') . '">
-                            <div class="d-flex justify-content-between" style="margin-bottom: -0.8rem;">
-                                <div class="p-2">                                
-                                </div>                                
-                                <div class="p-2">                                
-                                </div>
-                                <div class="p-2" style="margin-top:0.5rem;">
-                                <span class="text-secondary">{summary}</span>
-                                </div>
-                            </div>                            
-                        </div>  
-                        {items}
-                    ';
+                                    <div class=" ' . (!Yii::$app->user->isGuest ? Yii::$app->user->identity->themechoice : '') . '">
+                                        <div class="d-flex justify-content-between" style="margin-bottom: -0.8rem;">
+                                            <div class="p-2">                                
+                                            </div>                                
+                                            <div class="p-2">                                
+                                            </div>
+                                            <div class="p-2" style="margin-top:0.5rem;">
+                                            <span class="text-secondary">{summary}</span>
+                                            </div>
+                                        </div>                            
+                                    </div>  
+                                    {items}
+                                ';
                             ?>
                             <?= GridView::widget([
                                 'dataProvider' => $dataProvider,
@@ -483,8 +529,60 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-agenda-form.
     </div>
 </div>
 <?php
-$js = <<< JS
-
-JS;
-$this->registerJs($js);
+$eventTeamLeaders = json_encode([
+    '01' => 'rolianardi',        // February
+    '02' => 'rolianardi',
+    '03' => 'taufan.hidayat',    // March
+    '04' => 'ardiansyah3',       // April
+    '05' => 'meidio.talo',       // May
+    '06' => 'suhanderi',         // June
+    '07' => 'aypratama',         // July
+    '08' => 'rolianardi',        // August
+    '09' => 'taufan.hidayat',    // September
+    '10' => 'ardiansyah3',       // October
+    '11' => 'meidio.talo',       // November
+    '12' => 'suhanderi',         // December
+]);
 ?>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let eventLeaders = <?= $eventTeamLeaders ?>;
+        let leaderNames = {
+            "rolianardi": "Februari dan Agustus 2025: Rolian Ardi",
+            "taufan.hidayat": "Maret dan September 2025: Taufan Hidayat",
+            "ardiansyah3": "April dan Oktober 2025: Ardiansyah",
+            "meidio.talo": "Mei dan November 2025: Meidio Talo Prista",
+            "suhanderi": "Juni dan Desember 2025: Suhanderi",
+            "aypratama": "Juli 2025 dan Januari 2026: Auliya Yudha Pratama"
+        };
+
+        function updateLeader() {
+            let dateVal = $('#waktumulai').val();
+            let isChecked = $('#by_event_team').is(':checked');
+            let leaderDisplay = $('#event_team_leader_display');
+            let leaderText = $('#selected_event_leader');
+            let hiddenInput = $('#event_team_leader');
+
+            if (!isChecked || !dateVal) {
+                leaderDisplay.fadeOut(300); // Fade out smoothly
+                hiddenInput.val('');
+                return;
+            }
+
+            let month = dateVal.substring(5, 7); // Extract MM from yyyy-mm-dd
+            let leaderKey = eventLeaders[month] || null;
+
+            if (leaderKey) {
+                leaderText.html(leaderNames[leaderKey]);
+                hiddenInput.val(leaderKey);
+                leaderDisplay.fadeIn(300); // Fade in smoothly
+            } else {
+                leaderDisplay.fadeOut(300); // Hide if no match
+                hiddenInput.val('');
+            }
+        }
+
+        $('#waktumulai').on('change', updateLeader);
+        $('#by_event_team').on('change', updateLeader);
+    });
+</script>
