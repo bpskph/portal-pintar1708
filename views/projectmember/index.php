@@ -121,9 +121,9 @@ $this->title = 'Rekap Tim Kerja dalam Aplikasi Ini';
                         'attribute' => 'member_status',
                         'value' => function ($data) {
                             if ($data->member_status == 3)
-                                return '<center><span title="Operator" class="badge bg-success rounded-pill"><i class="fab fa-ubuntu"></i> Operator</span></center>';
+                                return '<center><span title="Operator" class="badge bg-success rounded-pill"><i class="fab fa-ubuntu"></i> Operator Agenda</span></center>';
                             elseif ($data->member_status == 2)
-                                return '<center><span title="Ketua" class="badge bg-primary rounded-pill"><i class="fas fa-book-reader"></i> Ketua</span></center>';
+                                return '<center><span title="Penanggung Jawab" class="badge bg-primary rounded-pill"><i class="fas fa-book-reader"></i> Penanggung Jawab</span></center>';
                             elseif ($data->member_status == 1)
                                 return '<center><span title="Anggota" class="badge bg-secondary rounded-pill"><i class="fas fa-user"></i> Anggota</span></center>';
                             elseif ($data->member_status == 0)
@@ -138,8 +138,8 @@ $this->title = 'Rekap Tim Kerja dalam Aplikasi Ini';
                         'filter' => \yii\helpers\Html::activeDropDownList($searchModel, 'member_status', [
                             '' => 'Cari Status Anggota ...',
                             1 => 'Anggota',
-                            2 => 'Ketua',
-                            3 => 'Operator'
+                            2 => 'Penanggung Jawab',
+                            3 => 'Operator Agenda'
                         ], ['class' => 'form-control']),
                     ],
                     [

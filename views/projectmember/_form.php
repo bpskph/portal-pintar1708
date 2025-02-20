@@ -49,7 +49,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-projectmembe
         ]);
         ?>
         <?= $form->field($model, 'member_status')->widget(Select2::classname(), [
-            'data' => [1 => "Anggota", 2 => "Ketua", 3 => "Operator"],
+            'data' => [1 => "Anggota", 2 => "Penanggung Jawab", 3 => "Operator Agenda"],
             'options' => ['placeholder' => 'Status Anggota'],
             'pluginOptions' => [
                 'allowClear' => true

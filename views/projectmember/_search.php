@@ -22,8 +22,8 @@ use kartik\form\ActiveForm;
         <?=
         $form->field($model, 'member_status')->dropDownList([
             1 => 'Anggota',
-            2 => 'Ketua',
-            3 => 'Operator'
+            2 => 'Penanggung Jawab',
+            3 => 'Operator Agenda'
         ], ['prompt' => 'Status Anggota ...'])
         ?>
         <div class="form-group">
