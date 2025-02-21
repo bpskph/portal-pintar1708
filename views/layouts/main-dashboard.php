@@ -3,7 +3,6 @@
 use yii\helpers\Html;
 use app\assets\DashboardAsset;
 use app\assets\DashboardLightAsset;
-use Yii;
 
 if (!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) //light theme
     DashboardLightAsset::register($this);

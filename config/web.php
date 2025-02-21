@@ -26,7 +26,7 @@ $config = [
     ],
     'components' => [
         'assetManager' => [
-            'linkAssets' => true,
+            'linkAssets' => false,
             'forceCopy' => true,
         ],
         'request' => [
