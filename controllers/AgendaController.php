@@ -928,7 +928,7 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
     {
         // URL tujuan
         $url = 'https://dialogwa.web.id/api/send-text';
-        $token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NmNjNjA4ZGM2NDQyMmVkOTE1MzdjMiIsInVzZXJuYW1lIjoibm9mcmlhbmkiLCJpYXQiOjE3MjE3OTg3NDgsImV4cCI6NDg3NzU1ODc0OH0.5dnMRRM-G0bktsNFvArEnBkH1Qr5Snn8LvEBpswVhtw';
+        $token = Yii::$app->params['tokenWhatsAppAPI'];
 
         // Data yang akan dikirim dalam body request
         $data = array(
@@ -968,48 +968,7 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
             curl_close($ch);
             return $response;
         }
-    }
-    public static function wa_engine_fonnte($nomor_tujuan, $isi_notif)
-    {
-        // URL tujuan
-        $url = 'https://api.fonnte.com/send';
-        $token = 'GmcguyaWvLMQmv7hNGES';
-        $ch = curl_init();
-
-        curl_setopt_array($ch, array(
-            CURLOPT_URL => $url,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => array(
-                'target' => $nomor_tujuan,
-                'message' => $isi_notif,
-                // 'countryCode' => '62', //optional
-            ),
-            CURLOPT_HTTPHEADER => array(
-                'Authorization: ' .  $token //change TOKEN to your actual token
-            ),
-        ));
-
-
-        // Eksekusi request dan simpan responsenya
-        $response = curl_exec($ch);
-
-        // Periksa apakah terjadi kesalahan saat melakukan request
-        if (curl_errno($ch)) {
-            $error_msg = curl_error($ch);
-            curl_close($ch);
-            return 'Error: ' . $error_msg;
-        } else {
-            // Tutup cURL
-            curl_close($ch);
-            return $response;
-        }
-    }
+    
     public function actionWa_blast($id)
     {
         $dataagenda = $this->findModel($id);

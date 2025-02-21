@@ -45,19 +45,6 @@ $config = [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        // 'mailer' => [
-        //     'class' => \yii\symfonymailer\Mailer::class,
-        //     'useFileTransport' => false,
-        //     'transport' => [
-        //         'scheme' => 'smtps',
-        //         'host' => 'smtp.bps.go.id',
-        //         'username' => 'portalpintar',
-        //         'password' => 'Portalpintar1700',
-        //         'encryption' => 'ssl',
-        //         'port' => '465',
-        //         'dsn' => 'sendmail://default',
-        //     ],
-        // ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [

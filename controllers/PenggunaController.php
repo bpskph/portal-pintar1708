@@ -70,8 +70,8 @@ class PenggunaController extends BaseController
         $url_base = 'https://sso.bps.go.id/auth/';
         $url_token = $url_base . 'realms/pegawai-bps/protocol/openid-connect/token';
         $url_api = $url_base . 'admin/realms/pegawai-bps/users';
-        $client_id      = '11700-portalpintar-g64';
-        $client_secret  = '1de86905-2d74-46f3-b609-3594f2855287';
+        $client_id      = Yii::$app->params['ssoSatkerId'];
+        $client_secret  = Yii::$app->params['ssoSatkerKey'];
         $ch = curl_init($url_token);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
         curl_setopt($ch, CURLOPT_POSTFIELDS, "grant_type=client_credentials");

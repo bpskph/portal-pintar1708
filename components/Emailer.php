@@ -3,6 +3,7 @@ namespace app\components;
 
 use Exception;
 use PHPMailer\PHPMailer\PHPMailer;
+use Yii;
 
 class Emailer
 {
@@ -15,8 +16,8 @@ class Emailer
             $mail->isSMTP();
             $mail->Host = 'smtp.bps.go.id';
             $mail->SMTPAuth = true;
-            $mail->Username = 'portalpintar';
-            $mail->Password = 'Portalpintar1700';
+            $mail->Username = Yii::$app->params['emailBlastUsername'];
+            $mail->Password = Yii::$app->params['emailBlastPassword'];
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $mail->Port = 465;
 

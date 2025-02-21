@@ -123,7 +123,7 @@ class SiteController extends Controller
         }
         $sso = new SSOBPS();
         /* pakai OpenID*/
-        $sso->setCredential("11700-portalpintar-g64", "1de86905-2d74-46f3-b609-3594f2855287");
+        $sso->setCredential(Yii::$app->params['ssoSatkerId'], Yii::$app->params['ssoSatkerKey']);
         $sso->setRedirectUri('http://localhost/portalpintar/site/login');
         $sso->setRedirectUri(Yii::$app->params['webhostingSatker'] . 'portalpintar/site/login');
         $model = new LoginForm();
