@@ -531,7 +531,7 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
                         $pelaksana = $pelaksana->nama_project;
                     else
                         $pelaksana = $model->pelaksana;
-                    $agendaId = Agenda::find()->max('id_agenda');
+                    $agendaId = $model->id_agenda;
                     $formatter = Yii::$app->formatter;
                     $formatter->locale = 'id-ID';
                     $waktumulai = new \DateTime($model->waktumulai, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktumulai with UTC timezone
@@ -968,7 +968,7 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
             curl_close($ch);
             return $response;
         }
-    
+    }
     public function actionWa_blast($id)
     {
         $dataagenda = $this->findModel($id);
