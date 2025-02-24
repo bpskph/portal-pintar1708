@@ -130,10 +130,8 @@ class SuratmasukController extends BaseController
             $model->reporter = Yii::$app->user->identity->username;
             $pejabat = Suratmasukpejabat::findOne($model->fk_suratmasukpejabat);
             $model->fk_suratmasukpejabat = $pejabat->pegawai;
-
+            $model->filepdf = UploadedFile::getInstance($model, 'filepdf'); // Move this up
             if ($model->validate() && $model->save()) {
-                $model->filepdf = UploadedFile::getInstance($model, 'filepdf');
-
                 if ($model->filepdf && $model->id_suratmasuk && $model->filepdf->extension === 'pdf') {
                     if (file_exists(Yii::getAlias('@webroot/surat/masuk/' . $model->id_suratmasuk . '.pdf'))) {
                         unlink(Yii::getAlias('@webroot/surat/masuk/') . $model->id_suratmasuk . '.pdf');

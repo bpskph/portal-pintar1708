@@ -47,10 +47,10 @@ $this->title = 'Detail Agenda # ' . $model->id_agenda;
     $formatter = Yii::$app->formatter;
     $formatter->locale = 'id-ID'; // set the locale to Indonesian
     $timezone = new \DateTimeZone('Asia/Jakarta'); // create a timezone object for WIB
-    $waktumulai = new \DateTime($model->waktumulai, new \DateTimeZone('UTC')); // create a datetime object for waktumulai with UTC timezone
+    $waktumulai = new \DateTime($model->waktumulai, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktumulai with UTC timezone
     $waktumulai->setTimeZone($timezone); // set the timezone to WIB
     $waktumulaiFormatted = $formatter->asDatetime($waktumulai, 'd MMMM Y, H:mm'); // format the waktumulai datetime value
-    $waktuselesai = new \DateTime($model->waktuselesai, new \DateTimeZone('UTC')); // create a datetime object for waktuselesai with UTC timezone
+    $waktuselesai = new \DateTime($model->waktuselesai, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktuselesai with UTC timezone
     $waktuselesai->setTimeZone($timezone); // set the timezone to WIB
     $waktuselesaiFormatted = $formatter->asDatetime($waktuselesai, 'H:mm'); // format the waktuselesai time value only
     if ($waktumulai->format('Y-m-d') === $waktuselesai->format('Y-m-d')) {
@@ -68,10 +68,10 @@ $this->title = 'Detail Agenda # ' . $model->id_agenda;
         $formatter = Yii::$app->formatter;
         $formatter->locale = 'id-ID'; // set the locale to Indonesian
         $timezone = new \DateTimeZone('Asia/Jakarta'); // create a timezone object for WIB
-        $waktumulai_tunda = new \DateTime($model->waktumulai_tunda, new \DateTimeZone('UTC')); // create a datetime object for waktumulai_tunda with UTC timezone
+        $waktumulai_tunda = new \DateTime($model->waktumulai_tunda, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktumulai_tunda with UTC timezone
         $waktumulai_tunda->setTimeZone($timezone); // set the timezone to WIB
         $waktumulai_tundaFormatted = $formatter->asDatetime($waktumulai_tunda, 'd MMMM Y, H:mm'); // format the waktumulai_tunda datetime value
-        $waktuselesai_tunda = new \DateTime($model->waktuselesai_tunda, new \DateTimeZone('UTC')); // create a datetime object for waktuselesai_tunda with UTC timezone
+        $waktuselesai_tunda = new \DateTime($model->waktuselesai_tunda, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktuselesai_tunda with UTC timezone
         $waktuselesai_tunda->setTimeZone($timezone); // set the timezone to WIB
         $waktuselesai_tundaFormatted = $formatter->asDatetime($waktuselesai_tunda, 'H:mm'); // format the waktuselesai_tunda time value only
         if ($waktumulai_tunda->format('Y-m-d') === $waktuselesai_tunda->format('Y-m-d')) {

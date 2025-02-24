@@ -268,18 +268,19 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-suratrepoeks
                     $model->sent_by = 0
                 ?>
                 <?= $form->field($model, 'sent_by')->radioList([
-                    0 => "PDF Surat akan dikirim oleh Sekretaris ' . Yii::$app->params['namaSatker'] . '",
-                    1 => "PDF Surat akan dikirim oleh Anda (Tim Teknis)",
-                    2 => "PDF Surat tidak dikirim melalui surel/email"
-                ], [
-                    'item' => function ($index, $label, $name, $checked, $value) {
-                        return '<div class="custom-radio-wrapper">
-                            <input type="radio" id="sent_by_' . $value . '" name="' . $name . '" value="' . $value . '" 
-                                class="custom-radio-option" ' . ($checked ? 'checked' : '') . '>
-                            <label for="sent_by_' . $value . '" class="custom-radio-label">' . $label . '</label>
-                        </div>';
-                    }
-                ])->label(false); ?>
+                        0 => "PDF Surat akan dikirim oleh Sekretaris " . Yii::$app->params['namaSatker'],
+                        1 => "PDF Surat akan dikirim oleh Anda (Tim Teknis)",
+                        2 => "PDF Surat tidak dikirim melalui surel/email"
+                    ], [
+                        'item' => function ($index, $label, $name, $checked, $value) {
+                            return '<div class="custom-radio-wrapper">
+                                <input type="radio" id="sent_by_' . $value . '" name="' . $name . '" value="' . $value . '" 
+                                    class="custom-radio-option" ' . ($checked ? 'checked' : '') . '>
+                                <label for="sent_by_' . $value . '" class="custom-radio-label">' . $label . '</label>
+                            </div>';
+                        }
+                    ]); ?>
+
 
                 <?= $form->field($model, 'tembusan')->textarea(['rows' => 3])
                     ->hint('Jika daftar tembusan lebih dari satu, pisahkan dengan koma. Contoh: <b>Kepala ' . Yii::$app->params['namaSatker'] . ', Kepala Bagian Umum ' . Yii::$app->params['namaSatker'] . '</b>', ['class' => '', 'style' => 'color: #999']) ?>
