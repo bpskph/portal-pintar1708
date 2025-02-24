@@ -53,7 +53,7 @@ foreach ($pemimpins as $pemimpin) {
                 "*Reminder Penyelesaian/Persetujuan Laporan Agenda*\n" .
                 "Bapak/Ibu $nama_penerima, sejak 1 Januari 2024, terdapat $total1 agenda yang Anda pimpin belum memiliki laporan " .
                 "dan $total2 laporan agenda yang belum Anda setujui. Mohon lakukan peninjauan di Sistem Portal Pintar, " .
-                Yii::$app->params['namaSatkerKop'] . "portalpintar/agenda/index?owner=&year=" . date("Y") . "&nopage=0. \n\n" .
+                Yii::$app->params['webhostingSatker'] . "portalpintar/agenda/index?owner=&year=" . date("Y") . "&nopage=0. \n\n" .
                 "Untuk melihat daftar kegiatan yang Anda pimpin, lakukan pencarian _pemimpin_ dengan menggunakan username Anda pada halaman tersebut.\n\nTerima kasih.\n\n_#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_";
 
             // Send WhatsApp message using WA engine
