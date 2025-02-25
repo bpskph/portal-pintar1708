@@ -85,7 +85,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             $formatter = Yii::$app->formatter;
                             $formatter->locale = 'id-ID'; // set the locale to Indonesian
                             $timezone = new \DateTimeZone('Asia/Jakarta'); // create a timezone object for WIB
-                            $waktumulai = new \DateTime($model->timestamp, new \DateTimeZone('UTC')); // create a datetime object for waktumulai with UTC timezone
+                            $waktumulai = new \DateTime($model->timestamp, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktumulai with UTC timezone
                             $waktumulai->setTimeZone($timezone); // set the timezone to WIB
                             $waktumulaiFormatted = $formatter->asDatetime($waktumulai, 'd MMMM Y, H:mm'); // format the waktumulai datetime value
                             return $waktumulaiFormatted . ' WIB';

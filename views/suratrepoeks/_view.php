@@ -16,7 +16,7 @@ $waktutampil = '';
 $formatter = Yii::$app->formatter;
 $formatter->locale = 'id-ID'; // set the locale to Indonesian
 $timezone = new \DateTimeZone('Asia/Jakarta'); // create a timezone object for WIB
-$waktutampil = new \DateTime($model->tanggal_suratrepoeks, new \DateTimeZone('UTC')); // create a datetime object for waktumulai with UTC timezone
+$waktutampil = new \DateTime($model->tanggal_suratrepoeks, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktumulai with UTC timezone
 $waktutampil->setTimeZone($timezone); // set the timezone to WIB
 $waktutampil = $formatter->asDatetime($waktutampil, 'd MMMM Y'); // format the waktumulai datetime value
 ?>

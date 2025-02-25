@@ -106,10 +106,10 @@ $this->registerJs($script, \yii\web\View::POS_HEAD);
                             $formatter = Yii::$app->formatter;
                             $formatter->locale = 'id-ID'; // set the locale to Indonesian
                             $timezone = new \DateTimeZone('Asia/Jakarta'); // create a timezone object for WIB
-                            $waktumulai = new \DateTime($model->tanggal_mulai, new \DateTimeZone('UTC')); // create a datetime object for waktumulai with UTC timezone
+                            $waktumulai = new \DateTime($model->tanggal_mulai, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktumulai with UTC timezone
                             $waktumulai->setTimeZone($timezone); // set the timezone to WIB
                             $waktumulaiFormatted = $formatter->asDatetime($waktumulai, 'd MMMM Y'); // format the waktumulai datetime value
-                            $waktuselesai = new \DateTime($model->tanggal_selesai, new \DateTimeZone('UTC')); // create a datetime object for waktuselesai with UTC timezone
+                            $waktuselesai = new \DateTime($model->tanggal_selesai, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktuselesai with UTC timezone
                             $waktuselesai->setTimeZone($timezone); // set the timezone to WIB
                             $waktuselesaiFormatted = $formatter->asDatetime($waktuselesai, 'd MMMM Y'); // format the waktuselesai time value only
                             if ($waktumulai->format('Y-m') === $waktuselesai->format('Y-m')) {

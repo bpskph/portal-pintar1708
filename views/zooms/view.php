@@ -31,10 +31,10 @@ $this->title = 'Detail Usulan Zoom # ' . $model->id_zooms;
     $formatter = Yii::$app->formatter;
     $formatter->locale = 'id-ID'; // set the locale to Indonesian
     $timezone = new \DateTimeZone('Asia/Jakarta'); // create a timezone object for WIB
-    $waktumulai = new \DateTime($model->agendae->waktumulai, new \DateTimeZone('UTC')); // create a datetime object for waktumulai with UTC timezone
+    $waktumulai = new \DateTime($model->agendae->waktumulai, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktumulai with UTC timezone
     $waktumulai->setTimeZone($timezone); // set the timezone to WIB
     $waktumulaiFormatted = $formatter->asDatetime($waktumulai, 'd MMMM Y, H:mm'); // format the waktumulai datetime value
-    $waktuselesai = new \DateTime($model->agendae->waktuselesai, new \DateTimeZone('UTC')); // create a datetime object for waktuselesai with UTC timezone
+    $waktuselesai = new \DateTime($model->agendae->waktuselesai, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktuselesai with UTC timezone
     $waktuselesai->setTimeZone($timezone); // set the timezone to WIB
     $waktuselesaiFormatted = $formatter->asDatetime($waktuselesai, 'H:mm'); // format the waktuselesai time value only
     if ($waktumulai->format('Y-m-d') === $waktuselesai->format('Y-m-d')) {

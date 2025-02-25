@@ -84,7 +84,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-suratrepo-fo
                             'onchange' => '
                     var tanggal = $("#' . Html::getInputId($model, 'tanggal_suratrepo') . '").val();
                     var actionId = "' . (Yii::$app->controller->action->id == 'update' ? $model->id_suratrepo : '') . '"
-                    $.post("' . Yii::$app->request->hostInfo . '/' . Yii::$app->params['versiAplikasi'] . '/' . Yii::$app->controller->id . '/getnomorsurat?id=" + $(this).val() + "&tanggal=" + tanggal + "&action=" + actionId, function(data) {
+                   $.post("' . str_replace("http://", "https://", Yii::$app->request->hostInfo) . '/' . Yii::$app->params['versiAplikasi'] . '/' . Yii::$app->controller->id . '/getnomorsurat?id=" + $(this).val() + "&tanggal=" + tanggal + "&action=" + actionId, function(data) {
                         $("input#suratrepo-nomor_suratrepo").val(data);
                     });
                 ',
@@ -109,15 +109,14 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-suratrepo-fo
                     <?= $form->field($model, 'nomor_suratrepo')->textInput(['readonly' => true])->hint('Pilih Cakupan Surat untuk men-generate nomor surat', ['class' => '', 'style' => 'color: #999'])  ?>
                     <!-- AUTOFILL SURAT -->
                     <?php
-                    $autofillString =
-                        "
-                    <p style='text-indent:.5in;'>Dalam rangka peningkatan pemahaman Reformasi Birokrasi dalam tim sekretariat RB ' . Yii::$app->params['namaSatker'] . ', bersama ini  mengundang Bapak/Ibu untuk hadir pada:</p>
-                    <p>Hari/Tanggal&nbsp; &nbsp; &nbsp; &nbsp;: Jumat/2 Februari 2023</p>
-                    <p>Waktu&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;: 14.00 WIB s.d. selesai</p>
-                    <p>Agenda&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;: Review Pilar dan Rencana Kegiatan Bulanan</p>
-                    <p>Tempat &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : Ruang Agro ' . Yii::$app->params['namaSatker'] . '</p>
-                    <p style='text-indent:.5in;'>Demikian disampaikan, atas perhatian diucapkan terima kasih.</p>
-                    <br/>                    
+                    $autofillString = "
+                        <p style='text-indent:.5in;'>Dalam rangka peningkatan pemahaman Reformasi Birokrasi dalam tim sekretariat RB " . Yii::$app->params['namaSatker'] . ", bersama ini mengundang Bapak/Ibu untuk hadir pada:</p>
+                        <p>Hari/Tanggal&nbsp; &nbsp; &nbsp; &nbsp;: Jumat/2 Februari 2023</p>
+                        <p>Waktu&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;: 14.00 WIB s.d. selesai</p>
+                        <p>Agenda&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;: Review Pilar dan Rencana Kegiatan Bulanan</p>
+                        <p>Tempat &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : Ruang Agro " . Yii::$app->params['namaSatker'] . "</p>
+                        <p style='text-indent:.5in;'>Demikian disampaikan, atas perhatian diucapkan terima kasih.</p>
+                        <br/>                    
                     ";
                     ?>
 
@@ -225,7 +224,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-suratrepo-fo
                             'onchange' => '
                     var tanggal = $("#' . Html::getInputId($model, 'tanggal_suratrepo') . '").val();
                     var actionId = "' . (Yii::$app->controller->action->id == 'update' ? $model->id_suratrepo : '') . '"
-                    $.post("' . Yii::$app->request->hostInfo . '/' . Yii::$app->params['versiAplikasi'] . '/' . Yii::$app->controller->id . '/getnomorsurat?id=" + $(this).val() + "&tanggal=" + tanggal + "&action=" + actionId, function(data) {
+                    $.post("' . str_replace("http://", "https://", Yii::$app->request->hostInfo) . '/' . Yii::$app->params['versiAplikasi'] . '/' . Yii::$app->controller->id . '/getnomorsurat?id=" + $(this).val() + "&tanggal=" + tanggal + "&action=" + actionId, function(data) {
                         $("input#suratrepo-nomor_suratrepo").val(data);
                     });
                 ',
@@ -264,11 +263,11 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-suratrepo-fo
                     <?php
                     $autofillString =
                         "
-                    <p style='text-indent:.5in;'>Dalam rangka peningkatan pemahaman Reformasi Birokrasi dalam tim sekretariat RB ' . Yii::$app->params['namaSatker'] . ', bersama ini  mengundang Bapak/Ibu untuk hadir pada:</p>
+                    <p style='text-indent:.5in;'>Dalam rangka peningkatan pemahaman Reformasi Birokrasi dalam tim sekretariat RB " . Yii::$app->params['namaSatker'] . ", bersama ini  mengundang Bapak/Ibu untuk hadir pada:</p>
                     <p>Hari/Tanggal&nbsp; &nbsp; &nbsp; &nbsp;: Jumat/2 Februari 2023</p>
                     <p>Waktu&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;: 14.00 WIB s.d. selesai</p>
                     <p>Agenda&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;: Review Pilar dan Rencana Kegiatan Bulanan</p>
-                    <p>Tempat &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : Ruang Agro ' . Yii::$app->params['namaSatker'] . '</p>
+                    <p>Tempat &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : Ruang Agro " . Yii::$app->params['namaSatker'] . "</p>
                     <p style='text-indent:.5in;'>Demikian disampaikan, atas perhatian diucapkan terima kasih.</p>
                     <br/>                    
                     ";

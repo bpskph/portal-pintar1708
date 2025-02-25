@@ -17,10 +17,10 @@ function findWaktutampil($id_laporan)
         $formatter = Yii::$app->formatter;
         $formatter->locale = 'id-ID';
         $timezone = new \DateTimeZone('Asia/Jakarta');
-        $waktumulai_tunda = new \DateTime($dataagenda->waktumulai_tunda, new \DateTimeZone('UTC'));
+        $waktumulai_tunda = new \DateTime($dataagenda->waktumulai_tunda, new \DateTimeZone('Asia/Jakarta'));
         $waktumulai_tunda->setTimeZone($timezone);
         $waktumulai_tundaFormatted = $formatter->asDatetime($waktumulai_tunda, 'd MMMM Y, H:mm');
-        $waktuselesai_tunda = new \DateTime($dataagenda->waktuselesai_tunda, new \DateTimeZone('UTC'));
+        $waktuselesai_tunda = new \DateTime($dataagenda->waktuselesai_tunda, new \DateTimeZone('Asia/Jakarta'));
         $waktuselesai_tunda->setTimeZone($timezone);
         $waktuselesai_tundaFormatted = $formatter->asDatetime($waktuselesai_tunda, 'H:mm');
         if ($waktumulai_tunda->format('Y-m-d') === $waktuselesai_tunda->format('Y-m-d')) {
@@ -34,10 +34,10 @@ function findWaktutampil($id_laporan)
         $formatter = Yii::$app->formatter;
         $formatter->locale = 'id-ID';
         $timezone = new \DateTimeZone('Asia/Jakarta');
-        $waktumulai = new \DateTime($dataagenda->waktumulai, new \DateTimeZone('UTC'));
+        $waktumulai = new \DateTime($dataagenda->waktumulai, new \DateTimeZone('Asia/Jakarta'));
         $waktumulai->setTimeZone($timezone);
         $waktumulaiFormatted = $formatter->asDatetime($waktumulai, 'd MMMM Y, H:mm');
-        $waktuselesai = new \DateTime($dataagenda->waktuselesai, new \DateTimeZone('UTC'));
+        $waktuselesai = new \DateTime($dataagenda->waktuselesai, new \DateTimeZone('Asia/Jakarta'));
         $waktuselesai->setTimeZone($timezone);
         $waktuselesaiFormatted = $formatter->asDatetime($waktuselesai, 'H:mm');
         if ($waktumulai->format('Y-m-d') === $waktuselesai->format('Y-m-d')) {
@@ -282,10 +282,10 @@ function findPesertaTambahan($dataagenda)
                 $formatter = Yii::$app->formatter;
                 $formatter->locale = 'id-ID';
                 $timezone = new \DateTimeZone('Asia/Jakarta');
-                $waktumulai = new \DateTime($beritarilis->waktumulai, new \DateTimeZone('UTC'));
+                $waktumulai = new \DateTime($beritarilis->waktumulai, new \DateTimeZone('Asia/Jakarta'));
                 $waktumulai->setTimeZone($timezone);
                 $waktumulaiFormatted = $formatter->asDatetime($waktumulai, 'd MMMM Y, H:mm');
-                $waktuselesai = new \DateTime($beritarilis->waktuselesai, new \DateTimeZone('UTC'));
+                $waktuselesai = new \DateTime($beritarilis->waktuselesai, new \DateTimeZone('Asia/Jakarta'));
                 $waktuselesai->setTimeZone($timezone);
                 $waktuselesaiFormatted = $formatter->asDatetime($waktuselesai, 'H:mm');
                 if ($waktumulai->format('Y-m-d') === $waktuselesai->format('Y-m-d')) {
@@ -353,10 +353,10 @@ function findPesertaTambahan($dataagenda)
                             $formatter = Yii::$app->formatter;
                             $formatter->locale = 'id-ID'; // set the locale to Indonesian
                             $timezone = new \DateTimeZone('Asia/Jakarta'); // create a timezone object for WIB
-                            $waktumulai = new \DateTime($model->tanggal_mulai, new \DateTimeZone('UTC')); // create a datetime object for waktumulai with UTC timezone
+                            $waktumulai = new \DateTime($model->tanggal_mulai, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktumulai with UTC timezone
                             $waktumulai->setTimeZone($timezone); // set the timezone to WIB
                             $waktumulaiFormatted = $formatter->asDatetime($waktumulai, 'd MMMM Y'); // format the waktumulai datetime value
-                            $waktuselesai = new \DateTime($model->tanggal_selesai, new \DateTimeZone('UTC')); // create a datetime object for waktuselesai with UTC timezone
+                            $waktuselesai = new \DateTime($model->tanggal_selesai, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktuselesai with UTC timezone
                             $waktuselesai->setTimeZone($timezone); // set the timezone to WIB
                             $waktuselesaiFormatted = $formatter->asDatetime($waktuselesai, 'd MMMM Y'); // format the waktuselesai time value only
                             if ($waktumulai->format('Y-m') === $waktuselesai->format('Y-m')) {
@@ -447,10 +447,10 @@ function findPesertaTambahan($dataagenda)
                             $formatter = Yii::$app->formatter;
                             $formatter->locale = 'id-ID'; // set the locale to Indonesian
                             $timezone = new \DateTimeZone('Asia/Jakarta'); // create a timezone object for WIB
-                            $waktumulai = new \DateTime($model->mulai, new \DateTimeZone('UTC')); // create a datetime object for waktumulai with UTC timezone
+                            $waktumulai = new \DateTime($model->mulai, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktumulai with UTC timezone
                             $waktumulai->setTimeZone($timezone); // set the timezone to WIB
                             $waktumulaiFormatted = $formatter->asDatetime($waktumulai, 'd MMMM Y, H:mm'); // format the waktumulai datetime value
-                            $waktuselesai = new \DateTime($model->selesai, new \DateTimeZone('UTC')); // create a datetime object for waktuselesai with UTC timezone
+                            $waktuselesai = new \DateTime($model->selesai, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktuselesai with UTC timezone
                             $waktuselesai->setTimeZone($timezone); // set the timezone to WIB
                             $waktuselesaiFormatted = $formatter->asDatetime($waktuselesai, 'H:mm'); // format the waktuselesai time value only
                             if ($waktumulai->format('Y-m-d') === $waktuselesai->format('Y-m-d')) {

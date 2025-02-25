@@ -85,10 +85,10 @@ class AgendaController extends BaseController
             $formatter = Yii::$app->formatter;
             $formatter->locale = 'id-ID'; // set the locale to Indonesian
             $timezone = new \DateTimeZone('Asia/Jakarta'); // create a timezone object for WIB
-            $waktumulai = new \DateTime($eve->waktumulai, new \DateTimeZone('UTC')); // create a datetime object for waktumulai with UTC timezone
+            $waktumulai = new \DateTime($eve->waktumulai, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktumulai with UTC timezone
             $waktumulai->setTimeZone($timezone); // set the timezone to WIB
             $waktumulaiFormatted = $formatter->asDatetime($waktumulai, 'd MMMM Y, H:mm'); // format the waktumulai datetime value
-            $waktuselesai = new \DateTime($eve->waktuselesai, new \DateTimeZone('UTC')); // create a datetime object for waktuselesai with UTC timezone
+            $waktuselesai = new \DateTime($eve->waktuselesai, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktuselesai with UTC timezone
             $waktuselesai->setTimeZone($timezone); // set the timezone to WIB
             $waktuselesaiFormatted = $formatter->asDatetime($waktuselesai, 'H:mm'); // format the waktuselesai time value only
             if ($waktumulai->format('Y-m-d') === $waktuselesai->format('Y-m-d')) {
@@ -223,10 +223,10 @@ class AgendaController extends BaseController
                 $formatter = Yii::$app->formatter;
                 $formatter->locale = 'id-ID'; // set the locale to Indonesian
                 $timezone = new \DateTimeZone('Asia/Jakarta'); // create a timezone object for WIB
-                $waktumulai = new \DateTime($agenda->waktumulai, new \DateTimeZone('UTC')); // create a datetime object for waktumulai with UTC timezone
+                $waktumulai = new \DateTime($agenda->waktumulai, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktumulai with UTC timezone
                 $waktumulai->setTimeZone($timezone); // set the timezone to WIB
                 $waktumulaiFormatted = $formatter->asDatetime($waktumulai, 'd MMMM Y, H:mm'); // format the waktumulai datetime value
-                $waktuselesai = new \DateTime($agenda->waktuselesai, new \DateTimeZone('UTC')); // create a datetime object for waktuselesai with UTC timezone
+                $waktuselesai = new \DateTime($agenda->waktuselesai, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktuselesai with UTC timezone
                 $waktuselesai->setTimeZone($timezone); // set the timezone to WIB
                 $waktuselesaiFormatted = $formatter->asDatetime($waktuselesai, 'H:mm'); // format the waktuselesai time value only
                 if ($waktumulai->format('Y-m-d') === $waktuselesai->format('Y-m-d')) {
@@ -770,12 +770,12 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
         $header = AgendaController::findHeader($id);
         $pelaksana = $dataagenda->getPelaksanalengkape();
         $surat = Suratrepo::findOne(['fk_agenda' => $id, 'is_undangan' => 1]);
-        $waktutampil = new \DateTime(date("Y-m-d"), new \DateTimeZone('UTC'));;
+        $waktutampil = new \DateTime(date("Y-m-d"), new \DateTimeZone('Asia/Jakarta'));;
         $formatter = Yii::$app->formatter;
         $formatter->locale = 'id-ID'; // set the locale to Indonesian
         $timezone = new \DateTimeZone('Asia/Jakarta'); // create a timezone object for WIB
         if (!empty($surat->tanggal_suratrepo)) {
-            $waktutampil = new \DateTime($surat->tanggal_suratrepo, new \DateTimeZone('UTC')); // create a datetime object for waktumulai with UTC timezone            
+            $waktutampil = new \DateTime($surat->tanggal_suratrepo, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktumulai with UTC timezone            
         }
         $waktutampil->setTimeZone($timezone); // set the timezone to WIB
         $waktutampil = $formatter->asDatetime($waktutampil, 'd MMMM Y'); // format the waktumulai datetime value
@@ -969,6 +969,47 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
             return $response;
         }
     }
+    public static function wa_engine_fonnte($nomor_tujuan, $isi_notif)
+    {
+        // URL tujuan
+        $url = 'https://api.fonnte.com/send';
+        $token = 'GmcguyaWvLMQmv7hNGES';
+        $ch = curl_init();
+
+        curl_setopt_array($ch, array(
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => array(
+                'target' => $nomor_tujuan,
+                'message' => $isi_notif,
+                // 'countryCode' => '62', //optional
+            ),
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: ' .  $token //change TOKEN to your actual token
+            ),
+        ));
+
+
+        // Eksekusi request dan simpan responsenya
+        $response = curl_exec($ch);
+
+        // Periksa apakah terjadi kesalahan saat melakukan request
+        if (curl_errno($ch)) {
+            $error_msg = curl_error($ch);
+            curl_close($ch);
+            return 'Error: ' . $error_msg;
+        } else {
+            // Tutup cURL
+            curl_close($ch);
+            return $response;
+        }
+    }
     public function actionWa_blast($id)
     {
         $dataagenda = $this->findModel($id);
@@ -988,17 +1029,17 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
         $formatter->locale = 'id-ID'; // set the locale to Indonesian
         $timezone = new \DateTimeZone('Asia/Jakarta'); // create a timezone object for WIB
         if ($dataagenda->progress == 0) {
-            $waktumulai = new \DateTime($dataagenda->waktumulai, new \DateTimeZone('UTC')); // create a datetime object for waktumulai with UTC timezone
+            $waktumulai = new \DateTime($dataagenda->waktumulai, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktumulai with UTC timezone
             $waktumulai->setTimeZone($timezone); // set the timezone to WIB
             $waktumulaiFormatted = $formatter->asDatetime($waktumulai, 'd MMMM Y, H:mm'); // format the waktumulai datetime value
-            $waktuselesai = new \DateTime($dataagenda->waktuselesai, new \DateTimeZone('UTC')); // create a datetime object for waktuselesai with UTC timezone
+            $waktuselesai = new \DateTime($dataagenda->waktuselesai, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktuselesai with UTC timezone
             $waktuselesai->setTimeZone($timezone); // set the timezone to WIB
             $waktuselesaiFormatted = $formatter->asDatetime($waktuselesai, 'H:mm'); // format the waktuselesai time value only            
         } elseif ($dataagenda->progress == 2) {
-            $waktumulai = new \DateTime($dataagenda->waktumulai_tunda, new \DateTimeZone('UTC')); // create a datetime object for waktumulai with UTC timezone
+            $waktumulai = new \DateTime($dataagenda->waktumulai_tunda, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktumulai with UTC timezone
             $waktumulai->setTimeZone($timezone); // set the timezone to WIB
             $waktumulaiFormatted = $formatter->asDatetime($waktumulai, 'd MMMM Y, H:mm'); // format the waktumulai datetime value
-            $waktuselesai = new \DateTime($dataagenda->waktuselesai_tunda, new \DateTimeZone('UTC')); // create a datetime object for waktuselesai with UTC timezone
+            $waktuselesai = new \DateTime($dataagenda->waktuselesai_tunda, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktuselesai with UTC timezone
             $waktuselesai->setTimeZone($timezone); // set the timezone to WIB
             $waktuselesaiFormatted = $formatter->asDatetime($waktuselesai, 'H:mm'); // format the waktuselesai time value only           
         }

@@ -127,10 +127,10 @@ class MobildinasController extends BaseController
                 $formatter = Yii::$app->formatter;
                 $formatter->locale = 'id-ID'; // set the locale to Indonesian
                 $timezone = new \DateTimeZone('Asia/Jakarta'); // create a timezone object for WIB
-                $waktumulai = new \DateTime($model->mulai, new \DateTimeZone('UTC')); // create a datetime object for waktumulai with UTC timezone
+                $waktumulai = new \DateTime($model->mulai, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktumulai with UTC timezone
                 $waktumulai->setTimeZone($timezone); // set the timezone to WIB
                 $waktumulaiFormatted = $formatter->asDatetime($waktumulai, 'd MMMM Y, H:mm'); // format the waktumulai datetime value
-                $waktuselesai = new \DateTime($model->selesai, new \DateTimeZone('UTC')); // create a datetime object for waktuselesai with UTC timezone
+                $waktuselesai = new \DateTime($model->selesai, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktuselesai with UTC timezone
                 $waktuselesai->setTimeZone($timezone); // set the timezone to WIB
                 $waktuselesaiFormatted = $formatter->asDatetime($waktuselesai, 'H:mm'); // format the waktuselesai time value only
                 if ($waktumulai->format('Y-m-d') === $waktuselesai->format('Y-m-d')) {
@@ -284,10 +284,10 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
             $formatter = Yii::$app->formatter;
             $formatter->locale = 'id-ID'; // set the locale to Indonesian
             $timezone = new \DateTimeZone('Asia/Jakarta'); // create a timezone object for WIB
-            $waktumulai = new \DateTime($model->mulai, new \DateTimeZone('UTC')); // create a datetime object for waktumulai with UTC timezone
+            $waktumulai = new \DateTime($model->mulai, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktumulai with UTC timezone
             $waktumulai->setTimeZone($timezone); // set the timezone to WIB
             $waktumulaiFormatted = $formatter->asDatetime($waktumulai, 'd MMMM Y, H:mm'); // format the waktumulai datetime value
-            $waktuselesai = new \DateTime($model->selesai, new \DateTimeZone('UTC')); // create a datetime object for waktuselesai with UTC timezone
+            $waktuselesai = new \DateTime($model->selesai, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktuselesai with UTC timezone
             $waktuselesai->setTimeZone($timezone); // set the timezone to WIB
             $waktuselesaiFormatted = $formatter->asDatetime($waktuselesai, 'H:mm'); // format the waktuselesai time value only
             if ($waktumulai->format('Y-m-d') === $waktuselesai->format('Y-m-d')) {
@@ -345,10 +345,10 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
                     $formatter = Yii::$app->formatter;
                     $formatter->locale = 'id-ID'; // set the locale to Indonesian
                     $timezone = new \DateTimeZone('Asia/Jakarta'); // create a timezone object for WIB
-                    $waktumulai = new \DateTime($model->mulai, new \DateTimeZone('UTC')); // create a datetime object for waktumulai with UTC timezone
+                    $waktumulai = new \DateTime($model->mulai, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktumulai with UTC timezone
                     $waktumulai->setTimeZone($timezone); // set the timezone to WIB
                     $waktumulaiFormatted = $formatter->asDatetime($waktumulai, 'd MMMM Y, H:mm'); // format the waktumulai datetime value
-                    $waktuselesai = new \DateTime($model->selesai, new \DateTimeZone('UTC')); // create a datetime object for waktuselesai with UTC timezone
+                    $waktuselesai = new \DateTime($model->selesai, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktuselesai with UTC timezone
                     $waktuselesai->setTimeZone($timezone); // set the timezone to WIB
                     $waktuselesaiFormatted = $formatter->asDatetime($waktuselesai, 'H:mm'); // format the waktuselesai time value only
                     if ($waktumulai->format('Y-m-d') === $waktuselesai->format('Y-m-d')) {
@@ -416,10 +416,10 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
                     $formatter = Yii::$app->formatter;
                     $formatter->locale = 'id-ID'; // set the locale to Indonesian
                     $timezone = new \DateTimeZone('Asia/Jakarta'); // create a timezone object for WIB
-                    $waktumulai = new \DateTime($model->mulai, new \DateTimeZone('UTC')); // create a datetime object for waktumulai with UTC timezone
+                    $waktumulai = new \DateTime($model->mulai, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktumulai with UTC timezone
                     $waktumulai->setTimeZone($timezone); // set the timezone to WIB
                     $waktumulaiFormatted = $formatter->asDatetime($waktumulai, 'd MMMM Y, H:mm'); // format the waktumulai datetime value
-                    $waktuselesai = new \DateTime($model->selesai, new \DateTimeZone('UTC')); // create a datetime object for waktuselesai with UTC timezone
+                    $waktuselesai = new \DateTime($model->selesai, new \DateTimeZone('Asia/Jakarta')); // create a datetime object for waktuselesai with UTC timezone
                     $waktuselesai->setTimeZone($timezone); // set the timezone to WIB
                     $waktuselesaiFormatted = $formatter->asDatetime($waktuselesai, 'H:mm'); // format the waktuselesai time value only
                     if ($waktumulai->format('Y-m-d') === $waktuselesai->format('Y-m-d')) {

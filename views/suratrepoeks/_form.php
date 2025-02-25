@@ -143,7 +143,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-suratrepoeks
                             var sifat = $("#suratrepoeks-sifat").val();
                             console.log(sifat);
                             var actionId = "' . (Yii::$app->controller->action->id == 'update' ? $model->id_suratrepoeks : '') . '"
-                            $.post("' . Yii::$app->request->hostInfo . '/' . Yii::$app->params['versiAplikasi'] . '/' . Yii::$app->controller->id . '/getnomorsurat?id=" + $(this).val() + "&tanggal=" + tanggal + "&sifat=" + sifat + "&action=" + actionId, function(data) {
+                            $.post("' . str_replace("http://", "https://", Yii::$app->request->hostInfo) . '/' .  Yii::$app->params['versiAplikasi'] . '/' . Yii::$app->controller->id . '/getnomorsurat?id=" + $(this).val() + "&tanggal=" + tanggal + "&sifat=" + sifat + "&action=" + actionId, function(data) {
                                 $("input#suratrepoeks-nomor_suratrepoeks").val(data);
                             });
                         ',
@@ -163,7 +163,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-suratrepoeks
                                 var id = $("#suratrepoeks-fk_suratsubkode").val();
                                 console.log(id);
                                 var actionId = "' . (Yii::$app->controller->action->id == 'update' ? $model->id_suratrepoeks : '') . '"
-                                $.post("' . Yii::$app->request->hostInfo . '/' . Yii::$app->params['versiAplikasi'] . '/' . Yii::$app->controller->id . '/getnomorsurat?id=" + id + "&tanggal=" + tanggal + "&sifat=" + $(this).val() + "&action=" + actionId, function(data) {
+                                $.post("' . str_replace("http://", "https://", Yii::$app->request->hostInfo) . '/' . Yii::$app->params['versiAplikasi'] . '/' . Yii::$app->controller->id . '/getnomorsurat?id=" + id + "&tanggal=" + tanggal + "&sifat=" + $(this).val() + "&action=" + actionId, function(data) {
                                     $("input#suratrepoeks-nomor_suratrepoeks").val(data);
                                 });
                             ',
@@ -183,7 +183,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-suratrepoeks
                                 var id = $("#suratrepoeks-fk_suratsubkode").val();
                                 console.log(id);
                                 var actionId = "' . (Yii::$app->controller->action->id == 'update' ? $model->id_suratrepoeks : '') . '"
-                                $.post("' . Yii::$app->request->hostInfo . '/' . Yii::$app->params['versiAplikasi'] . '/' . Yii::$app->controller->id . '/getnomorsurat?id=" + id + "&tanggal=" + tanggal + "&sifat=" + $(this).val() + "&action=" + actionId, function(data) {
+                                $.post("' . str_replace("http://", "https://", Yii::$app->request->hostInfo) . '/' . Yii::$app->params['versiAplikasi'] . '/' . Yii::$app->controller->id . '/getnomorsurat?id=" + id + "&tanggal=" + tanggal + "&sifat=" + $(this).val() + "&action=" + actionId, function(data) {
                                     $("input#suratrepoeks-nomor_suratrepoeks").val(data);
                                 });
                             ',
