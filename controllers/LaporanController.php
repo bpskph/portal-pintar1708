@@ -259,7 +259,7 @@ class LaporanController extends BaseController
                                 </tr>
                                 <tr>
                                     <td class="' . ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? 'text-dark' : '') . '">Penambah Laporan</td>
-                                    <td class="' . ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? 'text-dark' : '') . '">: ' . ($dataagenda->laporane->uploader == null ? $dataagenda->reportere->nama : $dataagenda->uploadere->nama) . '</td>
+                                    <td class="' . ((!Yii::$app->user->isGuest && Yii::$app->user->identity->theme == 0) ? 'text-dark' : '') . '">: ' . (!isset($dataagenda->laporane->uploader) ? $dataagenda->reportere->nama : $dataagenda->uploadere->nama) . '</td>
                                 </tr>
                             </tbody>
                         </table>
