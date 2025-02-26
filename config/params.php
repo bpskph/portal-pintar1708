@@ -18,10 +18,16 @@ return [
     'webSatker' => 'https://bengkulu.bps.go.id/',
     'webhostingSatker' => 'https://bengkulu.web.bps.go.id/',
     'ibukotaSatker' => 'Bengkulu',
+    'timTiSatker' => 'TI dan Pengembangan Inovasi',
     'ssoSatkerId' => 'client-id-satker-minta-ke-halosis',
     'ssoSatkerKey' => 'client-secret-key-satker-minta-ke-halosis',
     'emailBlastUsername' => 'portalpintar',
     'emailBlastPassword' => 'Portalpintar1700',
+    'urlDeveloperFi' => 'https://khansasafira19.github.io/',
+    'emailDeveloperFi'=>'nofriani@bps.go.id',
+    'urlDeveloperSatker' => 'https://khansasafira19.github.io/',
+    'emailDeveloperSatker'=>'nofriani@bps.go.id',
+    'hpDeveloperSatker'=>'6285664991937',
     'tokenWhatsAppAPI' => 'beli-di-dialogwa-web-id-atau-penyedia-jasa-lainnya',
     'versiAplikasi' => 'portalpintar', //untuk di localhost
     // 'versiAplikasi' => 'portalpintar',//untuk di webapps    

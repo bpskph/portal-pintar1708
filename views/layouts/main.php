@@ -232,7 +232,7 @@ $this->registerJs($script, \yii\web\View::POS_HEAD);
                 &copy; Copyright <strong><span>Tim TIP <?= Yii::$app->params['namaSatker'] ?></span></strong>. All Rights Reserved | <span class="text-secondary"> App Version:</span> <?= Yii::$app->params['appVersion']; ?>
             </div>
             <div class="credits" style="color: #aaa">
-                Coded by <a href="https://khansasafira19.github.io/">nofriani@bps.go.id</a> | <a href="https://wa.me/6285664991937?text=Salam+Senyum,+Developer+Portal+Pintar%0ASaya+ingin+berdiskusi+terkait+Sistem+Portal+Pintar" target="_blank">Hubungi Developer</a>
+                Originally Developed by <a href="<?= Yii::$app->params['urlDeveloperFi'] ?>"><?= Yii::$app->params['emailDeveloperFi'] ?></a> | Further Developed by <a href="<?= Yii::$app->params['urlDeveloperSatker'] ?>"><?= Yii::$app->params['emailDeveloperSatker'] ?></a> | <a href="https://wa.me/<?= Yii::$app->params['hpDeveloperSatker'] ?>?text=Salam+Senyum,+Developer+Portal+Pintar%0ASaya+ingin+berdiskusi+terkait+Sistem+Portal+Pintar" target="_blank">Hubungi Developer</a>
             </div>
         </div>
     </footer><!-- End Footer -->
