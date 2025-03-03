@@ -106,38 +106,35 @@ class Agenda extends \yii\db\ActiveRecord
         $mulai = $this->waktumulai;
         $selesai = $this->waktuselesai;
         $ruangan = $this->tempat;
-
+    
         $query = Agenda::find()
             ->where(['tempat' => $ruangan])
             ->andWhere(['progress' => '0'])
             ->andWhere(['deleted' => 0]);
-
-        if (Yii::$app->controller->action->id = 'update') {
+    
+        if (Yii::$app->controller->action->id == 'update') {
             $id = $this->id_agenda;
             $query->andWhere(['<>', 'id_agenda', $id]);
-        } elseif (Yii::$app->controller->action->id = 'tunda') {
+        } elseif (Yii::$app->controller->action->id == 'tunda') {
             $id = $this->id_agenda;
             $mulai = $this->waktumulai_tunda;
             $selesai = $this->waktuselesai_tunda;
             $query->andWhere(['<>', 'id_agenda', $id]);
         }
-
-        // Check for any overlap
+    
+        // Improved Overlap Condition
         $query->andWhere([
             'or',
-            ['between', 'waktumulai', $mulai, $selesai],
-            ['between', 'waktuselesai', $mulai, $selesai],
-            [
-                'and',
-                ['<=', 'waktumulai', $mulai],
-                ['>=', 'waktuselesai', $selesai]
-            ]
+            ['and', ['>=', 'waktumulai', $mulai], ['<', 'waktumulai', $selesai]], // Starts inside
+            ['and', ['>', 'waktuselesai', $mulai], ['<=', 'waktuselesai', $selesai]], // Ends inside
+            ['and', ['<=', 'waktumulai', $mulai], ['>=', 'waktuselesai', $selesai]], // Fully contains
+            ['and', ['>=', 'waktumulai', $mulai], ['<=', 'waktuselesai', $selesai]], // Fully contained
         ]);
-
+    
         $agenda = $query->all();
-
+    
         if (Yii::$app->controller->action->id != 'editpeserta' && count($agenda) > 0 && $ruangan != 13) {
-            $this->addError('tempat', "Ruangan dan jadwal tersebut sudah digunakan untuk " . $agenda[0]['kegiatan'] . $this->waktumulai_tunda);
+            $this->addError('tempat', "Ruangan dan jadwal tersebut sudah digunakan untuk " . $agenda[0]['kegiatan']);
         } elseif (Yii::$app->controller->action->id != 'editpeserta' && count($agenda) > 1 && $ruangan == 13) {
             $this->addError('tempat', "Zoom dan jadwal tersebut sudah digunakan untuk " . $agenda[0]['kegiatan']);
         }
