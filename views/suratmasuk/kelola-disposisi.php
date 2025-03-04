@@ -53,7 +53,7 @@ $this->registerJs($script);
                         <?=
                         $form->field($model, 'tujuan_disposisi_team')->widget(Select2::class, [
                             'data' => \yii\helpers\ArrayHelper::map(
-                                \app\models\Teamleader::find()->joinWith(['teame', 'penggunae'])->where('leader_status = 1')->all(),
+                                \app\models\Teamleader::find()->joinWith(['teame', 'penggunae', 'projecte'])->where('leader_status = 1')->andWhere('tahun = ' . date("Y"))->all(),
                                 'fk_team',
                                 function ($model) {
                                     return $model['teame']['nama_team'] . ' [Ketua: ' . $model['penggunae']['nama'] .  ']';
@@ -77,7 +77,7 @@ $this->registerJs($script);
                         <?=
                         $form->field($model, 'tujuan_disposisi_team_lain')->widget(Select2::class, [
                             'data' => \yii\helpers\ArrayHelper::map(
-                                \app\models\Teamleader::find()->joinWith(['teame', 'penggunae'])->where('leader_status = 1')->all(),
+                                \app\models\Teamleader::find()->joinWith(['teame', 'penggunae', 'projecte'])->where('leader_status = 1')->andWhere('tahun = ' . date("Y"))->all(),
                                 'fk_team',
                                 function ($model) {
                                     return $model['teame']['nama_team'] . ' [Ketua: ' . $model['penggunae']['nama'] .  ']';

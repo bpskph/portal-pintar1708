@@ -1180,6 +1180,7 @@ _#pesan ini dikirim oleh Portal Pintar dan tidak perlu dibalas_';
             $autofillString2 = '';
         }
         $kop = '';
+        $kop2 = '';
         $jenis = $model->jenis;
         switch ($jenis) {
             case 0: // biasa
