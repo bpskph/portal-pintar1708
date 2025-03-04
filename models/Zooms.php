@@ -56,18 +56,18 @@ class Zooms extends \yii\db\ActiveRecord
         if ($this->jenis_surat == 0 && $this->fk_surat != '') {
             $fk_surat = str_replace('0-', '', $this->fk_surat);
             $surat = Suratrepo::findOne($fk_surat);
-            $surat = $surat->nomor_suratrepo;
+            return $surat ? $surat->nomor_suratrepo : '-';
         } else {
             if ($this->fk_surat != '') {
                 $fk_surat = str_replace('1-', '', $this->fk_surat);
                 $surat = Suratrepoeks::findOne($fk_surat);
-                $surat = $surat->nomor_suratrepoeks;
+                return $surat ? $surat->nomor_suratrepoeks : '-';
             } else {
-                $surat = '-';
+                return '-';
             }
         }
-        return $surat;
     }
+
     public function validateRooms()
     {
         $data = Agenda::findOne($this->fk_agenda);
