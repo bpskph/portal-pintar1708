@@ -284,7 +284,7 @@ class PenggunaController extends BaseController
                 ->execute();
             Yii::$app->session->setFlash('success', "Password berhasil diubah. Terima kasih.");
             return $this->redirect([
-                'view', 'id' => $id
+                'view', 'username' => $id
             ]);
         }
         return $this->render('ubahpassword', [

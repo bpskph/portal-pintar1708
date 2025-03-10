@@ -112,10 +112,10 @@ class Agenda extends \yii\db\ActiveRecord
             ->andWhere(['progress' => '0'])
             ->andWhere(['deleted' => 0]);
     
-        if (Yii::$app->controller->action->id == 'update') {
+        if (Yii::$app->controller->action->id = 'update') {
             $id = $this->id_agenda;
             $query->andWhere(['<>', 'id_agenda', $id]);
-        } elseif (Yii::$app->controller->action->id == 'tunda') {
+        } elseif (Yii::$app->controller->action->id = 'tunda') {
             $id = $this->id_agenda;
             $mulai = $this->waktumulai_tunda;
             $selesai = $this->waktuselesai_tunda;

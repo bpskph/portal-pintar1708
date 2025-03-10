@@ -234,17 +234,17 @@ class SiteController extends Controller
             ->andWhere('YEAR(timestamp) = ' . $year)
             ->count();
         /* SNAPSHOT TOP CONTRIBUTORS */
-        $topcontributoragenda = Agenda::find()->select('*, count(id_agenda) as jumlahinput')
+        $topcontributoragenda = Agenda::find()->select('reporter, count(id_agenda) as jumlahinput')
             ->joinWith('reportere')
             ->where('deleted = 0')
             ->andWhere('YEAR(waktuselesai) = ' . $year)
             ->groupBy(['reporter'])->orderBy(['jumlahinput' => SORT_DESC])->asArray()->all();
-        $topcontributorsuratinternal = Suratrepo::find()->select('*, count(id_suratrepo) as jumlahinput')
+        $topcontributorsuratinternal = Suratrepo::find()->select('owner, count(id_suratrepo) as jumlahinput')
             ->joinWith('ownere')
             ->where('deleted = 0')
             ->andWhere('YEAR(tanggal_suratrepo) = ' . $year)
             ->groupBy(['owner'])->orderBy(['jumlahinput' => SORT_DESC])->asArray()->all();
-        $topcontributorsurateksternal = Suratrepoeks::find()->select('*, count(id_suratrepoeks) as jumlahinput')
+        $topcontributorsurateksternal = Suratrepoeks::find()->select('owner, count(id_suratrepoeks) as jumlahinput')
             ->joinWith('ownere')
             ->where('deleted = 0')
             ->andWhere('YEAR(tanggal_suratrepoeks) = ' . $year)
@@ -254,12 +254,12 @@ class SiteController extends Controller
                 ['<', 'id_suratrepoeks', 85],
             ])
             ->groupBy(['owner'])->orderBy(['jumlahinput' => SORT_DESC])->asArray()->all();
-        $topcontributoraplikasi = Linkapp::find()->select('*, count(id_linkapp) as jumlahinput')
+        $topcontributoraplikasi = Linkapp::find()->select('owner, count(id_linkapp) as jumlahinput')
             ->joinWith('ownere')
             ->where('active = 1')
             ->andWhere('YEAR(timestamp) = ' . $year)
             ->groupBy(['owner'])->orderBy(['jumlahinput' => SORT_DESC])->asArray()->all();
-        $topcontributormateri = Linkmat::find()->select('*, count(id_linkmat) as jumlahinput')
+        $topcontributormateri = Linkmat::find()->select('owner, count(id_linkmat) as jumlahinput')
             ->joinWith('ownere')
             ->where('active = 1')
             ->andWhere('YEAR(timestamp) = ' . $year)
@@ -282,18 +282,18 @@ class SiteController extends Controller
         // Step 4: Get the top 3 most frequent email addresses along with their total appearance
         $agendapesertatersering = array_slice($emailCounts, 0, 3, true);
         // Now $top3EmailsWithCounts contains the top 3 most frequent email addresses with their total appearance
-        $agendatimtersering =   Agenda::find()->select('*, count(id_agenda) as jumlahinput')
+        $agendatimtersering =   Agenda::find()->select('pelaksana, count(id_agenda) as jumlahinput')
             ->joinWith('projecte')
             ->where('deleted = 0')
             ->andWhere('YEAR(waktuselesai) = ' . $year)
             ->groupBy(['pelaksana'])->orderBy(['jumlahinput' => SORT_DESC])
             ->asArray()->all();
-        $suratinternalcakupan = Suratrepo::find()->select('*, count(id_suratrepo) as jumlahinput')
+        $suratinternalcakupan = Suratrepo::find()->select('fk_suratkode, suratkode.rincian_suratkode, count(id_suratrepo) as jumlahinput')
             ->joinWith('suratkodee')
             ->where('deleted = 0')
             ->andWhere('YEAR(tanggal_suratrepo) = ' . $year)
             ->groupBy(['fk_suratkode'])->orderBy(['jumlahinput' => SORT_DESC])->asArray()->all();
-        $surateksternalcakupan = Suratrepoeks::find()->select('*, count(id_suratrepoeks) as jumlahinput')
+        $surateksternalcakupan = Suratrepoeks::find()->select('fk_suratkode, count(id_suratrepoeks) as jumlahinput')
             ->joinWith('suratkodee')
             ->where('deleted = 0')
             ->andWhere('YEAR(tanggal_suratrepoeks) = ' . $year)
@@ -304,11 +304,18 @@ class SiteController extends Controller
             ])
             ->groupBy(['fk_suratkode'])->orderBy(['jumlahinput' => SORT_DESC])->asArray()->all();
         /* GRAFIK AGENDA */
-        $agendadata = Agenda::find()->select('*, count(id_agenda) as jumlahinput, MONTH(waktuselesai), MONTHNAME(waktuselesai)')
-            ->where('deleted = 0')
-            ->andWhere('YEAR(waktuselesai) = ' . $year)
-            ->groupBy(['MONTH(waktuselesai)'])->orderBy(['MONTH(waktuselesai)' => SORT_ASC])
-            ->asArray()->all();
+        $agendadata = Agenda::find()
+            ->select([
+                'MONTH(waktuselesai) as bulan',
+                'MONTHNAME(waktuselesai)',
+                'COUNT(id_agenda) as jumlahinput'
+            ])
+            ->where(['deleted' => 0])
+            ->andWhere(['YEAR(waktuselesai)' => $year])
+            ->groupBy(['MONTH(waktuselesai)', 'MONTHNAME(waktuselesai)'])  // Ensure all selected columns are in GROUP BY
+            ->orderBy(['MONTH(waktuselesai)' => SORT_ASC])
+            ->asArray()
+            ->all();
         $graphagenda = [];
         $graphagendalabel = [];
         foreach ($agendadata as $value) {
@@ -316,10 +323,10 @@ class SiteController extends Controller
             array_push($graphagendalabel, $value['MONTHNAME(waktuselesai)']);
         }
         /* GRAFIK SURAT */
-        $suratinternaldata = Suratrepo::find()->select('*, count(id_suratrepo) as jumlahinput, MONTH(tanggal_suratrepo), MONTHNAME(tanggal_suratrepo)')
+        $suratinternaldata = Suratrepo::find()->select('count(id_suratrepo) as jumlahinput, MONTH(tanggal_suratrepo), MONTHNAME(tanggal_suratrepo)')
             ->where('deleted = 0')
             ->andWhere('YEAR(tanggal_suratrepo) = ' . $year)
-            ->groupBy(['MONTH(tanggal_suratrepo)'])->orderBy(['MONTH(tanggal_suratrepo)' => SORT_ASC])
+            ->groupBy(['MONTH(tanggal_suratrepo)', 'MONTHNAME(tanggal_suratrepo)'])->orderBy(['MONTH(tanggal_suratrepo)' => SORT_ASC])
             ->asArray()->all();
         $graphsuratinternal = [];
         $graphsuratinternallabel = [];
@@ -327,7 +334,7 @@ class SiteController extends Controller
             array_push($graphsuratinternal, $value['jumlahinput']);
             array_push($graphsuratinternallabel, $value['MONTHNAME(tanggal_suratrepo)']);
         }
-        $surateksternaldata = Suratrepoeks::find()->select('*, count(id_suratrepoeks) as jumlahinput, MONTH(tanggal_suratrepoeks), MONTHNAME(tanggal_suratrepoeks)')
+        $surateksternaldata = Suratrepoeks::find()->select('count(id_suratrepoeks) as jumlahinput, MONTH(tanggal_suratrepoeks), MONTHNAME(tanggal_suratrepoeks)')
             ->where('deleted = 0')
             ->andWhere('YEAR(tanggal_suratrepoeks) = ' . $year)
             ->andWhere([
@@ -335,7 +342,7 @@ class SiteController extends Controller
                 ['>', 'id_suratrepoeks', 826],
                 ['<', 'id_suratrepoeks', 85],
             ])
-            ->groupBy(['MONTH(tanggal_suratrepoeks)'])->orderBy(['MONTH(tanggal_suratrepoeks)' => SORT_ASC])
+            ->groupBy(['MONTH(tanggal_suratrepoeks)', 'MONTHNAME(tanggal_suratrepoeks)'])->orderBy(['MONTH(tanggal_suratrepoeks)' => SORT_ASC])
             ->asArray()->all();
         $graphsurateksternal = [];
         $graphsurateksternallabel = [];
@@ -388,17 +395,17 @@ class SiteController extends Controller
             ->andWhere('YEAR(timestamp) = ' . ($year - 1))
             ->count();
         /* SNAPSHOT TOP CONTRIBUTORS */
-        $topcontributoragendabefore = Agenda::find()->select('*, count(id_agenda) as jumlahinput')
+        $topcontributoragendabefore = Agenda::find()->select('reporter, count(id_agenda) as jumlahinput')
             ->joinWith('reportere')
             ->where('deleted = 0')
             ->andWhere('YEAR(waktuselesai) = ' . ($year - 1))
             ->groupBy(['reporter'])->orderBy(['jumlahinput' => SORT_DESC])->asArray()->all();
-        $topcontributorsuratinternalbefore = Suratrepo::find()->select('*, count(id_suratrepo) as jumlahinput')
+        $topcontributorsuratinternalbefore = Suratrepo::find()->select('owner, count(id_suratrepo) as jumlahinput')
             ->joinWith('ownere')
             ->where('deleted = 0')
             ->andWhere('YEAR(tanggal_suratrepo) = ' . ($year - 1))
             ->groupBy(['owner'])->orderBy(['jumlahinput' => SORT_DESC])->asArray()->all();
-        $topcontributorsurateksternalbefore = Suratrepoeks::find()->select('*, count(id_suratrepoeks) as jumlahinput')
+        $topcontributorsurateksternalbefore = Suratrepoeks::find()->select('owner, count(id_suratrepoeks) as jumlahinput')
             ->joinWith('ownere')
             ->where('deleted = 0')
             ->andWhere('YEAR(tanggal_suratrepoeks) = ' . ($year - 1))
@@ -408,12 +415,12 @@ class SiteController extends Controller
                 ['<', 'id_suratrepoeks', 85],
             ])
             ->groupBy(['owner'])->orderBy(['jumlahinput' => SORT_DESC])->asArray()->all();
-        $topcontributoraplikasibefore = Linkapp::find()->select('*, count(id_linkapp) as jumlahinput')
+        $topcontributoraplikasibefore = Linkapp::find()->select('owner, count(id_linkapp) as jumlahinput')
             ->joinWith('ownere')
             ->where('active = 1')
             ->andWhere('YEAR(timestamp) = ' . ($year - 1))
             ->groupBy(['owner'])->orderBy(['jumlahinput' => SORT_DESC])->asArray()->all();
-        $topcontributormateribefore = Linkmat::find()->select('*, count(id_linkmat) as jumlahinput')
+        $topcontributormateribefore = Linkmat::find()->select('owner, count(id_linkmat) as jumlahinput')
             ->joinWith('ownere')
             ->where('active = 1')
             ->andWhere('YEAR(timestamp) = ' . ($year - 1))
@@ -436,18 +443,18 @@ class SiteController extends Controller
         // Step 4: Get the top 3 most frequent email addresses along with their total appearance
         $agendapesertaterseringbefore = array_slice($emailCountsbefore, 0, 3, true);
         // Now $top3EmailsWithCounts contains the top 3 most frequent email addresses with their total appearance
-        $agendatimterseringbefore =   Agenda::find()->select('*, count(id_agenda) as jumlahinput')
+        $agendatimterseringbefore =   Agenda::find()->select('pelaksana, count(id_agenda) as jumlahinput')
             ->joinWith('projecte')
             ->where('deleted = 0')
             ->andWhere('YEAR(waktuselesai) = ' . ($year - 1))
             ->groupBy(['pelaksana'])->orderBy(['jumlahinput' => SORT_DESC])
             ->asArray()->all();
-        $suratinternalcakupanbefore = Suratrepo::find()->select('*, count(id_suratrepo) as jumlahinput')
+        $suratinternalcakupanbefore = Suratrepo::find()->select('fk_suratkode, count(id_suratrepo) as jumlahinput')
             ->joinWith('suratkodee')
             ->where('deleted = 0')
             ->andWhere('YEAR(tanggal_suratrepo) = ' . ($year - 1))
             ->groupBy(['fk_suratkode'])->orderBy(['jumlahinput' => SORT_DESC])->asArray()->all();
-        $surateksternalcakupanbefore = Suratrepoeks::find()->select('*, count(id_suratrepoeks) as jumlahinput')
+        $surateksternalcakupanbefore = Suratrepoeks::find()->select('fk_suratkode, count(id_suratrepoeks) as jumlahinput')
             ->joinWith('suratkodee')
             ->where('deleted = 0')
             ->andWhere('YEAR(tanggal_suratrepoeks) = ' . ($year - 1))
@@ -458,10 +465,10 @@ class SiteController extends Controller
             ])
             ->groupBy(['fk_suratkode'])->orderBy(['jumlahinput' => SORT_DESC])->asArray()->all();
         /* GRAFIK AGENDA */
-        $agendadatabefore = Agenda::find()->select('*, count(id_agenda) as jumlahinput, MONTH(waktuselesai), MONTHNAME(waktuselesai)')
+        $agendadatabefore = Agenda::find()->select('count(id_agenda) as jumlahinput, MONTH(waktuselesai), MONTHNAME(waktuselesai)')
             ->where('deleted = 0')
             ->andWhere('YEAR(waktuselesai) = ' . ($year - 1))
-            ->groupBy(['MONTH(waktuselesai)'])->orderBy(['MONTH(waktuselesai)' => SORT_ASC])
+            ->groupBy(['MONTH(waktuselesai)', 'MONTHNAME(waktuselesai)'])->orderBy(['MONTH(waktuselesai)' => SORT_ASC])
             ->asArray()->all();
         $graphagendabefore = [];
         $graphagendalabelbefore = [];
@@ -470,10 +477,10 @@ class SiteController extends Controller
             array_push($graphagendalabelbefore, $value['MONTHNAME(waktuselesai)']);
         }
         /* GRAFIK SURAT */
-        $suratinternaldatabefore = Suratrepo::find()->select('*, count(id_suratrepo) as jumlahinput, MONTH(tanggal_suratrepo), MONTHNAME(tanggal_suratrepo)')
+        $suratinternaldatabefore = Suratrepo::find()->select('count(id_suratrepo) as jumlahinput, MONTH(tanggal_suratrepo), MONTHNAME(tanggal_suratrepo)')
             ->where('deleted = 0')
             ->andWhere('YEAR(tanggal_suratrepo) = ' . ($year - 1))
-            ->groupBy(['MONTH(tanggal_suratrepo)'])->orderBy(['MONTH(tanggal_suratrepo)' => SORT_ASC])
+            ->groupBy(['MONTH(tanggal_suratrepo)', 'MONTHNAME(tanggal_suratrepo)'])->orderBy(['MONTH(tanggal_suratrepo)' => SORT_ASC])
             ->asArray()->all();
         $graphsuratinternalbefore = [];
         $graphsuratinternallabelbefore = [];
@@ -481,7 +488,7 @@ class SiteController extends Controller
             array_push($graphsuratinternalbefore, $value['jumlahinput']);
             array_push($graphsuratinternallabelbefore, $value['MONTHNAME(tanggal_suratrepo)']);
         }
-        $surateksternaldatabefore = Suratrepoeks::find()->select('*, count(id_suratrepoeks) as jumlahinput, MONTH(tanggal_suratrepoeks), MONTHNAME(tanggal_suratrepoeks)')
+        $surateksternaldatabefore = Suratrepoeks::find()->select('count(id_suratrepoeks) as jumlahinput, MONTH(tanggal_suratrepoeks), MONTHNAME(tanggal_suratrepoeks)')
             ->where('deleted = 0')
             ->andWhere('YEAR(tanggal_suratrepoeks) = ' . ($year - 1))
             ->andWhere([
@@ -489,7 +496,7 @@ class SiteController extends Controller
                 ['>', 'id_suratrepoeks', 826],
                 ['<', 'id_suratrepoeks', 85],
             ])
-            ->groupBy(['MONTH(tanggal_suratrepoeks)'])->orderBy(['MONTH(tanggal_suratrepoeks)' => SORT_ASC])
+            ->groupBy(['MONTH(tanggal_suratrepoeks)', 'MONTHNAME(tanggal_suratrepoeks)'])->orderBy(['MONTH(tanggal_suratrepoeks)' => SORT_ASC])
             ->asArray()->all();
         $graphsurateksternalbefore = [];
         $graphsurateksternallabelbefore = [];
