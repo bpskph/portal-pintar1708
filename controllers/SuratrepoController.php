@@ -160,6 +160,46 @@ class SuratrepoController extends BaseController
             if ($this->request->isPost) {
                 $model->owner = Yii::$app->user->identity->username;
                 $model->fk_agenda = NULL;
+
+                // Get user input for perihal_suratrepo
+                $perihalInput = strtolower(trim($this->request->post('Suratrepo')['perihal_suratrepo']));
+
+                // Remove the word "undangan" if present
+                $perihalCleaned = str_replace('undangan', '', $perihalInput);
+                $perihalCleaned = trim($perihalCleaned); // Remove extra spaces
+
+                // Get all agenda kegiatan where progress is 0
+                $agendas = Agenda::find()
+                    ->where(['progress' => 0])
+                    ->select('kegiatan')
+                    ->asArray()
+                    ->all();
+
+                // Check similarity using flexible word-matching
+                $isSimilar = false;
+                foreach ($agendas as $agenda) {
+                    $kegiatan = strtolower(trim($agenda['kegiatan']));
+
+                    // Convert both to arrays of words
+                    $perihalWords = explode(' ', $perihalCleaned);
+                    $kegiatanWords = explode(' ', $kegiatan);
+
+                    // Calculate word matches (flexible order)
+                    $matches = array_intersect($perihalWords, $kegiatanWords);
+                    $matchPercentage = count($matches) / max(count($perihalWords), count($kegiatanWords));
+
+                    if ($matchPercentage > 0.6) { // 60% similarity threshold
+                        $isSimilar = true;
+                        break;
+                    }
+                }
+
+                // If a similar agenda is found, prevent submission
+                if ($isSimilar) {
+                    Yii::$app->session->setFlash('warning', "Surat dengan perihal <strong>'$perihalInput'</strong> sudah terkait dengan agenda yang ada. <br/>Silakan tambahkan dari modul Agenda.");
+                    return $this->redirect(['index', 'owner' => '', 'year' => '']);
+                }
+
                 if ($model->load($this->request->post()) && $model->save()) {
                     Yii::$app->session->setFlash('success', "Surat berhasil ditambahkan. Terima kasih.");
                     return $this->redirect(['view', 'id' => $model->id_suratrepo]);

@@ -8,7 +8,7 @@ return [
     'meta_description' => 'Portal Pusat Informasi Terkini Dalam Layar',
     'bsVersion' => '5.x',
     'bsDependencyEnabled' => false, // this will not load Bootstrap CSS and JS for all Krajee extensions
-    'appVersion' => '3.66.115', //batas 10 Maret 2025
+    'appVersion' => '3.68.115', //batas 11 Maret 2025
     'namaSatker' => 'BPS Provinsi Bengkulu',
     'namaSatkerSSO' => 'Prov. Bengkulu',
     'namaSatkerKop' => 'PROVINSI BENGKULU',

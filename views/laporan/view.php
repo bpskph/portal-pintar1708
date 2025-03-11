@@ -58,6 +58,15 @@ $this->registerCssFile(Yii::$app->request->baseUrl . '/library/css/fi-page-invoi
                     ],
                 ]) ?>
             <?php endif; ?>
+            <?php if (!Yii::$app->user->isGuest && $model->agendae->pemimpin === Yii::$app->user->identity->username && $model->approval == 1) : ?>
+                <?= Html::a('<i class="far fa-thumbs-down"></i> Batal Setuju', ['batal-setujui', 'id' => $model->id_laporan], [
+                    'class' => 'btn btn-sm btn-danger',
+                    'data' => [
+                        'confirm' => 'Anda yakin akan membatalkan persetujuan laporan ini?',
+                        'method' => 'post',
+                    ],
+                ]) ?>
+            <?php endif; ?>
         </div>
     </div>
 

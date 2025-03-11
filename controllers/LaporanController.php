@@ -42,7 +42,7 @@ class LaporanController extends BaseController
                             },
                         ],
                         [
-                            'actions' => ['create', 'update', 'setujui', 'cetaklaporan', 'view'], // add all actions to take guest to login page
+                            'actions' => ['create', 'update', 'setujui', 'batal-setujui', 'cetaklaporan', 'view'], // add all actions to take guest to login page
                             'allow' => true,
                             'roles' => ['@'],
                         ],
@@ -282,6 +282,22 @@ class LaporanController extends BaseController
             $approver = \app\models\Pengguna::findOne(['username' => $dataagenda->pemimpin]);
             \app\models\Notification::createNotification($dataagenda->reporter, 'Laporan Kegiatan Anda <strong>' . $dataagenda->kegiatan . '</strong> sudah disetujui oleh <strong>' . $approver->nama . '</strong>.', Yii::$app->controller->id, $model->id_laporan);
             Yii::$app->session->setFlash('success', "Laporan berhasil disetujui. Terima kasih.");
+            return $this->redirect(['view', 'id' => $model->id_laporan]);
+        }
+    }
+    public function actionBatalSetujui($id)
+    {
+        $model = $this->findModel($id);
+        date_default_timezone_set('Asia/Jakarta');
+        $affected_rows = Laporan::updateAll(['approval' => 0, 'timestamp_laporan_lastupdate' => date('Y-m-d H:i:s')], 'id_laporan = "' . $id . '"');
+        if ($affected_rows == 0) {
+            Yii::$app->session->setFlash('warning', "Gagal. Mohon hubungi Admin.");
+            return $this->redirect(['view', 'id' => $model->id_laporan]);
+        } else {
+            $dataagenda = Agenda::findOne(['id_agenda' => $id]);
+            $approver = \app\models\Pengguna::findOne(['username' => $dataagenda->pemimpin]);
+            \app\models\Notification::createNotification($dataagenda->reporter, 'Laporan Kegiatan Anda <strong>' . $dataagenda->kegiatan . '</strong> dibatalkan persetujuannya oleh <strong>' . $approver->nama . '</strong>.', Yii::$app->controller->id, $model->id_laporan);
+            Yii::$app->session->setFlash('success', "Persetujuan laporan berhasil dibatalkan. Terima kasih.");
             return $this->redirect(['view', 'id' => $model->id_laporan]);
         }
     }
