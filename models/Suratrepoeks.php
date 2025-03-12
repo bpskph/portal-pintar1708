@@ -14,9 +14,9 @@ class Suratrepoeks extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['penerima_suratrepoeks', 'tanggal_suratrepoeks', 'perihal_suratrepoeks', 'fk_suratsubkode', 'nomor_suratrepoeks', 'owner', 'sifat', 'jenis', 'ttd_by', 'approver'], 'required'],
+            [['penerima_suratrepoeks', 'tanggal_suratrepoeks', 'perihal_suratrepoeks', 'fk_suratsubkode', 'nomor_suratrepoeks', 'owner', 'sifat', 'jenis', 'ttd_by', 'approver', 'sent_by'], 'required'],
             [['fk_agenda', 'fk_suratsubkode'], 'integer'],
-            [['tanggal_suratrepoeks', 'timestamp', 'timestamp_suratrepoeks_lastupdate', 'isi_suratrepoeks', 'tembusan', 'lampiran', 'komentar', 'invisibility', 'isi_lampiran', 'isi_lampiran_orientation', 'shared_to', 'sent_by', 'is_sent_by_sek'], 'safe'],
+            [['tanggal_suratrepoeks', 'timestamp', 'timestamp_suratrepoeks_lastupdate', 'isi_suratrepoeks', 'tembusan', 'lampiran', 'komentar', 'invisibility', 'isi_lampiran', 'isi_lampiran_orientation', 'shared_to', 'is_sent_by_sek'], 'safe'],
             [['perihal_suratrepoeks'], 'string'],
             [['nomor_suratrepoeks'], 'unique'],
             [['penerima_suratrepoeks', 'nomor_suratrepoeks'], 'string', 'max' => 255],
@@ -50,7 +50,8 @@ class Suratrepoeks extends \yii\db\ActiveRecord
             'ttd_by_jabatan' => 'TTD Oleh (Jabatannya)',
             'ttd_by' => 'Keterangan TTD',
             'invisibility' => 'Surat Anda Rahasiakan',
-            'shared_to' => 'Berbagi dengan Tim'
+            'shared_to' => 'Berbagi dengan Tim',
+            'sent_by' => 'Penanggung Jawab Pengiriman Surat'
         ];
     }
     public function getAgendae()

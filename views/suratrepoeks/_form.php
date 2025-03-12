@@ -264,9 +264,6 @@ $this->registerJsFile(Yii::$app->request->baseUrl . '/library/js/fi-suratrepoeks
                     ],
                 ])->hint('Penyetuju Surat adalah Ketua Proyek Menurut SK <b>Tahun Berjalan (' . date("Y") . ')</b>', ['class' => '', 'style' => 'color: #999']) ?>
 
-                <?php if ($model->isNewRecord)
-                    $model->sent_by = 0
-                ?>
                 <?= $form->field($model, 'sent_by')->radioList([
                         0 => "PDF Surat akan dikirim oleh Sekretaris " . Yii::$app->params['namaSatker'],
                         1 => "PDF Surat akan dikirim oleh Anda (Tim Teknis)",
